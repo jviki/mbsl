@@ -1,0 +1,46 @@
+#######################################################################
+# iperf 2.0.5
+BASE-iperf-2.0.5          := iperf-2.0.5
+WGET_TARGET-iperf-2.0.5   ?= $(SW_SRC)/$(BASE-iperf-2.0.5).tar.gz
+WGET_URL-iperf-2.0.5      ?= http://sourceforge.net/projects/iperf/files/iperf-2.0.5.tar.gz/download
+WGET_FLAGS-iperf-2.0.5    ?= 
+SRC-iperf-2.0.5            = $(SW_SRC)/$(BASE-iperf-2.0.5)
+
+$(SRC-iperf-2.0.5): $(WGET_TARGET-iperf-2.0.5)
+	tar -vxf $< -C $(SW_SRC)
+	touch $@ # mark as newer than archive
+
+$(WGET_TARGET-iperf-2.0.5): get-by-wget-iperf-2.0.5 
+
+patch-iperf-2.0.5: $(PATCHS_DIR)/$(BASE-iperf-2.0.5).patch
+	cd $(PATCH_SRC) && patch -p1 -ts < $<
+
+configure-iperf-2.0.5: $(SRC-iperf-2.0.5)/Makefile
+$(SRC-iperf-2.0.5)/configure:
+	cd $(SRC-iperf-2.0.5) && ./autogen.sh
+$(SRC-iperf-2.0.5)/Makefile: $(SRC-iperf-2.0.5)/configure
+	$(Q) echo "==== iperf ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH";        \
+	cd $(SRC-iperf-2.0.5)                          \
+	&&	ac_cv_func_malloc_0_nonnull=yes ./configure \
+	     --host=microblaze-unknown-linux-gnu       \
+		  LDFLAGS=--static CFLAGS=--static CXXFLAGS=--static
+build-iperf-2.0.5:
+	$(Q) echo "==== iperf ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
+	&& $(MAKE) -C $(BUILD_SRC) ac_cv_func_malloc_0_nonull=yes
+
+install-iperf-2.0.5:
+	$(Q) echo "==== iperf ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
+	&& $(MAKE) -C $(INSTALL_SRC) DESTDIR=$(INITRAMFS_DIR)
+
+clean-iperf-2.0.5:
+	$(Q) if [ -f "$(CLEAN_SRC)/Makefile" ]; then \
+		$(MAKE) -C $(CLEAN_SRC) clean;            \
+	fi
+distclean-iperf-2.0.5:
+	$(Q) if [ -f "$(CLEAN_SRC)/Makefile" ]; then \
+		$(MAKE) -C $(DISTCLEAN_SRC) distclean;    \
+	fi
+

@@ -1,0 +1,36 @@
+#######################################################################
+# busybox
+GIT_TARGET-busybox   ?= $(SW_SRC)/busybox
+GIT_URL-busybox      ?= git://git.xilinx.com/busybox.git
+GIT_FLAGS-busybox    ?= --depth 1
+SRC-busybox          ?= $(GIT_TARGET-busybox)
+BUSYBOX_CONFIG       ?= oldconfig
+BUSYBOX_CONFIG_FILES ?= default.bbconfig
+
+$(GIT_TARGET-busybox): get-by-git-busybox
+patch-busybox:
+configure-busybox:
+	$(Q) echo "==== BusyBox ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH"; \
+	$(MAKE) -C $(CONFIGURE_SRC) $(BUSYBOX_CONFIG)
+
+build-busybox:
+	$(Q) echo "==== BusyBox ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
+	&& $(MAKE) -C $(BUILD_SRC)
+
+install-busybox:
+	$(Q) echo "==== BusyBox ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
+	&& $(MAKE) -C $(INSTALL_SRC) install CONFIG_PREFIX=$(INITRAMFS_DIR)
+
+clean-busybox:
+	$(Q) echo "==== BusyBox ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
+	&& $(MAKE) -C $(CLEAN_SRC) clean
+
+distclean-busybox:
+	$(Q) echo "==== BusyBox ===="
+	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
+	&& $(MAKE) -C $(DISTCLEAN_SRC) distclean
+

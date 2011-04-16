@@ -4,12 +4,15 @@
 # Downloads software, builds, etc.
 #
 
-INITRAMFS  ?= $(PWD)/build/initramfs
-SW_SRC     ?= $(PWD)/src
-TOOLS_DIR  ?= $(PWD)/tools
-PATCHS_DIR ?= $(PWD)/patchs
-DTS_FILE   ?= $(PWD)/src/xilinx.dts
-Q          ?= @
+SW_SRC        ?= $(PWD)/src
+TOOLS_DIR     ?= $(PWD)/tools
+PATCHS_DIR    ?= $(PWD)/patchs
+DTS_FILE      ?= $(PWD)/src/xilinx.dts
+RAMFS_SRC     ?= $(PWD)/initramfs
+INITRAMFS_DIR ?= $(KSRC)/initramfs
+CONFIGS_DIR   ?= $(PWD)/config
+DTS_DIR       ?= $(PWD)/dts
+Q             ?= @
 
 ##############################
 
@@ -23,10 +26,13 @@ patch: patch-kernel patch-software patch-tools
 configure: configure-kernel configure-software
 download: download-prepare download-tools download-pkgs download-kernel
 build: build-image
+clean: clean-pkgs clean-kernel
+distclean: distclean-pkgs distclean-kernel
 help: help-main
 
 ##############################
 
+include Makefile.pkgs
 include Makefile.main
 include Makefile.git
 include Makefile.wget

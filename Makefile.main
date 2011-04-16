@@ -3,6 +3,7 @@
 #
 
 KSRC       := $(SRC-kernel-$(KERNEL))
+BBSRC      := $(SRC-busybox)
 TOOLS_PATH := $(foreach t,$(TOOLS),$(PATH-$(t)):)
 
 ##############################
@@ -15,7 +16,7 @@ GET_K  := $(KSRC)
 
 download-prepare:
 	mkdir -p $(SW_SRC)
-	mkdir -p $(TOOLS)
+	mkdir -p $(TOOLS_DIR)
 
 download-tools: $(GET_T)
 download-pkgs: $(GET_P)
@@ -33,50 +34,77 @@ configure-kernel: configure-kernel-$(KERNEL)
 ##############################
 
 # expands to current project src dir
-BUILD_SRC     = $($(@:build-%=SRC-%))
+BUILD_SRC    = $($(@:build-%=SRC-%))
+INSTALL_SRC  = $($(@:install-%=SRC-%))
 
 BUILD_P     := $(foreach p,$(PKGS),pre-build-$(p) build-$(p) post-build-$(p))
 PREBUILD_P  := $(foreach p,$(PKGS),pre-build-$(p))
 POSTBUILD_P := $(foreach p,$(PKGS),post-build-$(p))
 
+INSTALL_P   := $(foreach p,$(PKGS),install-$(p))
+DTS_FILE     = $(DTS_DIR)/$(DTS)
+
 build-image: prepare-initramfs build-software install-software \
-		       build-kernel copy-image
+		       prepare-dts build-kernel copy-image
 
 build-software: $(BUILD_P)
 $(PREBUILD_P):
 $(POSTBUILD_P):
 
 build-kernel: build-kernel-$(KERNEL)
+prepare-initramfs: $(INITRAMFS_DIR)
+install-software: $(INSTALL_P)
+prepare-dts: $(DTS_FILE)
+	$(Q) echo "==== $(DTS_FILE) ===="
+	$(Q) cp $(DTS_FILE) $(KSRC)/arch/microblaze/boot/dts/
+copy-image: image-$(KERNEL)
 
-prepare-initramfs:
-install-software:
-copy-image:
+$(INITRAMFS_DIR):
+	$(Q) mkdir -p $(INITRAMFS_DIR)
+
+image-$(KERNEL): $(KSRC)/arch/microblaze/boot/simpleImage.$(DTS:%.dts=%)
+	$(Q) echo "==== Image: image-$(KERNEL) ===="
+	$(Q) cp $< $@
+	$(Q) ls -lh $@
 
 ##############################
 
-$(KERNEL_CONFIG_FILES:%.config=kconfig_%):
-	$(Q) if [ -f "$(KSRC)/.config" ]; then         \
-		cp "$(KSRC)/.config" "$(KSRC)/.config.bak"; \
-	else                                           \
-		cp $(@:kconfig_%=%.config) $(KSRC)/.config; \
-	fi
+$(KERNEL_CONFIG_FILES:%.kconfig=kconfig_%):
+	$(Q) if [ -f "$(KSRC)/.config" ]; then            \
+		cp "$(KSRC)/.config" "$(KSRC)/.config.bak";    \
+	fi;                                               \
+	cp $(CONFIGS_DIR)/$(@:kconfig_%=%.kconfig) $(KSRC)/.config
 
-$(BUSYBOX_CONFIG_FILES:%.config=bbconfig_%):
-	$(Q) if [ -f "$(KSRC)/.config" ]; then                       \
-		cp "$(SRC-busybox)/.config" "$(SRC-busybox)/.config.bak"; \
-	else                                                         \
-		cp $(@:bbconfig_%=%.config) $(SRC-busybox)/.config;       \
-	fi
+$(BUSYBOX_CONFIG_FILES:%.bbconfig=bbconfig_%):
+	$(Q) if [ -f "$(BBSRC)/.config" ]; then                \
+		cp "$(BBSRC)/.config" "$(SRC-busybox)/.config.bak"; \
+	fi;                                                    \
+	cp $(CONFIGS_DIR)/$(@:bbconfig_%=%.bbconfig) $(BBSRC)/.config    
 
 ##############################
 
 # expands to current project src dir
-PATCH_SRC     = $($(@:patch-%=SRC-%))
+PATCH_SRC  = $($(@:patch-%=SRC-%))
 
-PATCH_P     := $(foreach p,$(PKGS),patch-$(p))
-PATCH_K     := patch-kernel-$(KERNEL)
-PATCH_T     := $(foreach t,$(TOOLS),patch-$(t))
+PATCH_P   := $(foreach p,$(PKGS),patch-$(p))
+PATCH_K   := patch-kernel-$(KERNEL)
+PATCH_T   := $(foreach t,$(TOOLS),patch-$(t))
 
 patch-software: $(PATCH_P)
 patch-tools: $(PATCH_T)
 patch-kernel: $(PATCH_K)
+
+##############################
+
+CLEAN_SRC     = $($(@:clean-%=SRC-%))
+DISTCLEAN_SRC = $($(@:distclean-%=SRC-%))
+
+CLEAN_P      := $(foreach p,$(PKGS),clean-$(p))
+DISTCLEAN_P  := $(foreach p,$(PKGS),distclean-$(p))
+CLEAN_K      := clean-kernel-$(KERNEL)
+DISTCLEAN_K  := distclean-kernel-$(KERNEL)
+
+clean-pkgs: $(CLEAN_P)
+distclean-pkgs: $(DISTCLEAN_P)
+clean-kernel: $(CLEAN_K)
+distclean-kernel: $(DISTCLEAN_K)
