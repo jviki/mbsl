@@ -1,0 +1,21 @@
+#
+# Download software by wget
+#
+
+# implements targets: get-by-wget-<module>
+WGET_P := $(PKGS:%=get-by-wget-%) get-by-wget-kernel-$(KERNEL)
+WGET   ?= wget
+
+# expands to proper variable from Makefile.<config>
+_WGET_FLAGS  = $(WGET_FLAGS) $($(@:get-by-wget-%=WGET_FLAGS-%))
+_WGET_URL    = $($(@:get-by-wget-%=WGET_URL-%))
+_WGET_TARGET = $($(@:get-by-wget-%=WGET_TARGET-%))
+_WGET_PKG    = $(@:get-by-wget-%=%)
+
+$(WGET_P):
+	$(Q) if [ -f "$(_WGET_TARGET)" ]; then \
+		echo "Skipping wget of $(_WGET_PKG)"; \
+	else \
+		$(WGET) $(_WGET_FLAGS) $(_WGET_URL) -O $(_WGET_TARGET); \
+	fi
+

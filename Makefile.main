@@ -1,0 +1,82 @@
+#
+# Most general things
+#
+
+KSRC       := $(SRC-kernel-$(KERNEL))
+TOOLS_PATH := $(foreach t,$(TOOLS),$(PATH-$(t)):)
+
+##############################
+
+# generates targets: get-<tool>
+GET_T  := $(foreach t,$(TOOLS),$(HOME-$(t)))
+# generates targets: get-<package>
+GET_P  := $(foreach p,$(PKGS),$(SRC-$(p)))
+GET_K  := $(KSRC)
+
+download-prepare:
+	mkdir -p $(SW_SRC)
+	mkdir -p $(TOOLS)
+
+download-tools: $(GET_T)
+download-pkgs: $(GET_P)
+download-kernel: $(GET_K)
+
+##############################
+
+# expands to current project src dir
+CONFIGURE_SRC = $($(@:configure-%=SRC-%))
+
+CONFIGURE_P  := $(foreach p,$(PKGS),configure-$(p))
+configure-software: $(CONFIGURE_P)
+configure-kernel: configure-kernel-$(KERNEL)
+
+##############################
+
+# expands to current project src dir
+BUILD_SRC     = $($(@:build-%=SRC-%))
+
+BUILD_P     := $(foreach p,$(PKGS),pre-build-$(p) build-$(p) post-build-$(p))
+PREBUILD_P  := $(foreach p,$(PKGS),pre-build-$(p))
+POSTBUILD_P := $(foreach p,$(PKGS),post-build-$(p))
+
+build-image: prepare-initramfs build-software install-software \
+		       build-kernel copy-image
+
+build-software: $(BUILD_P)
+$(PREBUILD_P):
+$(POSTBUILD_P):
+
+build-kernel: build-kernel-$(KERNEL)
+
+prepare-initramfs:
+install-software:
+copy-image:
+
+##############################
+
+$(KERNEL_CONFIG_FILES:%.config=kconfig_%):
+	$(Q) if [ -f "$(KSRC)/.config" ]; then         \
+		cp "$(KSRC)/.config" "$(KSRC)/.config.bak"; \
+	else                                           \
+		cp $(@:kconfig_%=%.config) $(KSRC)/.config; \
+	fi
+
+$(BUSYBOX_CONFIG_FILES:%.config=bbconfig_%):
+	$(Q) if [ -f "$(KSRC)/.config" ]; then                       \
+		cp "$(SRC-busybox)/.config" "$(SRC-busybox)/.config.bak"; \
+	else                                                         \
+		cp $(@:bbconfig_%=%.config) $(SRC-busybox)/.config;       \
+	fi
+
+##############################
+
+# expands to current project src dir
+PATCH_SRC     = $($(@:patch-%=SRC-%))
+
+PATCH_P     := $(foreach p,$(PKGS),patch-$(p))
+PATCH_K     := patch-kernel-$(KERNEL)
+PATCH_T     := $(foreach t,$(TOOLS),patch-$(t))
+
+patch-software: $(PATCH_P)
+patch-tools: $(PATCH_T)
+patch-kernel: $(PATCH_K)
