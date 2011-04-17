@@ -70,6 +70,9 @@ image-$(KERNEL): $(KSRC)/arch/microblaze/boot/simpleImage.$(DTS:%.dts=%)
 
 ##############################
 
+HW_DESIGN_FILE = $(HW_DESIGN_DIR)/$(HW_DESIGN).bit
+
+boot-design: download-design
 boot-image: image-$(KERNEL) boot-xmd
 .NOTPARALLEL: boot-image
 

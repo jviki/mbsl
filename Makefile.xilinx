@@ -8,8 +8,23 @@ XIL_ISE_ENV  ?= /opt/Xilinx/12.4/ISE_DS/settings64.sh
 XIL_EDK_ENV  ?= /opt/Xilinx/12.4/ISE_DS/EDK/settings64.sh
 # home of Xilinx EDK
 XIL_EDK_HOME ?= /opt/Xilinx/12.4/ISE_DS/EDK
+# selected design to download
+HW_DESIGN    ?= default
 
 boot-xmd: image-$(KERNEL)
 	source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
 	&& xmd <<< "connect mb mdm; dow image-$(KERNEL); run"
 	
+download-design: download.cmd $(HW_DESIGN_FILE)
+	$(Q) source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
+	&& impact -batch download.cmd
+
+download.cmd:
+	echo "setMode -bscan"    > download.cmd
+	echo "setCable -p auto" >> download.cmd
+	echo "identify"         >> download.cmd
+	echo "identifympm"      >> download.cmd
+	echo "assignfile -p 1 -file $(HW_DESIGN_FILE)" >> download.cmd
+	echo "program -p 1"     >> download.cmd
+	echo "quit"             >> download.cmd
+

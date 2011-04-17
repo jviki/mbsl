@@ -12,6 +12,7 @@ RAMFS_SRC      ?= $(PWD)/initramfs
 INITRAMFS_DIR  ?= $(KSRC)/initramfs
 CONFIGS_DIR    ?= $(PWD)/config
 DTS_DIR        ?= $(PWD)/dts
+HW_DESIGN_DIR  ?= $(PWD)/design
 KCONFIG_OUTPUT ?= new.kconfig
 Q              ?= @
 
