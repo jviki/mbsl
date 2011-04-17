@@ -21,4 +21,5 @@
 #/usr/sbin/ntpd
 #/usr/sbin/inetd
 
+source /etc/profile
 /bin/echo "rcS Complete"
