@@ -12,7 +12,7 @@
 /bin/mount -t tmpfs none /tmp
 
 /bin/echo "++ Loading system loggers"
-#/sbin/syslogd
+/sbin/syslogd
 /sbin/klogd
 
 /bin/echo "++ Starting telnet daemon"
@@ -21,5 +21,4 @@
 #/usr/sbin/ntpd
 #/usr/sbin/inetd
 
-source /etc/profile
 /bin/echo "rcS Complete"
