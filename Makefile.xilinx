@@ -2,3 +2,14 @@
 # Xilinx Makefile
 #
 
+# path to ISE/settings{32,64}.sh
+XIL_ISE_ENV  ?= /opt/Xilinx/12.4/ISE_DS/settings64.sh
+# path to EDK/settings{32,64}.sh
+XIL_EDK_ENV  ?= /opt/Xilinx/12.4/ISE_DS/EDK/settings64.sh
+# home of Xilinx EDK
+XIL_EDK_HOME ?= /opt/Xilinx/12.4/ISE_DS/EDK
+
+boot-xmd: image-$(KERNEL)
+	source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
+	&& xmd <<< "connect mb mdm; dow image-$(KERNEL); run"
+	

@@ -46,6 +46,7 @@ DTS_FILE     = $(DTS_DIR)/$(DTS)
 
 build-image: prepare-initramfs build-software install-software \
 		       prepare-dts build-kernel copy-image
+.NOTPARALLEL: prepare-dts build-kernel copy-image
 
 build-software: $(BUILD_P)
 $(PREBUILD_P):
@@ -66,6 +67,11 @@ image-$(KERNEL): $(KSRC)/arch/microblaze/boot/simpleImage.$(DTS:%.dts=%)
 	$(Q) echo "==== Image: image-$(KERNEL) ===="
 	$(Q) cp $< $@
 	$(Q) ls -lh $@
+
+##############################
+
+boot-image: image-$(KERNEL) boot-xmd
+.NOTPARALLEL: boot-image
 
 ##############################
 
@@ -108,3 +114,15 @@ clean-pkgs: $(CLEAN_P)
 distclean-pkgs: $(DISTCLEAN_P)
 clean-kernel: $(CLEAN_K)
 distclean-kernel: $(DISTCLEAN_K)
+
+##############################
+
+save-current-kconfig: $(KSRC)/.config
+	$(Q) if [ -f "config/$(KCONFIG_OUTPUT)" ]; then            \
+		echo -n "There is already a config/$(KCONFIG_OUTPUT)";  \
+		echo "file, please move it or delete it or something";  \
+	else                                                       \
+		cp $(KSRC)/.config config/$(KCONFIG_OUTPUT);            \
+		ls -l config/$(KCONFIG_OUTPUT);                         \
+	fi
+

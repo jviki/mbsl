@@ -24,4 +24,9 @@ nod /dev/ttyUL0  755 0 0 c 204 187
 dir /proc        755 0 0
 dir /sys         755 0 0
 dir /mnt         755 0 0
-slink /init bin/busybox 777 0 0
+dir /tmp         775 0 0
+dir /var         775 0 0
+dir /var/log     775 0 0
+
+slink /init       bin/busybox         777 0 0
+file  /System.map ${KSRC}/System.map  755 0 0

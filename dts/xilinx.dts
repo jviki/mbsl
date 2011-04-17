@@ -42,7 +42,7 @@
 		serial0 = &RS232_DCE;
 	} ;
 	chosen {
-		bootargs = "console=ttyUL0,115200 root=/dev/ram ip=192.168.0.2";
+		bootargs = "console=ttyUL0,115200 root=/dev/ram ip=192.168.0.2 profile=2";
 		linux,stdout-path = "/plb@0/serial@84000000";
 	} ;
 	cpus {

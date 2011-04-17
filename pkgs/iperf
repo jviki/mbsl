@@ -33,7 +33,7 @@ build-iperf-2.0.5:
 install-iperf-2.0.5:
 	$(Q) echo "==== iperf ===="
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
-	&& $(MAKE) -C $(INSTALL_SRC) DESTDIR=$(INITRAMFS_DIR)
+	&& $(MAKE) -C $(INSTALL_SRC) install DESTDIR=$(INITRAMFS_DIR)
 
 clean-iperf-2.0.5:
 	$(Q) if [ -f "$(CLEAN_SRC)/Makefile" ]; then \
