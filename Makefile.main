@@ -68,6 +68,14 @@ image-$(KERNEL): $(KSRC)/arch/microblaze/boot/simpleImage.$(DTS:%.dts=%)
 	$(Q) cp $< $@
 	$(Q) ls -lh $@
 
+# Egg-chicken problem, System.map is generated after kernel compilation,
+# but initramfs is generated before kernel compilation.
+# Eg. add this after build-kernel in the command line of make. And
+# then run build-kernel again.
+kernel-with-system.map: $(INITRAMFS_DIR)/System.map build-kernel
+$(INITRAMFS_DIR)/System.map: $(KSRC)/System.map
+	cp $(KSRC)/System.map $(INITRAMFS_DIR)
+
 ##############################
 
 HW_DESIGN_FILE = $(HW_DESIGN_DIR)/$(HW_DESIGN).bit

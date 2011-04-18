@@ -28,4 +28,4 @@ dir /tmp         775 0 0
 dir /var         775 0 0
 
 slink /init       bin/busybox         777 0 0
-file  /System.map ${KSRC}/System.map  755 0 0
+#file  /System.map ${KSRC}/System.map  755 0 0
