@@ -21,4 +21,5 @@
 #/usr/sbin/ntpd
 #/usr/sbin/inetd
 
+/bin/hostname mb-distro
 /bin/echo "rcS Complete"
