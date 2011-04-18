@@ -16,6 +16,7 @@ $(SRC-iptables)/Makefile: $(SRC-iptables)/configure
 	cd $(SRC-iptables)                                 \
 	&& ./configure --host=microblaze-unknown-linux-gnu \
 	     --enable-static --disable-shared              \
+		  --disable-ipv6                                \
 		  --with-ksource="$(KSRC)/usr/include"          \
 		  CFLAGS="-I$(KSRC)/include" LDFLAGS=--static
 
