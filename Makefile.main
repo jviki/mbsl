@@ -125,6 +125,7 @@ clean-pkgs: $(CLEAN_P)
 distclean-pkgs: $(DISTCLEAN_P)
 clean-kernel: $(CLEAN_K)
 distclean-kernel: $(DISTCLEAN_K)
+	rm -Rf $(INITRAMFS_DIR)
 
 ##############################
 

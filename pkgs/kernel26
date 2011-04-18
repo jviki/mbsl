@@ -29,3 +29,4 @@ clean-kernel-xlnx-26:
 distclean-kernel-xlnx-26:
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH";            \
 	$(MAKE) -C $(DISTCLEAN_SRC) ARCH=microblaze mrproper
+	rm -f $(DISTCLEAN_SRC)/include/asm
