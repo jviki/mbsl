@@ -4,6 +4,13 @@
 # Downloads software, builds, etc.
 #
 
+##############################
+
+CONFIG ?= default
+include Makefile.cfg.$(CONFIG)
+
+##############################
+
 SW_SRC         ?= $(PWD)/src
 TOOLS_DIR      ?= $(PWD)/tools
 PATCHS_DIR     ?= $(PWD)/patchs
@@ -15,11 +22,6 @@ DTS_DIR        ?= $(PWD)/dts
 HW_DESIGN_DIR  ?= $(PWD)/design
 KCONFIG_OUTPUT ?= new.kconfig
 Q              ?= @
-
-##############################
-
-CONFIG ?= default
-include Makefile.cfg.$(CONFIG)
 
 ##############################
 
