@@ -8,4 +8,5 @@ include $(PKGS_DIR)/kernel26
 include $(PKGS_DIR)/iptables
 include $(PKGS_DIR)/iperf
 include $(PKGS_DIR)/busybox
+include $(PKGS_DIR)/microblaze-v1.0
 include $(PKGS_DIR)/microblaze-v2.0

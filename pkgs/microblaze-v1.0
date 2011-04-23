@@ -1,0 +1,12 @@
+#######################################################################
+# microblaze-v1.0 cross compiler
+GIT_TARGET-microblaze-v1.0 ?= $(TOOLS_DIR)/microblaze-v1.0
+GIT_URL-microblaze-v1.0    ?= git://git.xilinx.com/xldk/microblaze_v1.0.git
+GIT_FLAGS-microblaze-v1.0  ?=
+HOME-microblaze-v1.0       ?= $(GIT_TARGET-microblaze-v1.0)
+PATH-microblaze-v1.0       ?= $(HOME-microblaze-v1.0)/microblaze-unknown-linux-gnu/bin
+
+$(HOME-microblaze-v1.0): get-by-git-microblaze-v1.0
+	cd $(HOME-microblaze-v1.0) && tar -vxf mb_gnu_tools_bin.tar.bz
+
+
