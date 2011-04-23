@@ -6,7 +6,7 @@ GIT_FLAGS-microblaze-v2.0  ?=
 HOME-microblaze-v2.0       ?= $(GIT_TARGET-microblaze-v2.0)
 PATH-microblaze-v2.0       ?= $(HOME-microblaze-v2.0)/microblaze-unknown-linux-gnu/bin
 
-$(HOME-microblaze-v2.0): get-by-git-mb-linux
+$(HOME-microblaze-v2.0): get-by-git-microblaze-v2.0
 	cd $(HOME-microblaze-v2.0) && tar -vxf microblaze-unknown-linux-gnu.tgz
 
 
