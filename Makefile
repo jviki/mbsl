@@ -14,7 +14,6 @@ include Makefile.cfg.$(CONFIG)
 SW_SRC         ?= $(PWD)/src
 TOOLS_DIR      ?= $(PWD)/tools
 PATCHS_DIR     ?= $(PWD)/patchs
-DTS_FILE       ?= $(PWD)/src/xilinx.dts
 RAMFS_SRC      ?= $(PWD)/initramfs
 INITRAMFS_DIR  ?= $(KSRC)/initramfs
 CONFIGS_DIR    ?= $(PWD)/config
