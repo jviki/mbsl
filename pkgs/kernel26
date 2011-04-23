@@ -12,7 +12,9 @@ configure-kernel-xlnx-26:
 	$(Q) echo "==== kernel ===="
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH";            \
 	$(MAKE) -C $(CONFIGURE_SRC) $(KERNEL_CONFIG) ARCH=microblaze
-	ln -s $(CONFIGURE_SRC)/arch/microblaze/include/asm $(CONFIGURE_SRC)/include/asm
+	$(Q) if [ ! -e "$(CONFIGURE_SRC)/include/asm" ]; then   \
+		ln -s $(CONFIGURE_SRC)/arch/microblaze/include/asm $(CONFIGURE_SRC)/include/asm; \
+	fi
 
 build-kernel-xlnx-26:
 	$(Q) echo "==== kernel ===="
