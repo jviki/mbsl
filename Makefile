@@ -25,23 +25,30 @@ Q              ?= @
 ##############################
 
 all: help-main
-patch: patch-kernel patch-software patch-tools
-configure: configure-kernel configure-software
-download: download-prepare download-tools download-pkgs download-kernel
-build: build-image
-boot: boot-image
-save-kconfig: save-current-kconfig
-clean: clean-pkgs clean-kernel
-distclean: distclean-pkgs distclean-kernel
+patch:
+	@echo "Finished"
+configure:
+	@echo "Finished"
+download:
+	@echo "Finished"
+build:
+	@echo "Finished"
+clean:
+	@echo "Finished"
+distclean:
+	@echo "Finished"
+
+#boot: boot-image
+#save-kconfig: save-current-kconfig
 help: help-advanced
 
 ##############################
 
 include Makefile.pkgs
 include Makefile.main
-include Makefile.git
-include Makefile.wget
-include Makefile.xilinx
+#include Makefile.git
+#include Makefile.wget
+#include Makefile.xilinx
 
 ##############################
 

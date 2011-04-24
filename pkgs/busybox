@@ -7,8 +7,9 @@ SRC-busybox          ?= $(GIT_TARGET-busybox)
 BUSYBOX_CONFIG       ?= oldconfig
 BUSYBOX_CONFIG_FILES ?= default.bbconfig
 
+download-busybox: $(GIT_TARGET-busybox)
 $(GIT_TARGET-busybox): get-by-git-busybox
-patch-busybox:
+
 configure-busybox:
 	$(Q) echo "==== BusyBox ===="
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH"; \
@@ -33,4 +34,11 @@ distclean-busybox:
 	$(Q) echo "==== BusyBox ===="
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
 	&& $(MAKE) -C $(DISTCLEAN_SRC) distclean
+
+download: download-busybox
+configure: configure-busybox
+build: build-busybox
+install: install-busybox
+clean: clean-busybox
+distclean: distclean-busybox
 

@@ -6,10 +6,10 @@ WGET_URL-iperf-2.0.5      ?= http://sourceforge.net/projects/iperf/files/iperf-2
 WGET_FLAGS-iperf-2.0.5    ?= 
 SRC-iperf-2.0.5            = $(SW_SRC)/$(BASE-iperf-2.0.5)
 
+download-iperf-2.0.5: $(SRC-iperf-2.0.5)
 $(SRC-iperf-2.0.5): $(WGET_TARGET-iperf-2.0.5)
 	tar -vxf $< -C $(SW_SRC)
 	touch $@ # mark as newer than archive
-
 $(WGET_TARGET-iperf-2.0.5): get-by-wget-iperf-2.0.5 
 
 patch-iperf-2.0.5: $(PATCHS_DIR)/$(BASE-iperf-2.0.5).patch
@@ -43,4 +43,12 @@ distclean-iperf-2.0.5:
 	$(Q) if [ -f "$(CLEAN_SRC)/Makefile" ]; then \
 		$(MAKE) -C $(DISTCLEAN_SRC) distclean;    \
 	fi
+
+download: download-iperf-2.0.5
+patch: patch-iperf-2.0.5
+configure: configure-iperf-2.0.5
+build: build-iperf-2.0.5
+install: install-iperf-2.0.5
+clean: clean-iperf-2.0.5
+distclean: distclean-iperf-2.0.5
 

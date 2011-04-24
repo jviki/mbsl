@@ -5,8 +5,9 @@ GIT_URL-iptables      ?= git://git.netfilter.org/iptables.git
 GIT_FLAGS-iptables    ?= --depth 1
 SRC-iptables           = $(GIT_TARGET-iptables)
 
-patch-iptables:
+download-iptables: $(SRC-iptables)
 $(SRC-iptables): get-by-git-iptables
+
 configure-iptables: $(SRC-iptables)/Makefile
 $(SRC-iptables)/configure:
 	cd $(SRC-iptables) && ./autogen.sh
@@ -38,3 +39,10 @@ distclean-iptables:
 	$(Q) if [ -f "$(DISTCLEAN_SRC)/Makefile" ]; then \
 		$(MAKE) -C $(DISTCLEAN_SRC) distclean;        \
 	fi
+
+download: download-iptables
+configure: configure-iptables
+build: build-iptables
+install: install-iptables
+clean: clean-iptables
+distclean: distclean-iptables
