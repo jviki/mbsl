@@ -42,6 +42,9 @@ prepare-dts: $(DTS_FILE)
 	$(Q) echo "==== $(DTS_FILE) ===="
 	$(Q) cp $(DTS_FILE) $(KSRC)/arch/microblaze/boot/dts/
 
+copy-system.map: $(KSRC)/vmlinux.o
+	$(Q) cp $(KSRC)/System.map $(INITRAMFS_DIR)
+
 #
 ###############################
 #
