@@ -7,6 +7,7 @@ SRC-kernel-xlnx-26        ?= $(GIT_TARGET-kernel-xlnx-26)
 KERNEL_CONFIG             ?= oldconfig
 KERNEL_CONFIG_FILES       ?= default.kconfig profile.kconfig
 
+patch-kernel-xlnx-26:
 $(SRC-kernel-xlnx-26): get-by-git-kernel-xlnx-26
 configure-kernel-xlnx-26:
 	$(Q) echo "==== kernel ===="
