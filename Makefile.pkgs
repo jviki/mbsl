@@ -4,4 +4,8 @@
 
 PKGS_DIR  ?= pkgs
 include $(PKGS:%=$(PKGS_DIR)/%)
+include $(TOOLS:%=$(PKGS_DIR)/%)
 
+ifdef KERNEL
+	include $(PKGS_DIR)/kernel-$(KERNEL)
+endif

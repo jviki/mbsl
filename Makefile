@@ -25,17 +25,17 @@ Q              ?= @
 ##############################
 
 all: help-main
-patch:
+patch: patch-init
 	@echo "Finished"
-configure:
+configure: configure-init
 	@echo "Finished"
-download:
+download: download-init
 	@echo "Finished"
-build:
+build: build-init
 	@echo "Finished"
-clean:
+clean: clean-init
 	@echo "Finished"
-distclean:
+distclean: distclean-init
 	@echo "Finished"
 
 #boot: boot-image
@@ -46,9 +46,9 @@ help: help-advanced
 
 include Makefile.pkgs
 include Makefile.main
-#include Makefile.git
-#include Makefile.wget
-#include Makefile.xilinx
+include Makefile.git
+include Makefile.wget
+include Makefile.xilinx
 
 ##############################
 

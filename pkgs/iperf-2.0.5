@@ -18,6 +18,7 @@ patch-iperf-2.0.5: $(PATCHS_DIR)/$(BASE-iperf-2.0.5).patch
 configure-iperf-2.0.5: $(SRC-iperf-2.0.5)/Makefile
 $(SRC-iperf-2.0.5)/configure:
 	cd $(SRC-iperf-2.0.5) && ./autogen.sh
+
 $(SRC-iperf-2.0.5)/Makefile: $(SRC-iperf-2.0.5)/configure
 	$(Q) echo "==== iperf ===="
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH";        \
