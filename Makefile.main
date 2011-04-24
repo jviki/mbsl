@@ -6,7 +6,9 @@ download-init:
 	@mkdir -p $(SW_SRC)
 patch-init:
 configure-init:
-build-init:
+install-init:
+build-init: prepare-dts
+	@mkdir -p $(INITRAMFS_DIR)
 clean-init:
 distclean-init:
 
@@ -33,6 +35,12 @@ $(BUSYBOX_CONFIG_FILES:%.bbconfig=bbconfig_%):
 		cp "$(BBSRC)/.config" "$(SRC-busybox)/.config.bak"; \
 	fi;                                                    \
 	cp $(CONFIGS_DIR)/$(@:bbconfig_%=%.bbconfig) $(BBSRC)/.config    
+
+DTS_FILE     = $(DTS_DIR)/$(DTS)
+
+prepare-dts: $(DTS_FILE)
+	$(Q) echo "==== $(DTS_FILE) ===="
+	$(Q) cp $(DTS_FILE) $(KSRC)/arch/microblaze/boot/dts/
 
 #
 ###############################
