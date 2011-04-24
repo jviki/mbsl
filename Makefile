@@ -26,17 +26,19 @@ Q              ?= @
 
 all: help-main
 patch: patch-init
-	@echo "Finished"
+	@echo "Finished $@"
 configure: configure-init
-	@echo "Finished"
+	@echo "Finished $@"
 download: download-init
-	@echo "Finished"
+	@echo "Finished $@"
 build: build-init
-	@echo "Finished"
+	@echo "Finished $@"
+install: install-init
+	@echo "Finished $@"
 clean: clean-init
 	@echo "Finished"
 distclean: distclean-init
-	@echo "Finished"
+	@echo "Finished $@"
 
 #boot: boot-image
 #save-kconfig: save-current-kconfig
