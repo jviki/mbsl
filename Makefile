@@ -40,8 +40,8 @@ clean: clean-init
 distclean: distclean-init
 	@echo "Finished $@"
 
-#boot: boot-image
-#save-kconfig: save-current-kconfig
+boot: boot-image
+save-kconfig: save-current-kconfig
 help: help-advanced
 
 ##############################
