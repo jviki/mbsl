@@ -12,7 +12,7 @@ XIL_EDK_HOME ?= /opt/Xilinx/12.4/ISE_DS/EDK
 HW_DESIGN    ?= default
 
 boot-xmd: image-$(KERNEL)
-	source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
+	$(Q) source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
 	&& xmd <<< "connect mb mdm; dow image-$(KERNEL); run"
 	
 download-design: download.cmd $(HW_DESIGN_FILE)
@@ -20,13 +20,13 @@ download-design: download.cmd $(HW_DESIGN_FILE)
 	&& impact -batch download.cmd
 
 download.cmd:
-	echo "setMode -bscan"    > download.cmd
-	echo "setCable -p auto" >> download.cmd
-	echo "identify"         >> download.cmd
-	echo "identifympm"      >> download.cmd
-	echo "assignfile -p 1 -file $(HW_DESIGN_FILE)" >> download.cmd
-	echo "program -p 1"     >> download.cmd
-	echo "quit"             >> download.cmd
+	$(Q) echo "setMode -bscan"    > download.cmd
+	$(Q) echo "setCable -p auto" >> download.cmd
+	$(Q) echo "identify"         >> download.cmd
+	$(Q) echo "identifympm"      >> download.cmd
+	$(Q) echo "assignfile -p 1 -file $(HW_DESIGN_FILE)" >> download.cmd
+	$(Q) echo "program -p 1"     >> download.cmd
+	$(Q) echo "quit"             >> download.cmd
 
 ##############################
 
