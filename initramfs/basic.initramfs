@@ -20,6 +20,9 @@ nod /dev/ttyp1   755 0 0 c   3   1
 nod /dev/ttyp2   755 0 0 c   3   2
 nod /dev/ttyS0   755 0 0 c   4  64
 nod /dev/ttyUL0  755 0 0 c 204 187
+nod /dev/ttyUL1  755 0 0 c 204 188
+nod /dev/ttyUL2  755 0 0 c 204 189
+nod /dev/ttyUL3  755 0 0 c 204 190
 
 dir /proc        755 0 0
 dir /sys         755 0 0
