@@ -17,7 +17,6 @@ configure-kernel-xlnx-26:
 	$(Q) if [ ! -e "$(CONFIGURE_SRC)/include/asm" ]; then   \
 		ln -s $(CONFIGURE_SRC)/arch/microblaze/include/asm $(CONFIGURE_SRC)/include/asm; \
 	fi
-	@cp 
 
 $(SRC-kernel-xlnx-26)/vmlinux.o: build-kernel-xlnx-26
 build-kernel-xlnx-26:
