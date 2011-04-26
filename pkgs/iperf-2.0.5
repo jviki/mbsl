@@ -12,6 +12,7 @@ $(SRC-iperf-2.0.5): $(WGET_TARGET-iperf-2.0.5)
 	touch $@ # mark as newer than archive
 $(WGET_TARGET-iperf-2.0.5): get-by-wget-iperf-2.0.5 
 
+# patch is for mb-linux-gcc only (but currently not used)
 patch-iperf-2.0.5: $(PATCHS_DIR)/$(BASE-iperf-2.0.5).patch
 	cd $(PATCH_SRC) && patch -p1 -ts < $<
 
