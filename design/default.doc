@@ -1,0 +1,2 @@
+Design for Spartan-3E SP3E16 board.
+Contains microblaze, ll temac, uartlite (DCE, 115200 Bd).
