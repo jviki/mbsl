@@ -1,0 +1,6 @@
+::sysinit:/etc/init.d/rcS
+console::respawn:-/bin/sh
+#ttyUL0::respawn:/sbin/getty -L ttyUL0 115200 vt100
+ttyUL1::respawn:-/bin/sh
+::restart:/sbin/init
+
