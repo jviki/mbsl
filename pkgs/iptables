@@ -14,8 +14,8 @@ patch-iptables-git-26ed9ea:
 	&& patch -p1 -ts < $(PATCHS_DIR)/iptables-git-26ed9ea.patch
 
 configure-iptables: $(SRC-iptables)/Makefile
-$(SRC-iptables)/configure:
-	cd $(SRC-iptables) && ./autogen.sh
+#$(SRC-iptables)/configure:
+#	cd $(SRC-iptables) && ./autogen.sh
 $(SRC-iptables)/Makefile: $(SRC-iptables)/configure
 	$(Q) echo "==== iptables ===="
 	$(Q) export PATH="$(TOOLS_PATH)$$PATH";            \
