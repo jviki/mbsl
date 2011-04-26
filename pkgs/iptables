@@ -8,6 +8,11 @@ SRC-iptables           = $(GIT_TARGET-iptables)
 download-iptables: $(SRC-iptables)
 $(SRC-iptables): get-by-git-iptables
 
+patch-iptables: patch-iptables-git-26ed9ea
+patch-iptables-git-26ed9ea:
+	$(Q) cd $(SRC-iptables) \
+	&& patch -p1 -ts < $(PATCHS_DIR)/iptables-git-26ed9ea.patch
+
 configure-iptables: $(SRC-iptables)/Makefile
 $(SRC-iptables)/configure:
 	cd $(SRC-iptables) && ./autogen.sh
@@ -41,6 +46,7 @@ distclean-iptables:
 	fi
 
 download: download-iptables
+patch: patch-iptables
 configure: configure-iptables
 build: build-iptables
 install: install-iptables
