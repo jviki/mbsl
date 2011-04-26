@@ -40,9 +40,10 @@
 	aliases {
 		ethernet0 = &Soft_TEMAC;
 		serial0 = &RS232_DCE;
+		serial1 = &RS232_DTE;
 	} ;
 	chosen {
-		bootargs = "console=ttyUL0,115200 root=/dev/ram ip=192.168.0.2 profile=2";
+		bootargs = "console=ttyUL0,115200 root=/dev/ram ip=192.168.0.2";
 		linux,stdout-path = "/plb@0/serial@84000000";
 	} ;
 	cpus {
@@ -127,7 +128,7 @@
 			xlnx,number-of-wr-addr-brk = <0x0>;
 			xlnx,opcode-0x0-illegal = <0x1>;
 			xlnx,optimization = <0x0>;
-			xlnx,pvr = <0x0>;
+			xlnx,pvr = <0x2>;
 			xlnx,pvr-user1 = <0x0>;
 			xlnx,pvr-user2 = <0x0>;
 			xlnx,reset-msr = <0x0>;
@@ -249,9 +250,24 @@
 			current-speed = <115200>;
 			device_type = "serial";
 			interrupt-parent = <&xps_intc_0>;
-			interrupts = < 4 0 >;
+			interrupts = < 5 0 >;
 			port-number = <0>;
 			reg = < 0x84000000 0x10000 >;
+			xlnx,baudrate = <0x1c200>;
+			xlnx,data-bits = <0x8>;
+			xlnx,family = "spartan3e";
+			xlnx,odd-parity = <0x0>;
+			xlnx,use-parity = <0x0>;
+		} ;
+		RS232_DTE: serial@84010000 {
+			clock-frequency = <50000000>;
+			compatible = "xlnx,xps-uartlite-1.01.a", "xlnx,xps-uartlite-1.00.a";
+			current-speed = <115200>;
+			device_type = "serial";
+			interrupt-parent = <&xps_intc_0>;
+			interrupts = < 0 0 >;
+			port-number = <1>;
+			reg = < 0x84010000 0x10000 >;
 			xlnx,baudrate = <0x1c200>;
 			xlnx,data-bits = <0x8>;
 			xlnx,family = "spartan3e";
@@ -267,9 +283,9 @@
 				compatible = "xlnx,xps-ll-temac-2.03.a", "xlnx,xps-ll-temac-1.00.a";
 				device_type = "network";
 				interrupt-parent = <&xps_intc_0>;
-				interrupts = < 3 2 >;
+				interrupts = < 4 2 >;
 				llink-connected = <&PIM1>;
-				local-mac-address = [ 00 0a 35 52 02 00 ];
+				local-mac-address = [ 00 0a 35 55 eb 00 ];
 				reg = < 0x84b80000 0x40 >;
 				xlnx,avb = <0x0>;
 				xlnx,bus2core-clk-ratio = <0x1>;
@@ -307,7 +323,7 @@
 			PIM1: sdma@84600080 {
 				compatible = "xlnx,ll-dma-1.00.a";
 				interrupt-parent = <&xps_intc_0>;
-				interrupts = < 1 2 0 2 >;
+				interrupts = < 2 2 1 2 >;
 				reg = < 0x84600080 0x80 >;
 			} ;
 		} ;
@@ -316,13 +332,13 @@
 			compatible = "xlnx,xps-intc-2.01.a", "xlnx,xps-intc-1.00.a";
 			interrupt-controller ;
 			reg = < 0x81800000 0x10000 >;
-			xlnx,kind-of-intr = <0x14>;
-			xlnx,num-intr-inputs = <0x5>;
+			xlnx,kind-of-intr = <0x29>;
+			xlnx,num-intr-inputs = <0x6>;
 		} ;
 		xps_timer_0: timer@83c00000 {
 			compatible = "xlnx,xps-timer-1.02.a", "xlnx,xps-timer-1.00.a";
 			interrupt-parent = <&xps_intc_0>;
-			interrupts = < 2 0 >;
+			interrupts = < 3 0 >;
 			reg = < 0x83c00000 0x10000 >;
 			xlnx,count-width = <0x20>;
 			xlnx,family = "spartan3e";
