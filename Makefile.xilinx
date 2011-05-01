@@ -87,6 +87,7 @@ help-xilinx:
 	@echo "  gen-dts                ... generates DTS file to $(DTS_DIR)/new.dts"
 	@echo "  build-design           ... builds bitstream (synthesis, map & par, place & route, ...) through system.make in EDK project"
 	@echo "  install-design         ... installs the generated bitstream to design directory with name from variable NEWBIT"
+	@echo "  HW_DESIGN              ... name of design to be downloaded (default: default)"
 	@echo "  HW_HOME                ... home of hardware (EDK) project variable"
 	@echo "  MSS                    ... name of Microprocessor Software Specification file (default: system.mss)"
 	@echo "  MHS                    ... name of Microprocessor Hardware Specification file (default: system.mhs)"
