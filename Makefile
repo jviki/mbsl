@@ -54,7 +54,14 @@ include Makefile.xilinx
 
 ##############################
 
-help-main:
+help-banner:
+	@echo "mbsl  Copyright (C) 2011  Jan Viktorin"
+	@echo "This program comes with ABSOLUTELY NO WARRANTY."
+	@echo "This is free software, and you are welcome to redistribute it"
+	@echo "under certain conditions. See file COPYING for details."
+	@echo "--------------------------------------------------------------"
+
+help-main: help-banner
 	@echo "Targets:"
 	@echo "  download               ... downloads all software and kernel sources from Internet"
 	@echo "  patch                  ... patchs all selected packages if possible"
