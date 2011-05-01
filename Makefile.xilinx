@@ -8,6 +8,8 @@ XIL_ISE_ENV  ?= /opt/Xilinx/12.4/ISE_DS/settings64.sh
 XIL_EDK_ENV  ?= /opt/Xilinx/12.4/ISE_DS/EDK/settings64.sh
 # home of Xilinx EDK
 XIL_EDK_HOME ?= /opt/Xilinx/12.4/ISE_DS/EDK
+# path to mb-gcc
+XIL_MB_GCC   ?= $(XIL_EDK_HOME)/gnu/microblaze/lin64/bin
 # selected design to download
 HW_DESIGN    ?= default
 
@@ -49,6 +51,7 @@ NEWDTS_FILE  = $(DTS_DIR)/$(NEWDTS)
 
 build-design: $(BIT_FILE)
 $(BIT_FILE): $(MHS_FILE) $(MSS_FILE)
+	$(Q) PATH="$(XIL_MB_GCC):$$PATH"; \
 	$(MAKE) -C $(HW_HOME) -f system.make bits init_bram
 
 install-design: $(NEWBIT_FILE)
