@@ -43,9 +43,11 @@ distclean: distclean-init
 boot: boot-image
 save-kconfig: save-current-kconfig
 help: help-advanced
+version: current-version
 
 ##############################
 
+include Makefile.version
 include Makefile.pkgs
 include Makefile.main
 include Makefile.git
@@ -76,6 +78,7 @@ help-main: help-banner
 	@echo "  distclean              ... calls distclean on all selected packages and possibly mrproper on kernel"
 	@echo "  save-current-kconfig   ... saves current kernel .config in config/ dir as new.kconfig"
 	@echo "  help                   ... advanced help"
+	@echo "  version                ... tries to determine current version"
 
 help-advanced: help-main
 	@echo "Useful internal targets:"
