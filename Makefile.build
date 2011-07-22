@@ -1,0 +1,13 @@
+##
+## MBSL Build Makefile
+##
+
+build-init:
+build-body:
+build-fini:
+
+KERNEL_BUILD_OPTS  = ARCH=microblaze CONFIG_INITRAMFS_SOURCE="$(KERNEL_INITRAMFS)"
+
+kernel-build = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_BUILD_OPTS) vmlinux.o
+common-build = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) $($(1)_BUILD_OPTS)
+

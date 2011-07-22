@@ -1,0 +1,8 @@
+##
+## MBSL Configure Makefile
+##
+
+configure-init:
+configure-body:
+configure-fini:
+

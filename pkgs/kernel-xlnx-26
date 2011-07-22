@@ -1,55 +1,23 @@
-#######################################################################
-# kernel 2.6
-GIT_TARGET-kernel-xlnx-26 ?= $(SW_SRC)/kernel-xlnx-26
-GIT_URL-kernel-xlnx-26    ?= git://git.xilinx.com/linux-2.6-xlnx.git
-GIT_FLAGS-kernel-xlnx-26  ?= --depth 1
-SRC-kernel-xlnx-26        ?= $(GIT_TARGET-kernel-xlnx-26)
-KERNEL_CONFIG             ?= oldconfig
-KERNEL_CONFIG_FILES       ?= default.kconfig profile.kconfig
+# Linux from git.xilinx.com
+KERNEL_XLNX_VERSION  ?= 37
+KERNEL_XLNX_BASE_URL ?= http://git.xilinx.com
+KERNEL_XLNX_NAME     := linux-2.6-xlnx
+KERNEL_XLNX_SHA1     ?= a5556fb251253ccb674bd22d9703c37f6f8807a8
+KERNEL_XLNX_AR       := tar.gz
+KERNEL_XLNX_URL      := '$(KERNEL_XLNX_BASE_URL)/?p=$(KERNEL_XLNX_NAME).git;a=snapshot;h=$(KERNEL_XLNX_SHA1);sf=tgz'
+KERNEL_XLNX_PATH     := $(SRC_PATH)/$(KERNEL_XLNX_NAME)
 
-download-kernel-xlnx-26: $(SRC-kernel-xlnx-26)
-$(SRC-kernel-xlnx-26): get-by-git-kernel-xlnx-26
+download-kernel-xlnx: $(call download-path,KERNEL_XLNX)
+$(call download-path,KERNEL_XLNX):
+	$(Q) $(call download,KERNEL_XLNX)
 
-configure-kernel-xlnx-26:
-	$(Q) echo "==== kernel ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH";            \
-	$(MAKE) -C $(CONFIGURE_SRC) $(KERNEL_CONFIG) ARCH=microblaze
-	$(Q) if [ ! -e "$(CONFIGURE_SRC)/include/asm" ]; then   \
-		ln -s $(CONFIGURE_SRC)/arch/microblaze/include/asm $(CONFIGURE_SRC)/include/asm; \
-	fi
+unpack-kernel-xlnx: download-kernel-xlnx
+	$(Q) $(call unpack,KERNEL_XLNX)
 
-$(SRC-kernel-xlnx-26)/vmlinux.o: build-kernel-xlnx-26
-build-kernel-xlnx-26:
-	$(Q) echo "==== kernel ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH"; \
-	     export KSRC="$(BUILD_SRC)";        \
-	$(MAKE) -C $(BUILD_SRC) ARCH=microblaze \
-		CONFIG_INITRAMFS_SOURCE="$(RAMFS)"   \
-		vmlinux
+configure-kernel-xlnx:
+	$(Q) $(call kernel-configure,KERNEL_XLNX)
 
-install-kernel-xlnx-26: KIMG=simpleImage.$(DTS:%.dts=%)
-install-kernel-xlnx-26: copy-system.map mkimage-kernel-xlnx-26 copy-kernel
-mkimage-kernel-xlnx-26:
-	$(Q) echo "==== kernel ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH";          \
-	     export KSRC="$(SRC-kernel-xlnx-26)";        \
-	$(MAKE) -C $(SRC-kernel-xlnx-26) ARCH=microblaze \
-		CONFIG_INITRAMFS_SOURCE="$(RAMFS)"            \
-		$(KIMG)
-
-clean-kernel-xlnx-26:
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH";            \
-	$(MAKE) -C $(CLEAN_SRC) ARCH=microblaze clean
-
-distclean-kernel-xlnx-26:
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH";            \
-	$(MAKE) -C $(DISTCLEAN_SRC) ARCH=microblaze mrproper
-	rm -f $(DISTCLEAN_SRC)/include/asm
-
-download: download-kernel-xlnx-26
-configure: configure-kernel-xlnx-26
-build: $(SRC-kernel-xlnx-26)/vmlinux.o
-install: install-kernel-xlnx-26
-clean: clean-kernel-xlnx-26
-distclean: distclean-kernel-xlnx-26
+download-body: download-kernel-xlnx
+download-fini: unpack-kernel-xlnx
+configure-body: configure-kernel-xlnx
 

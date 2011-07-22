@@ -1,0 +1,12 @@
+##
+## MBSL Install Makefile
+##
+
+install-init:
+install-body:
+install-fini:
+
+KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
+
+kernel-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS)
+common-install = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) install

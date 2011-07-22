@@ -1,9 +1,9 @@
 current-version:
 	$(Q) if [ -f ".version" ]; then \
-		cat .version;                \
+		cat .version;               \
 	elif [ -d ".git" ]; then        \
-		git describe --always;       \
+		git describe --always;      \
 	else                            \
-		echo "unknown";              \
+		echo "unknown";             \
 	fi
 

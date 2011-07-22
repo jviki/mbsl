@@ -1,0 +1,24 @@
+# MicroBlaze toolchain from git.xilinx.com
+MB_XLNX_VERSION  ?= v1.0
+MB_XLNX_BASE_URL ?= http://git.xilinx.com
+MB_XLNX_NAME     := microblaze_$(MB_XLNX_VERSION)
+MB_XLNX_SHA1     ?= e43ce25f13975214edfae33d2d9a35402fdcacf9
+MB_XLNX_AR       := tar.gz
+MB_XLNX_URL      := '$(MB_XLNX_BASE_URL)/?p=xldk/$(MB_XLNX_NAME).git;a=snapshot;h=$(MB_XLNX_SHA1);sf=tgz'
+MB_XLNX_PATH     := $(TOOLS_PATH)/$(MB_XLNX_NAME)
+TOOLCHAIN_ID     := MB_XLNX
+
+download-mb-xlnx: $(call download-path,MB_XLNX)
+$(call download-path,MB_XLNX):
+	$(Q) $(call download,MB_XLNX)
+
+unpack-mb-xlnx: download-mb-xlnx $(MB_XLNX_PATH)
+$(MB_XLNX_PATH):
+	$(Q) $(call unpack-tmp,MB_XLNX)
+	$(Q) cd $(TMP_PATH)/$(MB_XLNX_ORIG) && tar -xf microblaze-unknown-linux-gnu.tgz
+	$(Q) mv $(TMP_PATH)/$(MB_XLNX_ORIG)/microblaze-unknown-linux-gnu $(MB_XLNX_PATH)
+	$(Q) rm -Rf $(TMP_PATH)/$(MB_XLNX_ORIG)
+
+download: download-mb-xlnx
+download-fini: unpack-mb-xlnx
+

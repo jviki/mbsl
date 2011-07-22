@@ -1,0 +1,10 @@
+##
+## MBSL Clean Makefile
+##
+
+distclean-init:
+distclean-body:
+distclean-fini:
+
+kernel-distclean = $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze distclean
+common-distclean = $(MAKE) -C $($(1)_PATH) distclean

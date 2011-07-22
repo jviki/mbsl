@@ -1,0 +1,39 @@
+# Linux from kernel.org
+KERNEL_ORG_VERSION  ?= 39.3
+KERNEL_ORG_BASE_URL ?= http://www.kernel.org/pub/linux/kernel/v2.6
+KERNEL_ORG_NAME     := linux-2.6.$(KERNEL_ORG_VERSION)
+KERNEL_ORG_AR       ?= tar.bz2
+KERNEL_ORG_URL      := $(KERNEL_ORG_BASE_URL)/$(KERNEL_ORG_NAME).$(KERNEL_ORG_AR)
+KERNEL_ORG_PATH     := $(SRC_PATH)/$(KERNEL_ORG_NAME)
+
+download-kernel-org: $(call download-path,KERNEL_ORG)
+$(call download-path,KERNEL_ORG):
+	$(Q) $(call download,KERNEL_ORG)
+
+unpack-kernel-org: download-kernel-org
+	$(Q) $(call unpack,KERNEL_ORG)
+
+configure-kernel-org:
+	$(Q) $(call kernel-configure,KERNEL_ORG)
+
+build-kernel-org: $(KERNEL_ORG_DIR)/vmlinux.o
+$(KERNEL_ORG_DIR)/vmlinux.o:
+	$(Q) $(call kernel-build-vmlinux.o,KERNEL_ORG)
+
+mkimage-kernel-org: $(KERNEL_IMG)
+$(KERNEL_ORG_DIR)/$(KERNEL_IMG):
+	$(Q) $(call kernel-mkimage,KERNEL_ORG)
+
+install-kernel-org: mkimage-kernel-org copy-kernel
+
+clean-kernel-org:
+	$(Q) $(call kernel-clean,KERNEL_ORG)
+
+distclean-kernel-org:
+	$(Q) $(call kernel-distclean,KERNEL_ORG)
+
+
+download-body: download-kernel-org
+download-fini: unpack-kernel-org
+configure-body: configure-kernel-org
+
