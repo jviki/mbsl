@@ -1,0 +1,5 @@
+PKGS   ?=
+KERNEL ?=
+TOOLS  ?=
+DTS    ?= default
+INITRAMFS ?=
