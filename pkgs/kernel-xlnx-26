@@ -6,6 +6,7 @@ KERNEL_XLNX_SHA1     ?= a5556fb251253ccb674bd22d9703c37f6f8807a8
 KERNEL_XLNX_AR       := tar.gz
 KERNEL_XLNX_URL      := '$(KERNEL_XLNX_BASE_URL)/?p=$(KERNEL_XLNX_NAME).git;a=snapshot;h=$(KERNEL_XLNX_SHA1);sf=tgz'
 KERNEL_XLNX_PATH     := $(SRC_PATH)/$(KERNEL_XLNX_NAME)
+KERNEL_ID            := KERNEL_XLNX
 
 download-kernel-xlnx: $(call download-path,KERNEL_XLNX)
 $(call download-path,KERNEL_XLNX):

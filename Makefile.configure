@@ -7,11 +7,16 @@ configure-body:
 configure-fini:
 
 
-# Kernel common configure procedure
+# Kernel & Busybox common configure procedure
 
+KERNEL_PATH       = $($(KERNEL_ID)_PATH)
 KERNEL_CONFIGURE ?= oldconfig
-kernel-configure = $(MAKE) -C $($(1)_PATH) ARCH=microblaze $(KERNEL_CONFIGURE)
+kernel-configure  = $(MAKE) -C $($(1)_PATH) ARCH=microblaze $(KERNEL_CONFIGURE)
+kconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(KERNEL_PATH)
 
+BUSYBOX_PATH       = $($(BUSYBOX_ID)_PATH)
+BUSYBOX_CONFIGURE ?= oldconfig
+bbconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(BUSYBOX_PATH)
 
 # Kernel & Busybox configuration
 
@@ -19,8 +24,8 @@ KCONFIG_LS  := $(notdir $(shell ls $(CFG_PATH)/*.kconfig))
 BBCONFIG_LS := $(notdir $(shell ls $(CFG_PATH)/*.bbconfig))
 
 $(KCONFIG_LS:%.kconfig=kconfig_%):
-	$(Q) $(call kconfig-install,$@)
+	$(Q) $(call kconfig-install,$(@:kconfig_%=%.kconfig))
 
 $(BBCONFIG_LS:%.bbconfig=bbconfig_%):
-	$(Q) $(call bbconfig-install,$@)
+	$(Q) $(call bbconfig-install,$(@:bbconfig_%=%.bbconfig))
 
