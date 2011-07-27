@@ -2,5 +2,10 @@
 ## MBSL Initramfs Makefile
 ##
 
-KERNEL_INITRAMFS = $(foreach item,$(INITRAMFS),$(INITRAMFS_PATH)/$(item))
+KERNEL_INITRAMFS  = $(GENRAMFS_PATH)
+KERNEL_INITRAMFS += $(foreach item,$(INITRAMFS),$(INITRAMFS_PATH)/$(item))
 
+genramfs-init:
+	$(Q) mkdir -p $(GENRAMFS_PATH)
+
+build-init: genramfs-init
