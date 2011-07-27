@@ -13,4 +13,5 @@ KERNEL_IMAGE_NAME   ?= image-linux
 
 kernel-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS) \
                  && cp $(KERNEL_INSTALL_SRC) $(KERNEL_INSTALL_DST)
-common-install = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) install
+common-install = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) install DESTDIR="$(GENRAMFS_PATH)"
+
