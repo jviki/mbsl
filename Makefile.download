@@ -11,7 +11,8 @@ download-body:
 download-fini:
 
 download-path = $(TMP_PATH)/$($(1)_NAME).$($(1)_AR)
-download = $(UTIL_PATH)/download.sh $(TMP_PATH) $($(1)_NAME).$($(1)_AR) $($(1)_URL)
-unpack   = $(UTIL_PATH)/unpack.sh $(TMP_PATH) $($(1)_NAME) $($(1)_AR) $($(1)_PATH) $($(1)_ORIG) --totals
+download   = $(UTIL_PATH)/download.sh $(TMP_PATH) $($(1)_NAME).$($(1)_AR) $($(1)_URL)
+unpack     = $(UTIL_PATH)/unpack.sh $(TMP_PATH) $($(1)_NAME) $($(1)_AR) $($(1)_PATH) $($(1)_ORIG) --totals
+unpack-tmp = $(UTIL_PATH)/unpack.sh --tmp $(TMP_PATH) $($(1)_NAME) $($(1)_AR) --totals
 
 
