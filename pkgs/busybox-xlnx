@@ -23,7 +23,7 @@ build-busybox-xlnx:
 	$(Q) $(call common-build,BUSYBOX_XLNX)
 
 install-busybox-xlnx:
-	$(Q) $(call common-install,BUSYBOX_XLNX)
+	$(Q) $(call busybox-install)
 
 clean-busybox-xlnx:
 	$(Q) $(call common-clean,BUSYBOX_XLNX)
