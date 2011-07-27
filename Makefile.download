@@ -15,4 +15,10 @@ download   = $(UTIL_PATH)/download.sh $(TMP_PATH) $($(1)_NAME).$($(1)_AR) $($(1)
 unpack     = $(UTIL_PATH)/unpack.sh $(TMP_PATH) $($(1)_NAME) $($(1)_AR) $($(1)_PATH) $($(1)_ORIG) --totals
 unpack-tmp = $(UTIL_PATH)/unpack.sh --tmp $(TMP_PATH) $($(1)_NAME) $($(1)_AR) --totals
 
+std-dirs-init:
+	$(Q) mkdir -p $(SRC_PATH)
+	$(Q) mkdir -p $(TMP_PATH)
+	$(Q) mkdir -p $(TOOLS_PATH)
+
+download-init: std-dirs-init
 
