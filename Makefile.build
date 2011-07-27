@@ -12,6 +12,6 @@ kernel-build = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_BUILD_OPTS) v
 common-build = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) $($(1)_BUILD_OPTS)
 
 prepare-dts: $(DTS_FILE)
-        $(Q) cp $(DTS_FILE) $(KERNEL_DTS)
+	$(Q) cp $(DTS_FILE) $(KERNEL_DTS)
 
 build-init: prepare-dts
