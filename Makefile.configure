@@ -28,3 +28,18 @@ $(KCONFIG_LS:%.kconfig=kconfig_%):
 $(BBCONFIG_LS:%.bbconfig=bbconfig_%):
 	$(Q) $(call bbconfig-install,$(@:bbconfig_%=%.bbconfig))
 
+# Kernel & Busybox configuration save (eg. after some menuconfig)
+
+KCONFIG_NEW  ?= new
+BBCONFIG_NEW ?= new
+
+kconfig-save: $(CFG_PATH)/$(KCONFIG_NEW).kconfig
+$(CFG_PATH)/$(KCONFIG_NEW).kconfig: $(KERNEL_PATH)/.config
+	$(Q) cp $< $@
+	$(Q) ls -l $@
+
+bbconfig-save: $(CFG_PATH)/$(BBCONFIG_NEW).bbconfig
+$(CFG_PATH)/$(BBCONFIG_NEW).bbconfig: $(BUSYBOX_PATH)/.config
+	$(Q) cp $< $@
+	$(Q) ls -l $@
+
