@@ -1,0 +1,6 @@
+##
+## MBSL Xilinx Makefile
+##
+
+DTS_FILE = $(DTS_PATH)/$(DTS).dts
+
