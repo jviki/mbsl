@@ -5,7 +5,8 @@ BUSYBOX_XLNX_BASE_URL ?= http://git.xilinx.com
 BUSYBOX_XLNX_NAME     := busybox-$(BUSYBOX_XLNX_VERSION)
 BUSYBOX_XLNX_AR       := tar.gz
 BUSYBOX_XLNX_URL      := '$(BUSYBOX_XLNX_BASE_URL)/?p=busybox.git;a=snapshot;h=$(BUSYBOX_XLNX_SHA1);sf=tgz'
-BUSYBOX_XLNX_PATH     := $(SW_SRC)/$(BUSYBOX_XLNX_NAME)
+BUSYBOX_XLNX_PATH     := $(SRC_PATH)/$(BUSYBOX_XLNX_NAME)
+BUSYBOX_XLNX_ORIG     := busybox
 BUSYBOX_ID            := BUSYBOX_XLNX
 
 download-busybox-xlnx: $(call download-path,BUSYBOX_XLNX)

@@ -5,6 +5,7 @@ KERNEL_ORG_NAME     := linux-2.6.$(KERNEL_ORG_VERSION)
 KERNEL_ORG_AR       ?= tar.bz2
 KERNEL_ORG_URL      := $(KERNEL_ORG_BASE_URL)/$(KERNEL_ORG_NAME).$(KERNEL_ORG_AR)
 KERNEL_ORG_PATH     := $(SRC_PATH)/$(KERNEL_ORG_NAME)
+KERNEL_ORG_ORIG     := $(KERNEL_ORG_NAME)
 KERNEL_ID           := KERNEL_ORG
 
 download-kernel-org: $(call download-path,KERNEL_ORG)

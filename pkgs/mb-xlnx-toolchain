@@ -5,6 +5,7 @@ MB_XLNX_NAME     := microblaze_$(MB_XLNX_VERSION)
 MB_XLNX_SHA1     ?= e43ce25f13975214edfae33d2d9a35402fdcacf9
 MB_XLNX_AR       := tar.gz
 MB_XLNX_URL      := '$(MB_XLNX_BASE_URL)/?p=xldk/$(MB_XLNX_NAME).git;a=snapshot;h=$(MB_XLNX_SHA1);sf=tgz'
+MB_XLNX_ORIG     := $(MB_XLNX_NAME)
 MB_XLNX_PATH     := $(TOOLS_PATH)/$(MB_XLNX_NAME)
 TOOLCHAIN_ID     := MB_XLNX
 

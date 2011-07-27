@@ -4,6 +4,7 @@ PROCBENCH_BASE_URL ?= http://www.fit.vutbr.cz/research/view_product.php
 PROCBENCH_NAME     := procbench-toolset_$(PROCBENCH_VERSION)
 PROCBENCH_AR       := tar.gz
 PROCBENCH_URL      := '$(PROCBENCH_BASE_URL)?file=%2Fproduct%2F174%2F$(PROCBENCH_NAME).$(PROCBENCH_AR)&id=174'
+PROCBENCH_ORIG     := procbench-toolset
 PROCBENCH_PATH     := $(SRC_PATH)/$(PROCBENCH_NAME)
 
 download-procbench-toolset: $(call download-path,PROCBENCH)
