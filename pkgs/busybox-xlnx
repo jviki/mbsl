@@ -19,7 +19,23 @@ unpack-busybox-xlnx: download-busybox-xlnx
 configure-busybox-xlnx:
 	$(Q) $(call busybox-configure,BUSYBOX_XLNX)
 
+build-busybox-xlnx:
+	$(Q) $(call common-build,BUSYBOX_XLNX)
+
+install-busybox-xlnx:
+	$(Q) $(call common-install,BUSYBOX_XLNX)
+
+clean-busybox-xlnx:
+	$(Q) $(call common-clean,BUSYBOX_XLNX)
+
+distclean-busybox-xlnx:
+	$(Q) $(call common-distclean,BUSYBOX_XLNX)
+
 download-body: download-busybox-xlnx
 download-fini: unpack-busybox-xlnx
 configure-body: configure-busybox-xlnx
+build-body: build-busybox-xlnx
+install-body: install-busybox-xlnx
+clean-body: clean-busybox-xlnx
+distclean-body: distclean-busybox-xlnx
 
