@@ -17,7 +17,7 @@ unpack-kernel-xlnx: download-kernel-xlnx
 	$(Q) $(call unpack,KERNEL_XLNX)
 
 configure-kernel-xlnx:
-	$(Q) $(call kernel-configure,KERNEL_XLNX)
+	$(Q) $(call kernel-configure)
 
 build-kernel-xlnx:
 	$(Q) $(call kernel-build)
@@ -26,10 +26,10 @@ install-kernel-xlnx:
 	$(Q) $(call kernel-install)
 
 clean-kernel-xlnx:
-	$(Q) $(call kernel-clean,KERNEL_XLNX)
+	$(Q) $(call kernel-clean)
 
 distclean-kernel-xlnx:
-	$(Q) $(call kernel-distclean,KERNEL_XLNX)
+	$(Q) $(call kernel-distclean)
 
 download-body: download-kernel-xlnx
 download-fini: unpack-kernel-xlnx

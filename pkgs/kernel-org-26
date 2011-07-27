@@ -16,26 +16,25 @@ unpack-kernel-org: download-kernel-org
 	$(Q) $(call unpack,KERNEL_ORG)
 
 configure-kernel-org:
-	$(Q) $(call kernel-configure,KERNEL_ORG)
+	$(Q) $(call kernel-configure)
 
-build-kernel-org: $(KERNEL_ORG_DIR)/vmlinux.o
-$(KERNEL_ORG_DIR)/vmlinux.o:
-	$(Q) $(call kernel-build-vmlinux.o,KERNEL_ORG)
+build-kernel-org:
+	$(Q) $(call kernel-build)
 
-mkimage-kernel-org: $(KERNEL_IMG)
-$(KERNEL_ORG_DIR)/$(KERNEL_IMG):
-	$(Q) $(call kernel-mkimage,KERNEL_ORG)
-
-install-kernel-org: mkimage-kernel-org copy-kernel
+install-kernel-org:
+	$(Q) $(call kernel-install)
 
 clean-kernel-org:
-	$(Q) $(call kernel-clean,KERNEL_ORG)
+	$(Q) $(call kernel-clean)
 
 distclean-kernel-org:
-	$(Q) $(call kernel-distclean,KERNEL_ORG)
+	$(Q) $(call kernel-distclean)
 
 
 download-body: download-kernel-org
 download-fini: unpack-kernel-org
 configure-body: configure-kernel-org
-
+build-body: build-kernel-xlnx
+install-body: install-kernel-xlnx
+clean-body: clean-kernel-xlnx
+distclean-body: distclean-kernel-xlnx
