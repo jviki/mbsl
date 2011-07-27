@@ -1,0 +1,6 @@
+##
+## MBSL Initramfs Makefile
+##
+
+KERNEL_INITRAMFS = $(foreach item,$(INITRAMFS),$(INITRAMFS_PATH)/$(item))
+

@@ -19,6 +19,7 @@ PKGS_DIR   ?= pkgs
 PATCHS_DIR ?= patchs
 DTS_DIR    ?= dts
 UTIL_DIR   ?= util
+INITRAMFS_DIR ?= initramfs
 
 #################
 
@@ -30,6 +31,7 @@ PKGS_PATH   := $(MBSL_HOME)/$(PKGS_DIR)
 PATCHS_PATH := $(MBSL_HOME)/$(PATCHS_DIR)
 DTS_PATH    := $(MBSL_HOME)/$(DTS_DIR)
 UTIL_PATH   := $(MBSL_HOME)/$(UTIL_DIR)
+INITRAMFS_PATH := $(MBSL_HOME)/$(INITRAMFS_DIR)
 
 #################
 
