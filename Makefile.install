@@ -7,6 +7,10 @@ install-body:
 install-fini:
 
 KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
+KERNEL_INSTALL_SRC  := $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
+KERNEL_INSTALL_DST   = $(MBSL_HOME)/$(KERNEL_IMAGE_NAME)
+KERNEL_IMAGE_NAME   ?= image-linux
 
-kernel-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS)
+kernel-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS) \
+                 && cp $(KERNEL_INSTALL_SRC) $(KERNEL_INSTALL_DST)
 common-install = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) install
