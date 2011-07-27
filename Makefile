@@ -2,42 +2,8 @@
 ## MBSL Main Makefile
 ##
 
-MBSL_HOME  ?= $(PWD)
-
 #################
-
-CONFIG ?= default
-include $(CONFIG).cfg
-
-#################
-
-SRC_DIR    ?= src
-TMP_DIR    ?= tmp
-CFG_DIR    ?= config
-TOOLS_DIR  ?= tools
-PKGS_DIR   ?= pkgs
-PATCHS_DIR ?= patchs
-DTS_DIR    ?= dts
-UTIL_DIR   ?= util
-INITRAMFS_DIR ?= initramfs
-
-#################
-
-SRC_PATH    := $(MBSL_HOME)/$(SRC_DIR)
-TMP_PATH    := $(MBSL_HOME)/$(TMP_DIR)
-CFG_PATH    := $(MBSL_HOME)/$(CFG_DIR)
-TOOLS_PATH  := $(MBSL_HOME)/$(TOOLS_DIR)
-PKGS_PATH   := $(MBSL_HOME)/$(PKGS_DIR)
-PATCHS_PATH := $(MBSL_HOME)/$(PATCHS_DIR)
-DTS_PATH    := $(MBSL_HOME)/$(DTS_DIR)
-UTIL_PATH   := $(MBSL_HOME)/$(UTIL_DIR)
-INITRAMFS_PATH := $(MBSL_HOME)/$(INITRAMFS_DIR)
-
-#################
-
-Q ?= @
-
-#################
+# General targets
 
 all: help-main
 download: download-init download-body download-fini
@@ -51,6 +17,51 @@ version: current-version
 help: help-advanced
 
 #################
+# Path to distribution home
+
+MBSL_HOME  ?= $(PWD)
+
+#################
+# Used distribution configuration
+
+CONFIG ?= default
+include $(CONFIG).cfg
+
+#################
+# General directory names (relative)
+
+SRC_DIR    ?= src
+TMP_DIR    ?= tmp
+CFG_DIR    ?= config
+TOOLS_DIR  ?= tools
+PKGS_DIR   ?= pkgs
+PATCHS_DIR ?= patchs
+DTS_DIR    ?= dts
+UTIL_DIR   ?= util
+INITRAMFS_DIR ?= initramfs
+GENRAMFS_DIR ?= gen-ramfs
+
+#################
+# General directory paths (absolute)
+
+SRC_PATH    := $(MBSL_HOME)/$(SRC_DIR)
+TMP_PATH    := $(MBSL_HOME)/$(TMP_DIR)
+CFG_PATH    := $(MBSL_HOME)/$(CFG_DIR)
+TOOLS_PATH  := $(MBSL_HOME)/$(TOOLS_DIR)
+PKGS_PATH   := $(MBSL_HOME)/$(PKGS_DIR)
+PATCHS_PATH := $(MBSL_HOME)/$(PATCHS_DIR)
+DTS_PATH    := $(MBSL_HOME)/$(DTS_DIR)
+UTIL_PATH   := $(MBSL_HOME)/$(UTIL_DIR)
+INITRAMFS_PATH := $(MBSL_HOME)/$(INITRAMFS_DIR)
+GENRAMFS_PATH  := $(MBSL_HOME)/$(GENRAMFS_DIR)
+
+#################
+# Common options
+
+Q ?= @
+
+#################
+# Includes
 
 include Makefile.version
 include Makefile.help
@@ -68,4 +79,3 @@ include Makefile.distclean
 
 include Makefile.pkgs
 
-#################
