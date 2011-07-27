@@ -53,6 +53,10 @@ help: help-advanced
 include Makefile.version
 include Makefile.help
 
+include Makefile.path
+include Makefile.initramfs
+include Makefile.xilinx
+
 include Makefile.download
 include Makefile.configure
 include Makefile.build
