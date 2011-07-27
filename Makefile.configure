@@ -6,3 +6,21 @@ configure-init:
 configure-body:
 configure-fini:
 
+
+# Kernel common configure procedure
+
+KERNEL_CONFIGURE ?= oldconfig
+kernel-configure = $(MAKE) -C $($(1)_PATH) ARCH=microblaze $(KERNEL_CONFIGURE)
+
+
+# Kernel & Busybox configuration
+
+KCONFIG_LS  := $(notdir $(shell ls $(CFG_PATH)/*.kconfig))
+BBCONFIG_LS := $(notdir $(shell ls $(CFG_PATH)/*.bbconfig))
+
+$(KCONFIG_LS:%.kconfig=kconfig_%):
+	$(Q) $(call kconfig-install,$@)
+
+$(BBCONFIG_LS:%.bbconfig=bbconfig_%):
+	$(Q) $(call bbconfig-install,$@)
+
