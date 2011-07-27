@@ -16,6 +16,7 @@ kconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(KERNEL_PAT
 
 BUSYBOX_PATH       = $($(BUSYBOX_ID)_PATH)
 BUSYBOX_CONFIGURE ?= oldconfig
+busybox-configure  = $(MAKE) -C $($(1)_PATH) ARCH=microblaze $(BUSYBOX_CONFIGURE)
 bbconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(BUSYBOX_PATH)
 
 # Kernel & Busybox configuration
