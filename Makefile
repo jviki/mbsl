@@ -76,6 +76,7 @@ include Makefile.initramfs
 include Makefile.xilinx
 
 include Makefile.download
+include Makefile.patch
 include Makefile.configure
 include Makefile.build
 include Makefile.install
