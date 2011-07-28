@@ -18,6 +18,8 @@ boot: boot-design boot-image
 version: current-version
 help: help-advanced
 
+force:
+
 #################
 # Path to distribution home
 
