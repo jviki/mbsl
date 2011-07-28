@@ -41,6 +41,7 @@ DTS_DIR    ?= dts
 UTIL_DIR   ?= util
 INITRAMFS_DIR ?= initramfs
 GENRAMFS_DIR ?= gen-ramfs
+DESIGN_DIR ?= design
 
 #################
 # General directory paths (absolute)
@@ -55,6 +56,7 @@ DTS_PATH    := $(MBSL_HOME)/$(DTS_DIR)
 UTIL_PATH   := $(MBSL_HOME)/$(UTIL_DIR)
 INITRAMFS_PATH := $(MBSL_HOME)/$(INITRAMFS_DIR)
 GENRAMFS_PATH  := $(MBSL_HOME)/$(GENRAMFS_DIR)
+DESIGN_PATH := $(MBSL_HOME)/$(DESIGN_DIR)
 
 #################
 # Common options
