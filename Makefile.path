@@ -10,4 +10,6 @@ BUSYBOX_PATH   = $($(BUSYBOX_ID)_PATH)
 TOOLCHAIN_ENV  = PATH="$(TOOLCHAIN_BIN):$$PATH"
 
 KERNEL_DTS     = $(KERNEL_PATH)/arch/microblaze/boot/dts/
+KERNEL_NAME   ?= kernel
+KERNEL_IMAGE   = $(MBSL_HOME)/image-$(KERNEL_NAME)
 
