@@ -7,7 +7,7 @@ install-body:
 install-fini:
 
 KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
-KERNEL_INSTALL_SRC  := $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
+KERNEL_INSTALL_SRC   = $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
 KERNEL_INSTALL_DST   = $(MBSL_HOME)/$(KERNEL_IMAGE_NAME)
 KERNEL_IMAGE_NAME   ?= image-linux
 
