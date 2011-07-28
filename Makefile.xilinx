@@ -40,3 +40,8 @@ download.cmd:
 	$(Q) echo "program -p 1"     >> $@
 	$(Q) echo "quit"             >> $@
 
+clean-xilinx:
+	$(Q) $(RM) _impactbatch.log download.cmd
+
+clean-fini: clean-xilinx
+
