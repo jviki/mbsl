@@ -6,6 +6,8 @@ build-init:
 build-body:
 build-fini:
 
+TOOLCHAIN_CROSS    = $($(TOOLCHAIN_ID)_CROSS)
+TOOLCHAIN_CC       = $(TOOLCHAIN_CROSS)gcc
 KERNEL_BUILD_OPTS  = ARCH=microblaze CONFIG_INITRAMFS_SOURCE="$(KERNEL_INITRAMFS)"
 
 kernel-build = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_BUILD_OPTS) vmlinux.o
