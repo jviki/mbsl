@@ -1,0 +1,7 @@
+*.cmd
+*.log
+gen-ramfs
+src
+tmp
+tools
+image-*
