@@ -2,5 +2,41 @@
 ## MBSL Xilinx Makefile
 ##
 
-DTS_FILE = $(DTS_PATH)/$(DTS).dts
+SHELL := /bin/bash
+
+# Xilinx version
+XIL_VERSION  ?= 13.2
+XIL_ARCH     ?= 64
+
+# path to ISE/settings{32,64}.sh
+XIL_ISE_ENV  ?= /opt/Xilinx/$(XIL_VERSION)/ISE_DS/settings$(XIL_ARCH).sh
+# environment setup command
+XIL_SETUP     = source $(XIL_ISE_ENV)
+
+# selected design to download
+DESIGN      ?= default
+# full path to design file
+DESIGN_FILE := $(DESIGN_PATH)/$(DESIGN).bit
+# full path to selected DTS file
+DTS_FILE := $(DTS_PATH)/$(DTS).dts
+
+#################
+
+xmd-dow-run = $(XIL_SETUP) && xmd <<< "connect mb mdm; dow $(1); run"
+impact-dow  = $(XIL_SETUP) && impact -batch $(1)
+
+boot-xmd: $(MBSL_HOME)/$(KERNEL_IMAGE_NAME)
+	$(Q) $(call xmd-dow-run,$<)
+
+boot-design: download.cmd
+	$(Q) $(call impact-dow,$<)
+
+download.cmd:
+	$(Q) echo "setMode -bscan"    > $@
+	$(Q) echo "setCable -p auto" >> $@
+	$(Q) echo "identify"         >> $@
+	$(Q) echo "identifympm"      >> $@
+	$(Q) echo "assignfile -p 1 -file $(DESIGN_FILE)" >> $@
+	$(Q) echo "program -p 1"     >> $@
+	$(Q) echo "quit"             >> $@
 
