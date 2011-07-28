@@ -34,12 +34,12 @@ KCONFIG_NEW  ?= new
 BBCONFIG_NEW ?= new
 
 kconfig-save: $(CFG_PATH)/$(KCONFIG_NEW).kconfig
-$(CFG_PATH)/$(KCONFIG_NEW).kconfig: $(KERNEL_PATH)/.config
-	$(Q) cp $< $@
+$(CFG_PATH)/$(KCONFIG_NEW).kconfig:
+	$(Q) cp $(KERNEL_PATH)/.config $@
 	$(Q) ls -l $@
 
 bbconfig-save: $(CFG_PATH)/$(BBCONFIG_NEW).bbconfig
-$(CFG_PATH)/$(BBCONFIG_NEW).bbconfig: $(BUSYBOX_PATH)/.config
-	$(Q) cp $< $@
+$(CFG_PATH)/$(BBCONFIG_NEW).bbconfig:
+	$(Q) cp $(BUSYBOX_PATH)/.config $@
 	$(Q) ls -l $@
 
