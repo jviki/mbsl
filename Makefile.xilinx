@@ -33,7 +33,7 @@ boot-design: boot-by-impact
 boot-by-impact: download.cmd
 	$(Q) $(call impact-dow,$<)
 
-download.cmd:
+download.cmd: force
 	$(Q) echo "setMode -bscan"    > $@
 	$(Q) echo "setCable -p auto" >> $@
 	$(Q) echo "identify"         >> $@
