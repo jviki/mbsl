@@ -25,10 +25,12 @@ DTS_FILE := $(DTS_PATH)/$(DTS).dts
 xmd-dow-run = $(XIL_SETUP) && xmd <<< "connect mb mdm; dow $(1); run"
 impact-dow  = $(XIL_SETUP) && impact -batch $(1)
 
-boot-xmd: $(KERNEL_IMAGE)
+boot-image: boot-by-xmd
+boot-by-xmd: $(KERNEL_IMAGE)
 	$(Q) $(call xmd-dow-run,$<)
 
-boot-design: download.cmd
+boot-design: boot-by-impact
+boot-by-impact: download.cmd
 	$(Q) $(call impact-dow,$<)
 
 download.cmd:

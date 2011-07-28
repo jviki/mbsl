@@ -13,6 +13,8 @@ install: install-init install-body install-fini
 clean: clean-init clean-body clean-fini
 distclean: distclean-init distclean-body distclean-fini
 
+boot: boot-design boot-image
+
 version: current-version
 help: help-advanced
 
