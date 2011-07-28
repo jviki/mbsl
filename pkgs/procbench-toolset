@@ -11,7 +11,8 @@ download-procbench-toolset: $(call download-path,PROCBENCH)
 $(call download-path,PROCBENCH):
 	$(Q) $(call download,PROCBENCH)
 
-unpack-procbench-toolset: download-procbench-toolset
+unpack-procbench-toolset: download-procbench-toolset $(PROCBENCH_PATH)
+$(PROCBENCH_PATH):
 	$(Q) $(call unpack,PROCBENCH)
 
 download-body: download-procbench-toolset

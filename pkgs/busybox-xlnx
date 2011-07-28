@@ -13,7 +13,8 @@ download-busybox-xlnx: $(call download-path,BUSYBOX_XLNX)
 $(call download-path,BUSYBOX_XLNX):
 	$(Q) $(call download,BUSYBOX_XLNX)
 
-unpack-busybox-xlnx: download-busybox-xlnx
+unpack-busybox-xlnx: download-busybox-xlnx $(BUSYBOX_XLNX_PATH)
+$(BUSYBOX_XLNX_PATH):
 	$(Q) $(call unpack,BUSYBOX_XLNX)
 
 configure-busybox-xlnx:

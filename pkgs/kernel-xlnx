@@ -13,7 +13,8 @@ download-kernel-xlnx: $(call download-path,KERNEL_XLNX)
 $(call download-path,KERNEL_XLNX):
 	$(Q) $(call download,KERNEL_XLNX)
 
-unpack-kernel-xlnx: download-kernel-xlnx
+unpack-kernel-xlnx: download-kernel-xlnx $(KERNEL_XLNX_PATH)
+$(KERNEL_XLNX_PATH):
 	$(Q) $(call unpack,KERNEL_XLNX)
 
 configure-kernel-xlnx:

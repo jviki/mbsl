@@ -12,7 +12,8 @@ download-kernel-org: $(call download-path,KERNEL_ORG)
 $(call download-path,KERNEL_ORG):
 	$(Q) $(call download,KERNEL_ORG)
 
-unpack-kernel-org: download-kernel-org
+unpack-kernel-org: download-kernel-org $(KERNEL_ORG_PATH)
+$(KERNEL_ORG_PATH):
 	$(Q) $(call unpack,KERNEL_ORG)
 
 configure-kernel-org:
