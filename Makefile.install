@@ -12,7 +12,7 @@ KERNEL_INSTALL_DST   = $(MBSL_HOME)/$(KERNEL_IMAGE_NAME)
 KERNEL_IMAGE_NAME   ?= image-linux
 
 kernel-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS) \
-                 && cp $(KERNEL_INSTALL_SRC) $(KERNEL_INSTALL_DST)
+                 && cp $(KERNEL_INSTALL_SRC) $(KERNEL_INSTALL_DST) && ls -l $(KERNEL_INSTALL_DST)
 busybox-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(BUSYBOX_PATH) install CONFIG_PREFIX="$(GENRAMFS_PATH)"
 common-install = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) install DESTDIR="$(GENRAMFS_PATH)"
 
