@@ -10,7 +10,8 @@ KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
 KERNEL_INSTALL_SRC   = $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
 KERNEL_INSTALL_DST   = $(KERNEL_IMAGE)
 
-kernel-install = $(RM) $(KERNEL_PATH)/initramfs_data.o \
+kernel-install = $(RM) $(KERNEL_PATH)/{vmlinux,vmlinux.o} \
+                 && $(RM) $(KERNEL_PATH)/usr/{initramfs_data.o,built-in.o,gen_init_cpio} \
                  && $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS) \
                  && cp $(KERNEL_INSTALL_SRC) $(KERNEL_INSTALL_DST) && ls -lh $(KERNEL_INSTALL_DST)
 busybox-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(BUSYBOX_PATH) install CONFIG_PREFIX="$(GENRAMFS_PATH)"
