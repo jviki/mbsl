@@ -42,6 +42,40 @@ download.cmd: force
 	$(Q) echo "program -p 1"     >> $@
 	$(Q) echo "quit"             >> $@
 
+
+#################
+ 
+DTS_NEW      ?= new
+DTS_NEW_FILE := $(DTS_PATH)/$(DTS_NEW).dts
+DTS_TMP_PATH ?= $(TMP_PATH)/.dts
+MHS_FILE     ?= $(DESIGN_PATH)/$(DESIGN).mhs
+MSS_FILE     ?= $(DESIGN_PATH)/$(DESIGN).mss
+
+DEVTREE_PATH  = $($(DEVTREE_ID)_PATH)
+DEVTREE_LIB_PATH = $(DEVTREE_PATH)/..
+DEVTREE_DTS   = $($(DEVTREE_ID)_DTS)
+FPGA_PROC_ID ?= microblaze_0
+FPGA_TYPE    ?= xc3s1600efg320-4
+
+dts-generate: $(DTS_NEW_FILE)
+$(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
+	$(Q) if [ -z "$(DEVTREE_ID)" ]; then                  \
+	       echo "No DEVTREE_ID is defined" > /dev/stderr; \
+	       exit 1;                                        \
+             fi
+	$(Q) if [ -z "$(DEVTREE_DTS)" ]; then                      \
+	       echo "No <DEVTREE_ID>_DTS is defined" > /dev/stderr \
+	       exit 1;                                             \
+	     fi
+	$(Q) $(XIL_SETUP) && $(UTIL_PATH)/gen-dts.sh                        \
+	                   "$(DTS_TMP_PATH)" "$(DEVTREE_LIB_PATH)"          \
+	                   "$(FPGA_PROC_ID)" "$(MHS_FILE)"                  \
+	                   "$(MSS_FILE)"     "$(FPGA_TYPE)"                 \
+	                   "$(DTS_TMP_PATH)/$(FPGA_PROC_ID)/$(DEVTREE_DTS)" \
+	                   "$(DTS_NEW_FILE)"
+	
+#################
+
 clean-xilinx:
 	$(Q) $(RM) _impactbatch.log download.cmd
 
