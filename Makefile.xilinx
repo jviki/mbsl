@@ -82,4 +82,5 @@ clean-xilinx:
 	$(Q) rm -Rf $(DTS_TMP_PATH)
 
 clean-fini: clean-xilinx
+distclean-fini: clean-xilinx
 
