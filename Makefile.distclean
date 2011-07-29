@@ -6,5 +6,5 @@ distclean-init:
 distclean-body:
 distclean-fini:
 
-kernel-distclean = $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze distclean
-common-distclean = $(MAKE) -C $($(1)_PATH) distclean
+kernel-distclean = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze distclean
+common-distclean = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) distclean

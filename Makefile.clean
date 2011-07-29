@@ -6,5 +6,5 @@ clean-init:
 clean-body:
 clean-fini:
 
-kernel-clean = $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze clean
-common-clean = $(MAKE) -C $($(1)_PATH) clean
+kernel-clean = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze clean
+common-clean = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) clean
