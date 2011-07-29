@@ -6,6 +6,8 @@ DEVTREE_XLNX_AR       := tar.gz
 DEVTREE_XLNX_URL      := '$(DEVTREE_XLNX_BASE_URL)/?p=$(DEVTREE_XLNX_NAME).git;a=snapshot;h=$(DEVTREE_XLNX_SHA1);sf=tgz'
 DEVTREE_XLNX_ORIG     := $(DEVTREE_XLNX_NAME)
 DEVTREE_XLNX_PATH     := $(TOOLS_PATH)/$(DEVTREE_XLNX_NAME)
+DEVTREE_XLNX_DTS      := libsrc/device-tree_v0_00_x/xilinx.dts
+DEVTREE_ID            := DEVTREE_XLNX
 
 download-device-tree: $(call download-path,DEVTREE_XLNX)
 $(call download-path,DEVTREE_XLNX):
