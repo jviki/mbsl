@@ -14,11 +14,11 @@ XIL_ISE_ENV  ?= /opt/Xilinx/$(XIL_VERSION)/ISE_DS/settings$(XIL_ARCH).sh
 XIL_SETUP     = source $(XIL_ISE_ENV)
 
 # selected design to download
-DESIGN      ?= default
+DESIGN       ?= default
 # full path to design file
-DESIGN_FILE := $(DESIGN_PATH)/$(DESIGN).bit
+DESIGN_FILE  := $(DESIGN_PATH)/$(DESIGN).bit
 # full path to selected DTS file
-DTS_FILE := $(DTS_PATH)/$(DTS).dts
+DTS_FILE     := $(DTS_PATH)/$(DTS).dts
 
 #################
 
