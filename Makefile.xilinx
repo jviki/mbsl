@@ -78,6 +78,8 @@ $(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
 
 clean-xilinx:
 	$(Q) $(RM) _impactbatch.log download.cmd
+	$(Q) rm -Rf __xps $(DESIGN_PATH)/data psf2Edward.log
+	$(Q) rm -Rf $(DTS_TMP_PATH)
 
 clean-fini: clean-xilinx
 
