@@ -76,6 +76,14 @@ $(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
 	
 #################
 
+help-xilinx:
+	@echo "Xilinx:"
+	@echo "  XIL_VERSION            ... Version of Xilinx ISE"
+	@echo "  XIL_ISE_ENV            ... path to settings script of ISE"
+	@echo "  XIL_ARCH               ... architecture of settings script (64|32)"
+
+#################
+
 clean-xilinx:
 	$(Q) $(RM) _impactbatch.log download.cmd
 	$(Q) rm -Rf __xps $(DESIGN_PATH)/data psf2Edward.log
@@ -83,4 +91,4 @@ clean-xilinx:
 
 clean-fini: clean-xilinx
 distclean-fini: clean-xilinx
-
+help-addon: help-xilinx
