@@ -15,7 +15,3 @@ BUILD_PARALLEL    ?= 2
 kernel-build = $(TOOLCHAIN_ENV) $(MAKE) -j$(BUILD_PARALLEL) -C $(KERNEL_PATH) $(KERNEL_BUILD_OPTS) vmlinux.o
 common-build = $(TOOLCHAIN_ENV) $(MAKE) -j$(BUILD_PARALLEL) -C $($(1)_PATH) $($(1)_BUILD_OPTS)
 
-prepare-dts: $(DTS_FILE)
-	$(Q) cp $(DTS_FILE) $(KERNEL_DTS)
-
-build-init: prepare-dts

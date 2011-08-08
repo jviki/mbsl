@@ -17,3 +17,9 @@ kernel-install = $(RM) $(KERNEL_PATH)/{vmlinux,vmlinux.o} \
 busybox-install = $(TOOLCHAIN_ENV) $(MAKE) -C $(BUSYBOX_PATH) install CONFIG_PREFIX="$(GENRAMFS_PATH)"
 common-install = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) install DESTDIR="$(GENRAMFS_PATH)"
 
+install-dts: $(DTS_FILE)
+	$(Q) echo "Installing dts file $(DTS_FILE)"
+	$(Q) cp $(DTS_FILE) $(KERNEL_DTS)
+	$(Q) ls -lh $(KERNEL_DTS)/$(DTS).dts
+
+install-init: install-dts
