@@ -29,8 +29,8 @@ MBSL_HOME  ?= $(PWD)
 # Used distribution configuration
 
 CONFIG ?= default
-include Makefile.default
 include $(CONFIG).cfg
+include Makefile.default
 
 #################
 # General directory names (relative)
