@@ -23,7 +23,7 @@ help-main: help-banner
 	@echo "  help                   ... advanced help"
 	@echo "  version                ... tries to determine current version"
 
-help-advanced: help-main
+help-advanced-impl:
 	@echo "Useful internal targets:"
 	@echo "  kconfig-save           ... saves current kernel .config file to $(KCONFIG_NEW).kconfig"
 	@echo "  bbconfig-save          ... saves current busybox .config file to $(BBCONFIG_NEW).bbconfig"
@@ -47,4 +47,6 @@ help-advanced: help-main
 	@echo "Hints:"
 	@echo "  $$ make configure KERNEL_CONFIGURE=menuconfig"
 	@echo "  $$ make configure BUSYBOX_CONFIGURE=menuconfig"
+
+help-advanced: help-main help-advanced-impl help-addon
 
