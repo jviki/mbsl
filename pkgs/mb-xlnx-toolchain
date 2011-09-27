@@ -10,6 +10,10 @@ MB_XLNX_PATH     := $(TOOLS_PATH)/$(MB_XLNX_NAME)
 MB_XLNX_CROSS    := microblaze-unknown-linux-gnu-
 TOOLCHAIN_ID     := MB_XLNX
 
+MB_XLNX_GCC-v2.0 := microblaze-unknown-linux-gnu.tgz
+MB_XLNX_GCC-v1.0 := mb_gnu_tools_bin.tar.bz
+MB_XLNX_GCCTAR   := $(MB_XLNX_GCC-$(MB_XLNX_VERSION))
+
 download-mb-xlnx: $(call download-path,MB_XLNX)
 $(call download-path,MB_XLNX):
 	$(Q) $(call download,MB_XLNX)
@@ -17,7 +21,7 @@ $(call download-path,MB_XLNX):
 unpack-mb-xlnx: download-mb-xlnx $(MB_XLNX_PATH)
 $(MB_XLNX_PATH):
 	$(Q) $(call unpack-tmp,MB_XLNX)
-	$(Q) cd $(TMP_PATH)/$(MB_XLNX_ORIG) && tar -xf microblaze-unknown-linux-gnu.tgz
+	$(Q) cd $(TMP_PATH)/$(MB_XLNX_ORIG) && tar -xf $(MB_XLNX_GCCTAR)
 	$(Q) mv $(TMP_PATH)/$(MB_XLNX_ORIG)/microblaze-unknown-linux-gnu $(MB_XLNX_PATH)
 	$(Q) rm -Rf $(TMP_PATH)/$(MB_XLNX_ORIG)
 
