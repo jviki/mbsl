@@ -1,0 +1,41 @@
+# Busybox
+BUSYBOX_VERSION  ?= 1_19_1
+BUSYBOX_BASE_URL ?= http://git.busybox.net/busybox/snapshot
+BUSYBOX_NAME     := busybox-$(BUSYBOX_VERSION)
+BUSYBOX_AR       := tar.bz2
+BUSYBOX_URL      := '$(BUSYBOX_BASE_URL)/busybox-$(BUSYBOX_VERSION).tar.bz2'
+BUSYBOX_PATH     := $(SRC_PATH)/$(BUSYBOX_NAME)
+BUSYBOX_ORIG     := busybox-$(BUSYBOX_VERSION)
+BUSYBOX_ID       := BUSYBOX
+
+download-busybox: $(call download-path,BUSYBOX)
+$(call download-path,BUSYBOX):
+	$(Q) $(call download,BUSYBOX)
+
+unpack-busybox: download-busybox $(BUSYBOX_PATH)
+$(BUSYBOX_PATH):
+	$(Q) $(call unpack,BUSYBOX)
+
+configure-busybox:
+	$(Q) $(call busybox-configure,BUSYBOX)
+
+build-busybox:
+	$(Q) $(call common-build,BUSYBOX)
+
+install-busybox:
+	$(Q) $(call busybox-install)
+
+clean-busybox:
+	$(Q) $(call common-clean,BUSYBOX)
+
+distclean-busybox:
+	$(Q) $(call common-distclean,BUSYBOX)
+
+download-body: download-busybox
+download-fini: unpack-busybox
+configure-body: configure-busybox
+build-body: build-busybox
+install-body: install-busybox
+clean-body: clean-busybox
+distclean-body: distclean-busybox
+
