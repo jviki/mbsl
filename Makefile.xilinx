@@ -48,8 +48,15 @@ download.cmd: force
 DTS_NEW      ?= new
 DTS_NEW_FILE := $(DTS_PATH)/$(DTS_NEW).dts
 DTS_TMP_PATH ?= $(TMP_PATH)/.dts
-MHS_FILE     ?= $(DESIGN_PATH)/$(DESIGN).mhs
-MSS_FILE     ?= $(DESIGN_PATH)/$(DESIGN).mss
+
+MHS_DIR      ?= $(DESIGN_DIR)
+MSS_DIR      ?= $(DESIGN_DIR)
+MHS_PATH     := $(MBSL_HOME)/$(MHS_DIR)
+MSS_PATH     := $(MBSL_HOME)/$(MSS_DIR)
+MHS_NAME     ?= $(DESIGN)
+MSS_NAME     ?= $(DESIGN)
+MHS_FILE     ?= $(MHS_PATH)/$(MHS_NAME).mhs
+MSS_FILE     ?= $(MSS_PATH)/$(MSS_NAME).mss
 
 DEVTREE_PATH  = $($(DEVTREE_ID)_PATH)
 DEVTREE_LIB_PATH = $(DEVTREE_PATH)/..
@@ -80,8 +87,10 @@ help-xilinx:
 	@echo "Xilinx:"
 	@echo "  dts-generate           ... Generates DTS file named <DTS_NEW> using MHS and MSS files"
 	@echo "  DTS_NEW                ... Variable that holds the name of generated DTS file"
-	@echo "  MHS_FILE               ... Path to MHS file (absolute), default: <DESIGN_PATH>/<DESIGN>.mhs"
-	@echo "  MSS_FILE               ... Path to MSS file (absolute), default: <DESIGN_PATH>/<DESIGN>.mss"
+	@echo "  MHS_DIR                ... Where to look for MHS files, default: <DESIGN_DIR>"
+	@echo "  MSS_DIR                ... Where to look for MSS files, default: <DESIGN_DIR>"
+	@echo "  MHS_NAME               ... Base name of MHS file, default: <DESIGN>"
+	@echo "  MSS_NAME               ... Base name of MSS file, default: <DESIGN>"
 	@echo "  FPGA_TYPE              ... Target FPGA that is used"
 	@echo "  FPGA_PROC_ID           ... ID of target processor (in FPGA)"
 	@echo "  XIL_VERSION            ... Version of Xilinx ISE"
