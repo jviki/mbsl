@@ -78,9 +78,15 @@ $(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
 
 help-xilinx:
 	@echo "Xilinx:"
+	@echo "  dts-generate           ... Generates DTS file named <DTS_NEW> using MHS and MSS files"
+	@echo "  DTS_NEW                ... Variable that holds the name of generated DTS file"
+	@echo "  MHS_FILE               ... Path to MHS file (absolute), default: <DESIGN_PATH>/<DESIGN>.mhs"
+	@echo "  MSS_FILE               ... Path to MSS file (absolute), default: <DESIGN_PATH>/<DESIGN>.mss"
+	@echo "  FPGA_TYPE              ... Target FPGA that is used"
+	@echo "  FPGA_PROC_ID           ... ID of target processor (in FPGA)"
 	@echo "  XIL_VERSION            ... Version of Xilinx ISE"
-	@echo "  XIL_ISE_ENV            ... path to settings script of ISE"
-	@echo "  XIL_ARCH               ... architecture of settings script (64|32)"
+	@echo "  XIL_ISE_ENV            ... Path to settings script of ISE"
+	@echo "  XIL_ARCH               ... Architecture of settings script (64|32)"
 
 #################
 
