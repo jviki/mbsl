@@ -21,9 +21,10 @@ dts_generate()
 
 	echo "[DTS-GEN] Generating DTS file ($fpga_type, $processor, $bsp_dir)" > /dev/stderr
 
-	check=`grep 'OS[ \t]*standalone' $mss_file | wc -l`
-	if [ "$check" != "0" ]; then
+	check=`grep '^[^#]*PARAMETER.*OS.*standalone' $mss_file | wc -l`
+	if [ $check != 0 ]; then
 		echo "[DTS-GEN] The MSS file $mss_file seems to be incorrect (OS standalone)" > /dev/stderr
+		sleep 2
 	fi
 
 	mkdir -p "$tmp_dir"
