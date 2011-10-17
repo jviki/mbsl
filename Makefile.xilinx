@@ -22,8 +22,8 @@ DTS_FILE     := $(DTS_PATH)/$(DTS).dts
 
 #################
 
-xmd-dow-run = $(XIL_SETUP) && xmd <<< "connect mb mdm; dow $(1); run"
-impact-dow  = $(XIL_SETUP) && impact -batch $(1)
+xmd-dow-run  = $(XIL_SETUP) && xmd <<< "connect mb mdm; dow $(1); run"
+impact-batch = $(XIL_SETUP) && impact -batch $(1)
 
 boot-image: boot-by-xmd
 boot-by-xmd: $(KERNEL_IMAGE)
@@ -31,7 +31,7 @@ boot-by-xmd: $(KERNEL_IMAGE)
 
 boot-design: boot-by-impact
 boot-by-impact: download.cmd
-	$(Q) $(call impact-dow,$<)
+	$(Q) $(call impact-batch,$<)
 
 download.cmd: force
 	$(Q) echo "setMode -bscan"    > $@
