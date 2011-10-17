@@ -20,6 +20,9 @@ DESIGN_FILE  := $(DESIGN_PATH)/$(DESIGN).bit
 # full path to selected DTS file
 DTS_FILE     := $(DTS_PATH)/$(DTS).dts
 
+# JTAG number of FPGA device
+FPGA_JTAG    ?= 1
+
 #################
 
 xmd-dow-run  = $(XIL_SETUP) && xmd <<< "connect mb mdm; dow $(1); run"
@@ -45,8 +48,8 @@ download.cmd: force
 	$(Q) echo "setCable -p auto" >> $@
 	$(Q) echo "identify"         >> $@
 	$(Q) echo "identifympm"      >> $@
-	$(Q) echo "assignfile -p 1 -file $(DESIGN_FILE)" >> $@
-	$(Q) echo "program -p 1"     >> $@
+	$(Q) echo "assignfile -p $(FPGA_JTAG) -file $(DESIGN_FILE)" >> $@
+	$(Q) echo "program -p $(FPGA_JTAG)" >> $@
 	$(Q) echo "quit"             >> $@
 
 
