@@ -33,6 +33,13 @@ boot-design: boot-by-impact
 boot-by-impact: download.cmd
 	$(Q) $(call impact-batch,$<)
 
+xilinx-cleanlock: cleanlock.cmd
+	$(Q) $(call impact-batch,$<)
+
+cleanlock.cmd: force
+	$(Q) echo "cleancablelock"    > $@
+	$(Q) echo "quit"             >> $@
+
 download.cmd: force
 	$(Q) echo "setMode -bscan"    > $@
 	$(Q) echo "setCable -p auto" >> $@
