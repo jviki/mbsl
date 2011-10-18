@@ -74,6 +74,19 @@ DEVTREE_DTS   = $($(DEVTREE_ID)_DTS)
 FPGA_PROC_ID ?= microblaze_0
 FPGA_TYPE    ?= xc3s1600efg320-4
 
+# generates linux MSS file from standalone MSS file
+mss-linux-gen = awk -v LOG=1 -f $(UTIL_PATH)/standalone2linux.awk $(1) > $(2);
+
+# name of the source standalone MSS
+# if empty no generation will occure
+MSS_SALONE   ?=
+
+# automatic linux MSS generation from standalone MSS
+ifneq ($(MSS_SALONE),)
+$(MSS_FILE): $(MSS_PATH)/$(MSS_SALONE).mss
+	$(Q) $(call mss-linux-gen,$<,$@)
+endif
+
 dts-generate: $(DTS_NEW_FILE)
 $(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
 	$(Q) if [ -z "$(DEVTREE_ID)" ]; then                  \
