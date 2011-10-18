@@ -25,7 +25,7 @@ FPGA_JTAG    ?= 1
 
 #################
 
-xmd-dow-run  = $(XIL_SETUP) && xmd <<< "connect mb mdm; dow $(1); run"
+xmd-dow-run  = $(XIL_SETUP) && ls -lh $(1) && xmd <<< "connect mb mdm; dow $(1); run"
 impact-batch = $(XIL_SETUP) && impact -batch $(1)
 
 boot-image: boot-by-xmd
