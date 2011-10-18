@@ -1,0 +1,132 @@
+###
+## MicroBlaze Simple Linux (MBSL)
+## Jan Viktorin <xvikto03@stud.fit.vutbr.cz>
+## GNU GPLv3
+###
+
+# Introduction
+
+This small distribution of OS Linux is intended to be used in
+embedded systems on (Xilinx) FPGA using soft processor MicroBlaze.
+It should automate many tasks that are necessary to do before
+the OS image is ready to be deployed.
+
+The main covered features are:
+
+* downloading of necessary source code and tools from the Internet
+  (Linux kernel sources, MicroBlaze toolchain, ...)
+* generating DTS from system.mhs and system.mss files
+* configurating Linux kernel and the used software
+* compiling of all software for the embedded device
+* creating initramfs for Linux
+* building Linux image to be downloaded to the chip
+* calling Xilinx tools to download the design to FPGA and to boot
+  Linux over JTAG (or using other possibilities)
+
+
+# Contents
+
+The distribution consists of few directories:
+
+* pkgs      - contains packages' descriptions
+* util      - utilities that the build system can use or the simplifies
+               some common issues
+* config    - location with Linux kernel and BusyBox (or other) configuration
+               files
+* dts       - location for DTS files
+* design    - location with design files (bit)
+* initramfs - static contents of the builtin ramdisk (configuration, scripts, ...)
+* patchs    - patchs of the software
+* src       - location where the downloaded sources are placed
+* tools     - location where the tools (eg. toolchain) are placed
+* tmp       - cache of downloaded archives
+* gen-ramfs - generated ramdisk structure for the image
+
+The whole process is driven by Makefile that is divided to smaller pieces
+that implement the targets:
+
+* Makefile           - top level Makefile with the main targets
+* default.cfg        - user configuration file (can have different name)
+* Makefile.default   - default configuration settings
+* Makefile.help      - contains general help
+* Makefile.version
+* Makefile.download
+* Makefile.configure - configuration of the software (eg. Linux kernel config)
+* Makefile.build
+* Makefile.install   - target install fills the initramfs with user applications
+* Makefile.clean
+* Makefile.distclean
+* Makefile.initramfs - implements generating of static part of initramfs
+* Makefile.patch
+* Makefile.path      - setting cosntant paths to different resources
+* Makefile.pkgs      - includes packages to the Makefile
+* Makefile.xilinx    - targets to use Xilinx tools
+
+
+# Getting started
+
+Most common (without considering possible issues that may happen) way to
+use MBSL:
+
+1) create configuration file like example.cfg
+
+   * select packages, toolchain
+   * select Linux kernel and BusyBox version
+   * setup Board/FPGA specific info
+
+2) download the sources
+
+   $ make CONFIG=example download
+
+3) configure the software
+
+   $ make CONFIG=example configure
+
+   Note:
+   To change Linux kernel or BusyBox configuration using ncurses menuconfig you can use:
+
+     $ make CONFIG=example configure KERNEL_CONFIGURE=menuconfig BUSYBOX_CONFIGURE=menuconfig
+     $ make CONFIG=example KCONFIG_NEW=example BBCONFIG_NEW=example kconfig-save bbconfig-save
+
+   (see `make help` and Makefile.configure)
+
+4) build the software
+
+   $ make CONFIG=example build
+
+   Note:
+   For parallel build -jX use:
+
+     $ make CONFIG=example build BUILD_PARALLEL=X
+
+5) install software to initramfs and build the image
+
+   $ make CONFIg=example install
+
+6) boot design and image
+
+   $ make CONFIG=example DESIGN_DIR=<path> DESIGN=<name> boot
+
+
+You can see that there is a configuration file example.cfg that can hold a lot
+of preconfigured variables (even KCONFIG_NEW, BUILD_PARALLEL, etc.).
+
+
+# Package description
+
+The build system consists of some general chains of targets. That means eg. (see Makefile):
+
+  build: build-init build->body build-fini
+
+Each packages that requires to be build then declares:
+  
+  build-<package-name>:
+  	make ...
+  build-body: build-<package-name>
+
+To solve common issues there are Makefile functions that simplifies the
+writing eg. (see some packages in pkgs/ or specific Makefile.* file):
+
+  $(call common-build,PACKAGE-NAME)
+  $(call common-clean,PACKAGE-NAME)
+
