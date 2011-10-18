@@ -10,6 +10,7 @@ BEGIN {
 ## detect the begin of OS section, and comment it:
 /^BEGIN OS/ {
 	os = 1
+	os_console = 0
 	print "# Commented on " strftime()
 	print "#" $0
 	next
@@ -20,6 +21,9 @@ BEGIN {
 	if(os == 1) {
 		print "#" $0 "\n"
 		print_os()
+		if(LOG > 0)
+			print_os("/dev/stderr")
+
 		os = 0
 		next
 	}
@@ -47,18 +51,34 @@ BEGIN {
 }
 
 ## new OS section:
-function print_os()
+function print_os(out)
 {
-	print "BEGIN OS"
-	print " PARAMETER OS_NAME = device-tree"
-	print " PARAMETER OS_VER = 0.00.x"
-	print " PARAMETER PROC_INSTANCE = microblaze_0"
-	print " PARAMETER bootargs = console=" os_tty " root=" os_root " ip=" os_ip
-	if(os_console)
-		print " PARAMETER console device = " os_console
-	else
-		print "# PARAMETER console device = UNKNOWN"
-		
-	print "END"
+	if(!out)
+		out = "/dev/stdout"
+
+	mss_begin("OS", out)
+	mss_param("OS_NAME", "device-tree", out)
+	mss_param("OS_VER", "0.00.x", out)
+	mss_param("PROC_INSTANCE", "microblaze_0", out)
+	mss_param("bootargs", "console=" os_tty " root=" os_root " ip=" os_ip, out)
+	mss_param("console device", os_console, out, !os_console)
+	mss_end(out)		
 }
 
+function mss_begin(what, out)
+{
+	print "BEGIN " what >> out
+}
+
+function mss_param(name, value, out, comment)
+{
+	if(comment)
+		print "# PARAMETER " name " = " value >> out
+	else
+		print " PARAMETER " name " = " value >> out
+}
+
+function mss_end(out)
+{
+	print "END" >> out
+}
