@@ -114,18 +114,54 @@ of preconfigured variables (even KCONFIG_NEW, BUILD_PARALLEL, etc.).
 
 # Package description
 
+Package description consists of variables, constants, targets (with recipes) and
+connections of targets with MBSL target chains.
+
+It is possible to describe packages in any way but MBSL suggests some rules to make the
+distribution consistent. These rules should apply to most cases.
+
+
+## Package targets and chaining
+
 The build system consists of some general chains of targets. That means eg. (see Makefile):
 
-  build: build-init build->body build-fini
+  build: build-init build-body build-fini
 
-Each packages that requires to be build then declares:
+When user calls `make build` the targets in the chain are called sequentialy: init, body, fini.
+Each packages that requires to be build then declares eg.:
   
   build-<package-name>:
   	make ...
   build-body: build-<package-name>
 
-To solve common issues there are Makefile functions that simplifies the
-writing eg. (see some packages in pkgs/ or specific Makefile.* file):
+It is up to the package which target chains will it use. Most common targets are:
+
+* download  (download-body chain)
+* configure (consifure-body chain)
+* build     (build-body chain)
+* install   (install-body chain)
+* clean     (clean-body chain)
+* distclean (distclean-body chain)
+* help      (help-addon chain)
+
+Internal targets' names should be unique in MBSL. They should contain name of the package
+in their names. Suggestion:
+
+  <goal>-<package-name>:
+  	do something...
+	
+When using this convention one can call:
+
+  $ make build-myapp
+
+to compile only one part of the system (otherwise a lot of output and lot of applications and scripts
+are executed for nothing...).
+
+
+## Target helpers
+
+To solve common issues there are Makefile functions that simplifies
+writing the recipes eg. (see some packages in pkgs/ or specific Makefile.* file):
 
   $(call common-build,<BASE>)
   $(call common-clean,<BASE>)
