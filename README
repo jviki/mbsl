@@ -127,6 +127,52 @@ Each packages that requires to be build then declares:
 To solve common issues there are Makefile functions that simplifies the
 writing eg. (see some packages in pkgs/ or specific Makefile.* file):
 
-  $(call common-build,PACKAGE-NAME)
-  $(call common-clean,PACKAGE-NAME)
+  $(call common-build,<BASE>)
+  $(call common-clean,<BASE>)
+
+Each package (mostly for consistency) contains several variables (or constants). Their names
+are written in upper case and consist of:
+
+* <BASE>   which should be unique in whole MBSL and should be equivalent to the package name
+* <SUFFIX> the variable discriminator
+
+Eg. KERNEL_ORG_NAME (<BASE> ::= KERNEL_ORG, <SUFFIX> ::= NAME) 
+
+
+## Package variables and constants
+
+Each package should declare at least <BASE>_NAME constant.
+Eg. package kernel-org declares:
+
+  KERNEL_ORG_VERSION ?= 39.3
+  KERNEL_ORG_NAME    := linux-2.6.$(KERNEL_ORG_VERSION)
+
+To change kernel version you can only specify KERNEL_ORG_VERSION := x.y in your configuration
+file and the system will download the selected sources from web. How MBSL knows the URL?
+
+  KERNEL_ORG_URL     := ...
+
+There are some constant/variable names that can be treated as standard (they are used by
+some MBSL helping routines):
+
+* <BASE>_NAME       ... name of source directory (where the compilation occures)
+  Required by: download, unpack, common-install, common-patch
+
+* <BASE>_AR         ... archive suffix that is to be downloaded and unpacked
+  Required by: download, unpack
+
+* <BASE>_URL        ... URL of the source archive
+  Required by: download
+
+* <BASE>_PATH       ... absolute path to the source directory (should consist of <BASE>_NAME)
+  Required by: unpack, common-build, common-install, common-clean/distclean, common-patch
+
+* <BASE>_ORIG       ... directory name contained in the downloaded archive (handy when
+                        it is different from <BASE>_NAME)
+  Required by: unpack
+
+* <BASE>_BUILD_OPTS ... options passed when building
+                        eg.: $(MAKE) -C $(<BASE>_PATH) $(<BASE>_BUILD_OPTS)
+  Used by: common-build
+
 
