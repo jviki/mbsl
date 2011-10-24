@@ -166,6 +166,9 @@ writing the recipes eg. (see some packages in pkgs/ or specific Makefile.* file)
   $(call common-build,<BASE>)
   $(call common-clean,<BASE>)
 
+
+## Package variables and constants
+
 Each package (mostly for consistency) contains several variables (or constants). Their names
 are written in upper case and consist of:
 
@@ -173,9 +176,6 @@ are written in upper case and consist of:
 * <SUFFIX> the variable discriminator
 
 Eg. KERNEL_ORG_NAME (<BASE> ::= KERNEL_ORG, <SUFFIX> ::= NAME) 
-
-
-## Package variables and constants
 
 Each package should declare at least <BASE>_NAME constant.
 Eg. package kernel-org declares:
