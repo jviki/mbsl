@@ -1,5 +1,18 @@
 #! /usr/bin/awk -f
 
+###
+# Processes MSS file and if there is an (anyone) OS section
+# it is replaced by a new one that uses device-tree BSP.
+# The old OS section is simply commented out (not removed).
+#
+# It is intended to quickly change MSS file that uses standalone
+# OS to equivalent one with device-tree BSP (reuses console device).
+#
+# If variable LOG > 0 it prints the new OS configuration to stderr.
+#
+# Usage: awk -f standalone2linux.awk < system.mss > linux.mss
+###
+
 BEGIN {
 	os = 0
 	os_tty  = "ttyUL0,9600"
