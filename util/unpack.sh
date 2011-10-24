@@ -1,5 +1,34 @@
 #! /bin/sh
 
+###
+# Unpack helper. Unpacks archive and then moves its root (orig)
+# directory to the destination path. If --tmp option is given
+# Only unpacking is made (no additional moving).
+# 
+# Knows how to unpack tar.bz2 and tar.gz files.
+#
+# All logging is prefixed by "[UNPACK]" string.
+#
+# Usage: ./unpack.sh <dir-with-arch> <arch-name> <arch-ext> <dst-dir> <orig-dir>
+#        ./unpack.sh --tmp <dir-with-arch> <arch-name> <arch-ext>
+#
+#################
+# Note to "orig":
+#
+#  example.tar.gz:
+#    + example-v1_00/
+#      + src/
+#      + include/
+#      ...
+# 
+#  $ tar -xf example.tar.gz
+#  $ ls
+#  example-v1_00/
+#  ^^^^^^^^^^^^^ this is orig
+#
+# It is often a good idea to remove the version information...
+###
+
 unpack_tmp()
 {
     archive_dir="$1"
