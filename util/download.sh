@@ -1,5 +1,14 @@
 #! /bin/sh
 
+###
+# Downloads the file specified by URL to a directory with
+# the given name.
+#
+# All logging is prefixed by "[DOWNLOAD]" string.
+#
+# Usage ./download.sh <dest-dir> <dest-name> <src-url>
+###
+
 download_dir="$1"
 shift
 download_name="$1"
