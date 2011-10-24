@@ -1,0 +1,18 @@
+##
+## MBSL Initramfs Makefile
+##
+
+KERNEL_INITRAMFS  = $(GENRAMFS_PATH)
+KERNEL_INITRAMFS += $(foreach item,$(INITRAMFS),$(INITRAMFS_PATH)/$(item))
+
+genramfs-init:
+	$(Q) mkdir -p $(GENRAMFS_PATH)
+
+genramfs-clean:
+	$(Q) rm -Rf $(GENRAMFS_PATH)
+
+genramfs-distclean: genramfs-clean
+
+build-init: genramfs-init
+clean-fini: genramfs-clean
+distclean-fini: genramfs-distclean

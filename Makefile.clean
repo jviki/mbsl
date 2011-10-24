@@ -1,0 +1,10 @@
+##
+## MBSL Clean Makefile
+##
+
+clean-init:
+clean-body:
+clean-fini:
+
+kernel-clean = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze clean
+common-clean = $(TOOLCHAIN_ENV) $(MAKE) -C $($(1)_PATH) clean

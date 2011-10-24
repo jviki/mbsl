@@ -1,0 +1,17 @@
+##
+## MBSL Build Makefile
+##
+
+build-init:
+build-body:
+build-fini:
+
+TOOLCHAIN_CROSS    = $($(TOOLCHAIN_ID)_CROSS)
+TOOLCHAIN_CC       = $(TOOLCHAIN_CROSS)gcc
+KERNEL_BUILD_OPTS  = ARCH=microblaze CONFIG_INITRAMFS_SOURCE="$(KERNEL_INITRAMFS)"
+
+BUILD_PARALLEL    ?= 2
+
+kernel-build = $(TOOLCHAIN_ENV) $(MAKE) -j$(BUILD_PARALLEL) -C $(KERNEL_PATH) $(KERNEL_BUILD_OPTS) vmlinux.o
+common-build = $(TOOLCHAIN_ENV) $(MAKE) -j$(BUILD_PARALLEL) -C $($(1)_PATH) $($(1)_BUILD_OPTS)
+

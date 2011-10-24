@@ -1,99 +1,132 @@
-#
-# Xilinx Makefile
-#
+##
+## MBSL Xilinx Makefile
+##
+
+SHELL := /bin/bash
+
+# Xilinx version
+XIL_VERSION  ?= 13.2
+XIL_ARCH     ?= 64
 
 # path to ISE/settings{32,64}.sh
-XIL_ISE_ENV  ?= /opt/Xilinx/12.4/ISE_DS/settings64.sh
-# path to EDK/settings{32,64}.sh
-XIL_EDK_ENV  ?= /opt/Xilinx/12.4/ISE_DS/EDK/settings64.sh
-# home of Xilinx EDK
-XIL_EDK_HOME ?= /opt/Xilinx/12.4/ISE_DS/EDK
-# path to mb-gcc
-XIL_MB_GCC   ?= $(XIL_EDK_HOME)/gnu/microblaze/lin64/bin
+XIL_ISE_ENV  ?= /opt/Xilinx/$(XIL_VERSION)/ISE_DS/settings$(XIL_ARCH).sh
+# environment setup command
+XIL_SETUP     = source $(XIL_ISE_ENV)
+
 # selected design to download
-HW_DESIGN    ?= default
+DESIGN       ?= default
+# full path to design file
+DESIGN_FILE  := $(DESIGN_PATH)/$(DESIGN).bit
+# full path to selected DTS file
+DTS_FILE     := $(DTS_PATH)/$(DTS).dts
 
-boot-xmd: image-$(KERNEL)
-	$(Q) source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
-	&& xmd <<< "connect mb mdm; dow image-$(KERNEL); run"
+# JTAG number of FPGA device
+FPGA_JTAG    ?= 1
+
+#################
+
+xmd-dow-run  = $(XIL_SETUP) && ls -lh $(1) && xmd <<< "connect mb mdm; dow $(1); run"
+impact-batch = $(XIL_SETUP) && impact -batch $(1)
+
+boot-image: boot-by-xmd
+boot-by-xmd: $(KERNEL_IMAGE)
+	$(Q) $(call xmd-dow-run,$<)
+
+boot-design: boot-by-impact
+boot-by-impact: download.cmd
+	$(Q) $(call impact-batch,$<)
+
+xilinx-cleanlock: cleanlock.cmd
+	$(Q) $(call impact-batch,$<)
+
+cleanlock.cmd: force
+	$(Q) echo "cleancablelock"    > $@
+	$(Q) echo "quit"             >> $@
+
+download.cmd: force
+	$(Q) echo "setMode -bscan"    > $@
+	$(Q) echo "setCable -p auto" >> $@
+	$(Q) echo "identify"         >> $@
+	$(Q) echo "identifympm"      >> $@
+	$(Q) echo "assignfile -p $(FPGA_JTAG) -file $(DESIGN_FILE)" >> $@
+	$(Q) echo "program -p $(FPGA_JTAG)" >> $@
+	$(Q) echo "quit"             >> $@
+
+
+#################
+ 
+DTS_NEW      ?= new
+DTS_NEW_FILE := $(DTS_PATH)/$(DTS_NEW).dts
+DTS_TMP_PATH ?= $(TMP_PATH)/.dts
+
+MHS_DIR      ?= $(DESIGN_DIR)
+MSS_DIR      ?= $(DESIGN_DIR)
+MHS_PATH     := $(MBSL_HOME)/$(MHS_DIR)
+MSS_PATH     := $(MBSL_HOME)/$(MSS_DIR)
+MHS_NAME     ?= $(DESIGN)
+MSS_NAME     ?= $(DESIGN)
+MHS_FILE     ?= $(MHS_PATH)/$(MHS_NAME).mhs
+MSS_FILE     ?= $(MSS_PATH)/$(MSS_NAME).mss
+
+DEVTREE_PATH  = $($(DEVTREE_ID)_PATH)
+DEVTREE_LIB_PATH = $(DEVTREE_PATH)/..
+DEVTREE_DTS   = $($(DEVTREE_ID)_DTS)
+FPGA_PROC_ID ?= microblaze_0
+FPGA_TYPE    ?= xc3s1600efg320-4
+
+# generates linux MSS file from standalone MSS file
+mss-linux-gen = awk -v LOG=1 -f $(UTIL_PATH)/standalone2linux.awk $(1) > $(2);
+
+# name of the source standalone MSS
+# if empty no generation will occure
+MSS_SALONE   ?=
+
+# automatic linux MSS generation from standalone MSS
+ifneq ($(MSS_SALONE),)
+$(MSS_FILE): $(MSS_PATH)/$(MSS_SALONE).mss
+	$(Q) $(call mss-linux-gen,$<,$@)
+endif
+
+dts-generate: $(DTS_NEW_FILE)
+$(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
+	$(Q) if [ -z "$(DEVTREE_ID)" ]; then                  \
+	       echo "No DEVTREE_ID is defined" > /dev/stderr; \
+	       exit 1;                                        \
+             fi
+	$(Q) if [ -z "$(DEVTREE_DTS)" ]; then                      \
+	       echo "No <DEVTREE_ID>_DTS is defined" > /dev/stderr \
+	       exit 1;                                             \
+	     fi
+	$(Q) $(XIL_SETUP) && $(UTIL_PATH)/gen-dts.sh                        \
+	                   "$(DTS_TMP_PATH)" "$(DEVTREE_LIB_PATH)"          \
+	                   "$(FPGA_PROC_ID)" "$(MHS_FILE)"                  \
+	                   "$(MSS_FILE)"     "$(FPGA_TYPE)"                 \
+	                   "$(DTS_TMP_PATH)/$(FPGA_PROC_ID)/$(DEVTREE_DTS)" \
+	                   "$(DTS_NEW_FILE)"
 	
-download-design: download.cmd $(HW_DESIGN_FILE)
-	$(Q) source $(XIL_ISE_ENV) && source $(XIL_EDK_ENV) \
-	&& impact -batch download.cmd
-
-download.cmd:
-	$(Q) echo "setMode -bscan"    > download.cmd
-	$(Q) echo "setCable -p auto" >> download.cmd
-	$(Q) echo "identify"         >> download.cmd
-	$(Q) echo "identifympm"      >> download.cmd
-	$(Q) echo "assignfile -p 1 -file $(HW_DESIGN_FILE)" >> download.cmd
-	$(Q) echo "program -p 1"     >> download.cmd
-	$(Q) echo "quit"             >> download.cmd
-
-##############################
-
-HW_HOME   ?= ../linux-design
-MSS       ?= system.mss
-DTS_MSS   ?= linux26.mss
-MHS       ?= system.mhs
-BIT       ?= download.bit
-NEWBIT    ?= new.bit
-NEWDTS    ?= new.dts
-MB_PROC   ?= microblaze_0
-FPGA      ?= xc3s1600efg320-4
-
-HW_HOME_REAL = $(realpath $(HW_HOME))
-MSS_FILE     = $(HW_HOME_REAL)/$(MSS)
-MHS_FILE     = $(HW_HOME_REAL)/$(MHS)
-BIT_FILE     = $(HW_HOME_REAL)/implementation/$(BIT)
-NEWBIT_FILE  = $(HW_DESIGN_DIR)/$(NEWBIT)
-NEWDTS_FILE  = $(DTS_DIR)/$(NEWDTS)
-
-build-design: $(BIT_FILE)
-$(BIT_FILE): $(MHS_FILE) $(MSS_FILE)
-	$(Q) PATH="$(XIL_MB_GCC):$$PATH"; \
-	$(MAKE) -C $(HW_HOME) -f system.make bits init_bram
-
-install-design: $(NEWBIT_FILE)
-$(NEWBIT_FILE): $(BIT_FILE)
-	$(Q) cp $(BIT_FILE) $(NEWBIT_FILE)
-	$(Q) ls -lh $(NEWBIT_FILE)
-
-##########################################
-# a little bit stupid, but works
-# prerequisites:
-# $(HW_HOME)/<name>.mss 
-# $(HW_HOME)/system.mhs 
-# $(HW_HOME)/microblaze_0
-# $(HW_HOME)/bsp/device-tree_v0_00_x/...
-gen-dts: $(NEWDTS_FILE)
-$(NEWDTS_FILE): $(HW_HOME)/$(DTS_MSS)
-	$(Q) mkdir -p tmp
-	$(Q) cp -r $(HW_HOME_REAL)/bsp $(HW_HOME_REAL)/$(MB_PROC) tmp
-	$(Q) source $(XIL_EDK_ENV)    \
-	  && source $(XIL_ISE_ENV) \
-	  && cd tmp                \
-	  && libgen -mhs $(HW_HOME_REAL)/$(MHS) $(HW_HOME_REAL)/$(DTS_MSS) \
-		  -p $(FPGA) -pe $(MB_PROC)                                     \
-	  && cp $(MB_PROC)/libsrc/device-tree_v0_00_x/xilinx.dts $(NEWDTS_FILE)
-	$(Q) ls -lh $(NEWDTS_FILE)
-	$(Q) rm -Rf $(HW_HOME_REAL)/tmp
-
-##############################
+#################
 
 help-xilinx:
-	@echo "=============================================="
-	@echo "Xilinx advanced:"
-	@echo "  gen-dts                ... generates DTS file to $(DTS_DIR)/new.dts"
-	@echo "  build-design           ... builds bitstream (synthesis, map & par, place & route, ...) through system.make in EDK project"
-	@echo "  install-design         ... installs the generated bitstream to design directory with name from variable NEWBIT"
-	@echo "  HW_DESIGN              ... name of design to be downloaded (default: default)"
-	@echo "  HW_HOME                ... home of hardware (EDK) project variable"
-	@echo "  MSS                    ... name of Microprocessor Software Specification file (default: system.mss)"
-	@echo "  MHS                    ... name of Microprocessor Hardware Specification file (default: system.mhs)"
-	@echo "  BIT                    ... name of bitstream file generated by synthesis (default: download.bit)"
-	@echo "  NEWBIT                 ... name of bitstream file when installing it in HW_DESIGN_DIR directory (default: new.bit)"
-	@echo "  NEWDTS                 ... name of dts file when generating it from a design (default: new.dts)"
+	@echo "Xilinx:"
+	@echo "  dts-generate           ... Generates DTS file named <DTS_NEW> using MHS and MSS files"
+	@echo "  DTS_NEW                ... Variable that holds the name of generated DTS file"
+	@echo "  MHS_DIR                ... Where to look for MHS files, default: <DESIGN_DIR>"
+	@echo "  MSS_DIR                ... Where to look for MSS files, default: <DESIGN_DIR>"
+	@echo "  MHS_NAME               ... Base name of MHS file, default: <DESIGN>"
+	@echo "  MSS_NAME               ... Base name of MSS file, default: <DESIGN>"
+	@echo "  FPGA_TYPE              ... Target FPGA that is used"
+	@echo "  FPGA_PROC_ID           ... ID of target processor (in FPGA)"
+	@echo "  XIL_VERSION            ... Version of Xilinx ISE"
+	@echo "  XIL_ISE_ENV            ... Path to settings script of ISE"
+	@echo "  XIL_ARCH               ... Architecture of settings script (64|32)"
 
-help: help-xilinx
+#################
 
+clean-xilinx:
+	$(Q) $(RM) _impactbatch.log download.cmd
+	$(Q) rm -Rf __xps $(DESIGN_PATH)/data psf2Edward.log
+	$(Q) rm -Rf $(DTS_TMP_PATH)
+
+clean-fini: clean-xilinx
+distclean-fini: clean-xilinx
+help-addon: help-xilinx

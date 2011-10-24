@@ -1,44 +1,41 @@
-#######################################################################
-# busybox
-GIT_TARGET-busybox   ?= $(SW_SRC)/busybox
-GIT_URL-busybox      ?= git://git.xilinx.com/busybox.git
-GIT_FLAGS-busybox    ?= --depth 1
-SRC-busybox          ?= $(GIT_TARGET-busybox)
-BUSYBOX_CONFIG       ?= oldconfig
-BUSYBOX_CONFIG_FILES ?= default.bbconfig
+# Busybox
+BUSYBOX_VERSION  ?= 1_19_1
+BUSYBOX_BASE_URL ?= http://git.busybox.net/busybox/snapshot
+BUSYBOX_NAME     := busybox-$(BUSYBOX_VERSION)
+BUSYBOX_AR       := tar.bz2
+BUSYBOX_URL      := '$(BUSYBOX_BASE_URL)/busybox-$(BUSYBOX_VERSION).tar.bz2'
+BUSYBOX_PATH     := $(SRC_PATH)/$(BUSYBOX_NAME)
+BUSYBOX_ORIG     := busybox-$(BUSYBOX_VERSION)
+BUSYBOX_ID       := BUSYBOX
 
-download-busybox: $(GIT_TARGET-busybox)
-$(GIT_TARGET-busybox): get-by-git-busybox
+download-busybox: $(call download-path,BUSYBOX)
+$(call download-path,BUSYBOX):
+	$(Q) $(call download,BUSYBOX)
+
+unpack-busybox: download-busybox $(BUSYBOX_PATH)
+$(BUSYBOX_PATH):
+	$(Q) $(call unpack,BUSYBOX)
 
 configure-busybox:
-	$(Q) echo "==== BusyBox ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH"; \
-	$(MAKE) -C $(CONFIGURE_SRC) $(BUSYBOX_CONFIG)
+	$(Q) $(call busybox-configure,BUSYBOX)
 
 build-busybox:
-	$(Q) echo "==== BusyBox ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
-	&& $(MAKE) -C $(BUILD_SRC)
+	$(Q) $(call common-build,BUSYBOX)
 
 install-busybox:
-	$(Q) echo "==== BusyBox ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
-	&& $(MAKE) -C $(INSTALL_SRC) install CONFIG_PREFIX=$(INITRAMFS_DIR)
+	$(Q) $(call busybox-install)
 
 clean-busybox:
-	$(Q) echo "==== BusyBox ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
-	&& $(MAKE) -C $(CLEAN_SRC) clean
+	$(Q) $(call common-clean,BUSYBOX)
 
 distclean-busybox:
-	$(Q) echo "==== BusyBox ===="
-	$(Q) export PATH="$(TOOLS_PATH)$$PATH" \
-	&& $(MAKE) -C $(DISTCLEAN_SRC) distclean
+	$(Q) $(call common-distclean,BUSYBOX)
 
-download: download-busybox
-configure: configure-busybox
-build: build-busybox
-install: install-busybox
-clean: clean-busybox
-distclean: distclean-busybox
+download-body: download-busybox
+download-fini: unpack-busybox
+configure-body: configure-busybox
+build-body: build-busybox
+install-body: install-busybox
+clean-body: clean-busybox
+distclean-body: distclean-busybox
 

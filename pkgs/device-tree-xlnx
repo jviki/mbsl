@@ -1,0 +1,22 @@
+# device-tree for DTS generation
+DEVTREE_XLNX_BASE_URL ?= http://git.xilinx.com
+DEVTREE_XLNX_SHA1     ?= 5253637de2b1c4c45a9183b0ab7abe69fe37de6e
+DEVTREE_XLNX_NAME     ?= device-tree
+DEVTREE_XLNX_AR       := tar.gz
+DEVTREE_XLNX_URL      := '$(DEVTREE_XLNX_BASE_URL)/?p=$(DEVTREE_XLNX_NAME).git;a=snapshot;h=$(DEVTREE_XLNX_SHA1);sf=tgz'
+DEVTREE_XLNX_ORIG     := $(DEVTREE_XLNX_NAME)
+DEVTREE_XLNX_PATH     := $(TOOLS_PATH)/$(DEVTREE_XLNX_NAME)
+DEVTREE_XLNX_DTS      := libsrc/device-tree_v0_00_x/xilinx.dts
+DEVTREE_ID            := DEVTREE_XLNX
+
+download-device-tree: $(call download-path,DEVTREE_XLNX)
+$(call download-path,DEVTREE_XLNX):
+	$(Q) $(call download,DEVTREE_XLNX)
+
+unpack-device-tree: download-device-tree $(DEVTREE_XLNX_PATH)
+$(DEVTREE_XLNX_PATH):
+	$(Q) $(call unpack,DEVTREE_XLNX)
+
+download-body: download-device-tree
+download-fini: unpack-device-tree
+

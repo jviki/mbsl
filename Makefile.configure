@@ -1,0 +1,45 @@
+##
+## MBSL Configure Makefile
+##
+
+configure-init:
+configure-body:
+configure-fini:
+
+
+# Kernel & Busybox common configure procedure
+
+KERNEL_CONFIGURE ?= oldconfig
+kernel-configure  = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze $(KERNEL_CONFIGURE)
+kconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(KERNEL_PATH)
+
+BUSYBOX_CONFIGURE ?= oldconfig
+busybox-configure  = $(TOOLCHAIN_ENV) $(MAKE) -C $(BUSYBOX_PATH) ARCH=microblaze $(BUSYBOX_CONFIGURE)
+bbconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(BUSYBOX_PATH)
+
+# Kernel & Busybox configuration
+
+KCONFIG_LS  := $(notdir $(shell ls $(CFG_PATH)/*.kconfig))
+BBCONFIG_LS := $(notdir $(shell ls $(CFG_PATH)/*.bbconfig))
+
+$(KCONFIG_LS:%.kconfig=kconfig_%):
+	$(Q) $(call kconfig-install,$(@:kconfig_%=%.kconfig))
+
+$(BBCONFIG_LS:%.bbconfig=bbconfig_%):
+	$(Q) $(call bbconfig-install,$(@:bbconfig_%=%.bbconfig))
+
+# Kernel & Busybox configuration save (eg. after some menuconfig)
+
+KCONFIG_NEW  ?= new
+BBCONFIG_NEW ?= new
+
+kconfig-save: $(CFG_PATH)/$(KCONFIG_NEW).kconfig
+$(CFG_PATH)/$(KCONFIG_NEW).kconfig: force
+	$(Q) cp $(KERNEL_PATH)/.config $@
+	$(Q) ls -l $@
+
+bbconfig-save: $(CFG_PATH)/$(BBCONFIG_NEW).bbconfig
+$(CFG_PATH)/$(BBCONFIG_NEW).bbconfig: force
+	$(Q) cp $(BUSYBOX_PATH)/.config $@
+	$(Q) ls -l $@
+

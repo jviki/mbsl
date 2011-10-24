@@ -1,0 +1,41 @@
+# Linux from git.xilinx.com
+KERNEL_XLNX_VERSION  ?= 37
+KERNEL_XLNX_BASE_URL ?= http://git.xilinx.com
+KERNEL_XLNX_NAME     := linux-2.6-xlnx
+KERNEL_XLNX_SHA1     ?= a5556fb251253ccb674bd22d9703c37f6f8807a8
+KERNEL_XLNX_AR       := tar.gz
+KERNEL_XLNX_URL      := '$(KERNEL_XLNX_BASE_URL)/?p=$(KERNEL_XLNX_NAME).git;a=snapshot;h=$(KERNEL_XLNX_SHA1);sf=tgz'
+KERNEL_XLNX_PATH     := $(SRC_PATH)/$(KERNEL_XLNX_NAME)
+KERNEL_XLNX_ORIG     := $(KERNEL_XLNX_NAME)
+KERNEL_ID            := KERNEL_XLNX
+
+download-kernel-xlnx: $(call download-path,KERNEL_XLNX)
+$(call download-path,KERNEL_XLNX):
+	$(Q) $(call download,KERNEL_XLNX)
+
+unpack-kernel-xlnx: download-kernel-xlnx $(KERNEL_XLNX_PATH)
+$(KERNEL_XLNX_PATH):
+	$(Q) $(call unpack,KERNEL_XLNX)
+
+configure-kernel-xlnx:
+	$(Q) $(call kernel-configure)
+
+build-kernel-xlnx:
+	$(Q) $(call kernel-build)
+
+install-kernel-xlnx:
+	$(Q) $(call kernel-install)
+
+clean-kernel-xlnx:
+	$(Q) $(call kernel-clean)
+
+distclean-kernel-xlnx:
+	$(Q) $(call kernel-distclean)
+
+download-body: download-kernel-xlnx
+download-fini: unpack-kernel-xlnx
+configure-body: configure-kernel-xlnx
+build-body: build-kernel-xlnx
+install-body: install-kernel-xlnx
+clean-body: clean-kernel-xlnx
+distclean-body: distclean-kernel-xlnx

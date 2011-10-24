@@ -1,0 +1,11 @@
+##
+## MBSL Patch Makefile
+##
+
+# parameters: package id, patch number
+ifeq ($(NOPATCH),1)
+	common-patch = echo "[PATCH] Skipping patch $(2)-$($(1)_NAME) (disabled)"
+else
+	common-patch = $(UTIL_PATH)/patch.sh $(PATCHS_PATH) $($(1)_PATH) $(2)-$($(1)_NAME)
+endif
+

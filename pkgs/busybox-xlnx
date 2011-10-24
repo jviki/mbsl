@@ -1,0 +1,42 @@
+# Busybox from Xilinx
+BUSYBOX_XLNX_VERSION  ?= 1.17.1
+BUSYBOX_XLNX_SHA1     ?= 941fce89fa346e06e936d4d3b58773c836127fd7
+BUSYBOX_XLNX_BASE_URL ?= http://git.xilinx.com
+BUSYBOX_XLNX_NAME     := busybox-$(BUSYBOX_XLNX_VERSION)
+BUSYBOX_XLNX_AR       := tar.gz
+BUSYBOX_XLNX_URL      := '$(BUSYBOX_XLNX_BASE_URL)/?p=busybox.git;a=snapshot;h=$(BUSYBOX_XLNX_SHA1);sf=tgz'
+BUSYBOX_XLNX_PATH     := $(SRC_PATH)/$(BUSYBOX_XLNX_NAME)
+BUSYBOX_XLNX_ORIG     := busybox
+BUSYBOX_ID            := BUSYBOX_XLNX
+
+download-busybox-xlnx: $(call download-path,BUSYBOX_XLNX)
+$(call download-path,BUSYBOX_XLNX):
+	$(Q) $(call download,BUSYBOX_XLNX)
+
+unpack-busybox-xlnx: download-busybox-xlnx $(BUSYBOX_XLNX_PATH)
+$(BUSYBOX_XLNX_PATH):
+	$(Q) $(call unpack,BUSYBOX_XLNX)
+
+configure-busybox-xlnx:
+	$(Q) $(call busybox-configure,BUSYBOX_XLNX)
+
+build-busybox-xlnx:
+	$(Q) $(call common-build,BUSYBOX_XLNX)
+
+install-busybox-xlnx:
+	$(Q) $(call busybox-install)
+
+clean-busybox-xlnx:
+	$(Q) $(call common-clean,BUSYBOX_XLNX)
+
+distclean-busybox-xlnx:
+	$(Q) $(call common-distclean,BUSYBOX_XLNX)
+
+download-body: download-busybox-xlnx
+download-fini: unpack-busybox-xlnx
+configure-body: configure-busybox-xlnx
+build-body: build-busybox-xlnx
+install-body: install-busybox-xlnx
+clean-body: clean-busybox-xlnx
+distclean-body: distclean-busybox-xlnx
+
