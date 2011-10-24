@@ -1,5 +1,23 @@
 #! /bin/sh
 
+###
+# Wrapper to call patch utility. Applies the patch and
+# if there exists a documentation for the patch it is
+# printed to console. The patch name is given without
+# extension. Extension is always 'patch'. Documentation
+# can be stored in file of the same name with different
+# extension - 'doc'.
+#
+# Logging is prefixed by "[PATCH]" string. 
+# Documentation prints are prefixed with "*" string.
+#
+# Usage: ./patch.sh <src-dir> <dst-dir> <name>
+#
+#   <src-dir> dir where patch is located
+#   <dst-dir> dir where the patch will be applied
+#   <name>    name of the patch without extension
+###
+
 patch_srcdir="$1"
 shift
 patch_dstdir="$1"
