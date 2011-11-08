@@ -13,6 +13,17 @@ XIL_ISE_ENV  ?= /opt/Xilinx/$(XIL_VERSION)/ISE_DS/settings$(XIL_ARCH).sh
 # environment setup command
 XIL_SETUP     = source $(XIL_ISE_ENV)
 
+# common options given to Xilinx tools
+XIL_OPTS     ?=
+
+# options passed to bitgen
+BITINIT_OPTS ?=
+BITINIT_OPTS += $(XIL_OPTS)
+
+# options passed to libgen
+LIBGEN_OPTS  ?=
+LIBGEN_OPTS  += $(XIL_OPTS)
+
 # selected design to download
 DESIGN       ?= default
 # full path to design file
@@ -97,7 +108,8 @@ $(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
 	       echo "No <DEVTREE_ID>_DTS is defined" > /dev/stderr \
 	       exit 1;                                             \
 	     fi
-	$(Q) $(XIL_SETUP) && $(UTIL_PATH)/gen-dts.sh                        \
+	$(Q) $(XIL_SETUP) && LIBGEN_OPTS="$(LIBGEN_OPTS)"                   \
+	                $(UTIL_PATH)/gen-dts.sh                             \
 	                   "$(DTS_TMP_PATH)" "$(DEVTREE_LIB_PATH)"          \
 	                   "$(FPGA_PROC_ID)" "$(MHS_FILE)"                  \
 	                   "$(MSS_FILE)"     "$(FPGA_TYPE)"                 \
