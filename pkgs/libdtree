@@ -1,0 +1,37 @@
+# Library libdtree to access device-tree
+# For now this only downloads the library
+LIBDTREE_VERSION ?= 0.1
+LIBDTREE_NAME    := libdtree-$(LIBDTREE_VERSION)
+LIBDTREE_SHA1    ?= master
+LIBDTREE_PATH    := $(SRC_PATH)/$(LIBDTREE_NAME)
+LIBDTREE_URL     := http://www.stud.fit.vutbr.cz/~xvikto03/git/libdtree.git
+
+download-libdtree: $(TMP_PATH)/$(LIBDTREE_NAME)
+$(TMP_PATH)/$(LIBDTREE_NAME):
+	$(Q) if [ ! -d "$@" ]; then                         \
+		mkdir -p `dirname $@`;                      \
+		echo "[GIT]" $(LIBDTREE_NAME) > /dev/stderr;\
+		git clone $(LIBDTREE_URL) $@;               \
+	fi
+
+unpack-libdtree: download-libdtree $(LIBDTREE_PATH)
+$(LIBDTREE_PATH):
+	$(Q) echo "[MV]" $(LIBDTREE_NAME) to $@ > /dev/stderr
+	$(Q) cp -ar $(TMP_PATH)/$(LIBDTREE_NAME) $@
+	$(Q) cd $@ && git checkout $(LIBDTREE_SHA1)
+
+configure-libdtree:
+build-libdtree:
+install-libdtree:
+clean-libdtree:
+	$(Q) $(call common-clean,LIBDTREE)
+distclean-libdtree: clean-libdtree
+
+download-body: download-libdtree
+download-fini: unpack-libdtree
+configure-body: configure-libdtree
+build-body: build-libdtree
+install-body: install-libdtree
+clean-body: clean-libdtree
+distclean-body: distclean-libdtree
+
