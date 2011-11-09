@@ -15,10 +15,15 @@ $(TMP_PATH)/$(LIBDTREE_NAME):
 	fi
 
 unpack-libdtree: download-libdtree $(LIBDTREE_PATH)
-$(LIBDTREE_PATH):
-	$(Q) echo "[MV]" $(LIBDTREE_NAME) to $@ > /dev/stderr
-	$(Q) cp -ar $(TMP_PATH)/$(LIBDTREE_NAME) $@
-	$(Q) cd $@ && git checkout $(LIBDTREE_SHA1)
+$(LIBDTREE_PATH): force
+	$(Q) if [ ! -d "$@" ]; then                               \
+		echo "[MV]" $(LIBDTREE_NAME) to $@ > /dev/stderr; \
+		cp -ar $(TMP_PATH)/$(LIBDTREE_NAME) $@;           \
+		cd $@ && git checkout $(LIBDTREE_SHA1);           \
+	else                                                      \
+		cd $@ && git pull;                                \
+		cd $@ && git checkout $(LIBDTREE_SHA1);           \
+	fi
 
 configure-libdtree:
 build-libdtree:
