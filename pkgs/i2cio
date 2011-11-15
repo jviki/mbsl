@@ -1,0 +1,41 @@
+# Utility to access i2c linux devices
+I2CIO_VERSION ?= 0.1
+I2CIO_NAME    := i2cio-$(I2CIO_VERSION)
+I2CIO_SHA1    ?= abd9ebbc04f4c8c40adee145b75e4053bcdcb602
+I2CIO_PATH    := $(SRC_PATH)/$(I2CIO_NAME)
+I2CIO_URL     ?= http://www.stud.fit.vutbr.cz/~xvikto03/git/i2cio.git
+
+download-i2cio: $(TMP_PATH)/$(I2CIO_NAME)
+$(TMP_PATH)/$(I2CIO_NAME):
+	$(Q) if [ ! -d "$@" ]; then                      \
+		mkdir -p `dirname $@`;                   \
+		echo "[GIT]" $(I2CIO_NAME) > /dev/stderr;\
+		git clone $(I2CIO_URL) $@;               \
+	fi
+
+unpack-i2cio: download-i2cio $(I2CIO_PATH)
+$(I2CIO_PATH): force
+	$(Q) if [ ! -d "$@" ]; then                            \
+		echo "[MV]" $(I2CIO_NAME) to $@ > /dev/stderr; \
+		cp -ar $(TMP_PATH)/$(I2CIO_NAME) $@;           \
+		cd $@ && git checkout $(I2CIO_SHA1);           \
+	else                                                   \
+		cd $@ && git pull;                             \
+		cd $@ && git checkout $(I2CIO_SHA1);           \
+	fi
+
+configure-i2cio:
+build-i2cio:
+install-i2cio:
+clean-i2cio:
+	$(Q) $(call common-clean,I2CIO)
+distclean-i2cio: clean-i2cio
+
+download-body: download-i2cio
+download-fini: unpack-i2cio
+configure-body: configure-i2cio
+build-body: build-i2cio
+install-body: install-i2cio
+clean-body: clean-i2cio
+distclean-body: distclean-i2cio
+
