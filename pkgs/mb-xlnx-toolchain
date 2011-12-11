@@ -7,6 +7,7 @@ MB_XLNX_AR       := tar.gz
 MB_XLNX_URL      := '$(MB_XLNX_BASE_URL)/?p=xldk/$(MB_XLNX_NAME).git;a=snapshot;h=$(MB_XLNX_SHA1);sf=tgz'
 MB_XLNX_ORIG     := $(MB_XLNX_NAME)
 MB_XLNX_PATH     := $(TOOLS_PATH)/$(MB_XLNX_NAME)
+MB_XLNX_LIBS     := $(MB_XLNX_PATH)/share/microblaze-unknown-linux-gnu/lib
 TOOLCHAIN_ID     := MB_XLNX
 
 ifeq (_le,$(findstring _le,$(MB_XLNX_VERSION)))
@@ -41,6 +42,24 @@ $(MB_XLNX_PATH):
 	$(Q) cd $(TMP_PATH)/$(MB_XLNX_ORIG) && tar -xf $(MB_XLNX_GCCTAR)
 	$(Q) mv $(TMP_PATH)/$(MB_XLNX_ORIG)/$(MB_XLNX_DIR-$(MB_XLNX_ENDIAN)) $(MB_XLNX_PATH)
 	$(Q) rm -Rf $(TMP_PATH)/$(MB_XLNX_ORIG)
+
+install-mb-xlnx:
+	$(Q) mkdir -p $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/ld-2.3.6.so             $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libc-2.3.6.so           $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libcrypt-2.3.6.so       $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libdl-2.3.6.so          $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libm-2.3.6.so           $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libmemusage.so          $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnsl-2.3.6.so         $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_compat-2.3.6.so  $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_dns-2.3.6.so     $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_files-2.3.6.so   $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_hesiod-2.3.6.so  $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_nis-2.3.6.so     $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_nisplus-2.3.6.so $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libpthread-0.10.so      $(GENRAMFS_PATH)/lib
+	$(Q) cp -v $(MB_XLNX_LIBS)/libresolv-2.3.6.so      $(GENRAMFS_PATH)/lib
 
 download: download-mb-xlnx
 download-fini: unpack-mb-xlnx
