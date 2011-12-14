@@ -1,0 +1,30 @@
+# Accessing bus, application from the package libdtree
+BUSIO_VERSION ?= 0.1
+BUSIO_NAME    := busio-$(BUSIO_VERSION)
+BUSIO_PATH    := $(SRC_PATH)/$(LIBDTREE_NAME)
+BUSIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC) AR=$(TOOLCHAIN_CROSS)ar LDFLAGS=-static
+
+download-busio: download-libdtree
+unpack-busio: unpack-libdtree
+
+configure-busio:
+build-busio:
+	$(Q) $(call common-build,BUSIO) busio
+	$(Q) $(TOOLCHAIN_ENV) $(TOOLCHAIN_CROSS)strip $(BUSIO_PATH)/busio
+
+install-busio:
+	$(Q) cp -v $(BUSIO_PATH)/busio $(GENRAMFS_PATH)/usr/bin
+
+clean-busio:
+	$(Q) $(call common-clean,BUSIO)
+
+distclean-busio: clean-busio
+
+download-body: download-busio
+download-fini: unpack-busio
+configure-body: configure-busio
+build-body: build-busio
+install-body: install-busio
+clean-body: clean-busio
+distclean-body: distclean-busio
+
