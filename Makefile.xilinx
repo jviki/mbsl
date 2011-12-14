@@ -30,6 +30,9 @@ DESIGN       ?= default
 DESIGN_FILE  := $(DESIGN_PATH)/$(DESIGN).bit
 # full path to selected DTS file
 DTS_FILE     := $(DTS_PATH)/$(DTS).dts
+# ELF file of bootloader
+BOOTLDR_ELF  ?=
+BOOTLDR_BMM  ?= $(DESIGN_PATH)/system_bd.bmm
 
 # JTAG number of FPGA device
 FPGA_JTAG    ?= 1
@@ -46,6 +49,17 @@ boot-by-xmd: $(KERNEL_IMAGE)
 boot-design: boot-by-impact
 boot-by-impact: $(DESIGN_FILE) download.cmd
 	$(Q) $(call impact-batch,download.cmd)
+
+ifneq ($(BOOTLDR_ELF),)
+$(DESIGN_FILE): $(DESIGN_PATH)/system.bit $(BOOTLDR_ELF)
+	$(Q) $(XIL_SETUP) && bitinit                    \
+	 	-bt "$(DESIGN_PATH)/system.bit"         \
+		-o  "$(DESIGN_FILE)"                    \
+		-pe "$(FPGA_PROC_ID)" "$(BOOTLDR_ELF)"  \
+		-bm "$(BOOTLDR_BMM)"                    \
+		$(BITINIT_OPTS)                         \
+		-p  "$(FPGA_TYPE)" "$(MHS_FILE)"
+endif
 
 xilinx-cleanlock: cleanlock.cmd
 	$(Q) $(call impact-batch,$<)
