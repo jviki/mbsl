@@ -33,8 +33,8 @@ boot-by-xmd: $(KERNEL_IMAGE)
 	$(Q) $(call xmd-dow-run,$<)
 
 boot-design: boot-by-impact
-boot-by-impact: download.cmd
-	$(Q) $(call impact-batch,$<)
+boot-by-impact: $(DESIGN_FILE) download.cmd
+	$(Q) $(call impact-batch,download.cmd)
 
 xilinx-cleanlock: cleanlock.cmd
 	$(Q) $(call impact-batch,$<)
