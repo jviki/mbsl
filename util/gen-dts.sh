@@ -43,7 +43,7 @@ dts_generate()
 	fi
 
 	mkdir -p "$tmp_dir"
-	libgen -od "$tmp_dir" -lp "$bsp_dir" -mhs "$mhs_file" -p "$fpga_type" -pe "$processor" "$mss_file"
+	libgen -od "$tmp_dir" -lp "$bsp_dir" -mhs "$mhs_file" -p "$fpga_type" -pe "$processor" "$mss_file" $LIBGEN_OPTS
 	
 	if [ "$?" != "0" ]; then
 		exit 1
