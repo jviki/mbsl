@@ -4,7 +4,7 @@ DTREE_VERSION ?= 0.1
 DTREE_NAME    := dtree-$(DTREE_VERSION)
 DTREE_SHA1    ?= master
 DTREE_PATH    := $(SRC_PATH)/$(DTREE_NAME)
-DTREE_URL     ?= https://jviki@github.com/jviki/dtree.git
+DTREE_URL     ?= git://github.com/jviki/dtree.git
 
 download-dtree: $(TMP_PATH)/$(DTREE_NAME)
 $(TMP_PATH)/$(DTREE_NAME):
