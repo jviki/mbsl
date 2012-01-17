@@ -1,10 +1,10 @@
-# Library libdtree to access device-tree
+# Library dtree to access device-tree
 # For now this only downloads the library
 LIBDTREE_VERSION ?= 0.1
-LIBDTREE_NAME    := libdtree-$(LIBDTREE_VERSION)
+LIBDTREE_NAME    := dtree-$(LIBDTREE_VERSION)
 LIBDTREE_SHA1    ?= master
 LIBDTREE_PATH    := $(SRC_PATH)/$(LIBDTREE_NAME)
-LIBDTREE_URL     ?= http://www.stud.fit.vutbr.cz/~xvikto03/git/libdtree.git
+LIBDTREE_URL     ?= https://jviki@github.com/jviki/dtree.git
 
 download-libdtree: $(TMP_PATH)/$(LIBDTREE_NAME)
 $(TMP_PATH)/$(LIBDTREE_NAME):
