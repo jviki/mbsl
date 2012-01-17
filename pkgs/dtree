@@ -1,42 +1,42 @@
 # Library dtree to access device-tree
 # For now this only downloads the library
-LIBDTREE_VERSION ?= 0.1
-LIBDTREE_NAME    := dtree-$(LIBDTREE_VERSION)
-LIBDTREE_SHA1    ?= master
-LIBDTREE_PATH    := $(SRC_PATH)/$(LIBDTREE_NAME)
-LIBDTREE_URL     ?= https://jviki@github.com/jviki/dtree.git
+DTREE_VERSION ?= 0.1
+DTREE_NAME    := dtree-$(DTREE_VERSION)
+DTREE_SHA1    ?= master
+DTREE_PATH    := $(SRC_PATH)/$(DTREE_NAME)
+DTREE_URL     ?= https://jviki@github.com/jviki/dtree.git
 
-download-libdtree: $(TMP_PATH)/$(LIBDTREE_NAME)
-$(TMP_PATH)/$(LIBDTREE_NAME):
+download-dtree: $(TMP_PATH)/$(DTREE_NAME)
+$(TMP_PATH)/$(DTREE_NAME):
 	$(Q) if [ ! -d "$@" ]; then                         \
 		mkdir -p `dirname $@`;                      \
-		echo "[GIT]" $(LIBDTREE_NAME) > /dev/stderr;\
-		git clone $(LIBDTREE_URL) $@;               \
+		echo "[GIT]" $(DTREE_NAME) > /dev/stderr;\
+		git clone $(DTREE_URL) $@;               \
 	fi
 
-unpack-libdtree: download-libdtree $(LIBDTREE_PATH)
-$(LIBDTREE_PATH): force
+unpack-dtree: download-dtree $(DTREE_PATH)
+$(DTREE_PATH): force
 	$(Q) if [ ! -d "$@" ]; then                               \
-		echo "[MV]" $(LIBDTREE_NAME) to $@ > /dev/stderr; \
-		cp -ar $(TMP_PATH)/$(LIBDTREE_NAME) $@;           \
-		cd $@ && git checkout $(LIBDTREE_SHA1);           \
+		echo "[MV]" $(DTREE_NAME) to $@ > /dev/stderr; \
+		cp -ar $(TMP_PATH)/$(DTREE_NAME) $@;           \
+		cd $@ && git checkout $(DTREE_SHA1);           \
 	else                                                      \
 		cd $@ && git pull;                                \
-		cd $@ && git checkout $(LIBDTREE_SHA1);           \
+		cd $@ && git checkout $(DTREE_SHA1);           \
 	fi
 
-configure-libdtree:
-build-libdtree:
-install-libdtree:
-clean-libdtree:
-	$(Q) $(call common-clean,LIBDTREE)
-distclean-libdtree: clean-libdtree
+configure-dtree:
+build-dtree:
+install-dtree:
+clean-dtree:
+	$(Q) $(call common-clean,DTREE)
+distclean-dtree: clean-dtree
 
-download-body: download-libdtree
-download-fini: unpack-libdtree
-configure-body: configure-libdtree
-build-body: build-libdtree
-install-body: install-libdtree
-clean-body: clean-libdtree
-distclean-body: distclean-libdtree
+download-body: download-dtree
+download-fini: unpack-dtree
+configure-body: configure-dtree
+build-body: build-dtree
+install-body: install-dtree
+clean-body: clean-dtree
+distclean-body: distclean-dtree
 
