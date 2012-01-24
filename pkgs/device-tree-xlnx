@@ -1,6 +1,6 @@
 # device-tree for DTS generation
 DEVTREE_XLNX_BASE_URL ?= http://git.xilinx.com
-DEVTREE_XLNX_SHA1     ?= 5253637de2b1c4c45a9183b0ab7abe69fe37de6e
+DEVTREE_XLNX_SHA1     ?= master
 DEVTREE_XLNX_NAME     ?= device-tree
 DEVTREE_XLNX_AR       := tar.gz
 DEVTREE_XLNX_URL      := '$(DEVTREE_XLNX_BASE_URL)/?p=$(DEVTREE_XLNX_NAME).git;a=snapshot;h=$(DEVTREE_XLNX_SHA1);sf=tgz'
