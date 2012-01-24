@@ -2,7 +2,7 @@
 KERNEL_XLNX_VERSION  ?= 3.0
 KERNEL_XLNX_BASE_URL ?= http://git.xilinx.com
 KERNEL_XLNX_NAME     := linux-2.6-xlnx
-KERNEL_XLNX_SHA1     ?= 5d397b7701692fde9dd8e572bc4820ffba093fa4
+KERNEL_XLNX_SHA1     ?= master
 KERNEL_XLNX_AR       := tar.gz
 KERNEL_XLNX_URL      := '$(KERNEL_XLNX_BASE_URL)/?p=$(KERNEL_XLNX_NAME).git;a=snapshot;h=$(KERNEL_XLNX_SHA1);sf=tgz'
 KERNEL_XLNX_PATH     := $(SRC_PATH)/$(KERNEL_XLNX_NAME)
