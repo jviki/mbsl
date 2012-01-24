@@ -3,7 +3,7 @@ I2CIO_VERSION ?= 0.1
 I2CIO_NAME    := i2cio-$(I2CIO_VERSION)
 I2CIO_SHA1    ?= master
 I2CIO_PATH    := $(SRC_PATH)/$(I2CIO_NAME)
-I2CIO_URL     ?= http://www.stud.fit.vutbr.cz/~xvikto03/git/i2cio.git
+I2CIO_URL     ?= git://github.com/jviki/i2cio.git
 I2CIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC) LDFLAGS=-static
 
 download-i2cio: $(TMP_PATH)/$(I2CIO_NAME)
