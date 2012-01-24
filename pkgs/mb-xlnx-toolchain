@@ -7,13 +7,17 @@ MB_XLNX_AR       := tar.gz
 MB_XLNX_URL      := '$(MB_XLNX_BASE_URL)/?p=xldk/$(MB_XLNX_NAME).git;a=snapshot;h=$(MB_XLNX_SHA1);sf=tgz'
 MB_XLNX_ORIG     := $(MB_XLNX_NAME)
 MB_XLNX_PATH     := $(TOOLS_PATH)/$(MB_XLNX_NAME)
-MB_XLNX_CROSS    := microblaze-unknown-linux-gnu-
 TOOLCHAIN_ID     := MB_XLNX
 
 MB_XLNX_GCC-v2.0 := microblaze-unknown-linux-gnu.tgz
 MB_XLNX_GCC-v1.0 := mb_gnu_tools_bin.tar.bz
 MB_XLNX_GCC-v1.0_le := microblazeel-unknown-linux-gnu.tar.gz
 MB_XLNX_GCCTAR   := $(MB_XLNX_GCC-$(MB_XLNX_VERSION))
+
+MB_XLNX_CROSS-v2.0 := microblaze-unknown-linux-gnu-
+MB_XLNX_CROSS-v1.0 := microblaze-unknown-linux-gnu-
+MB_XLNX_CROSS-v1.0_le := microblazeel-unknown-linux-gnu-
+MB_XLNX_CROSS      := $(MB_XLNX_CROSS-$(MB_XLNX_VERSION))
 
 ifndef MB_XLNX_GCC-$(MB_XLNX_VERSION)
 $(error Variable MB_XLNX_GCC-$(MB_XLNX_VERSION) is not defined, please fix mb-xlnx-toolchain package)
