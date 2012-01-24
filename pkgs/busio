@@ -1,11 +1,11 @@
-# Accessing bus, application from the package libdtree
+# Accessing bus, application from the package dtree
 BUSIO_VERSION ?= 0.1
 BUSIO_NAME    := busio-$(BUSIO_VERSION)
-BUSIO_PATH    := $(SRC_PATH)/$(LIBDTREE_NAME)
+BUSIO_PATH    := $(SRC_PATH)/$(DTREE_NAME)
 BUSIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC) AR=$(TOOLCHAIN_CROSS)ar LDFLAGS=-static
 
-download-busio: download-libdtree
-unpack-busio: unpack-libdtree
+download-busio: download-dtree
+unpack-busio: unpack-dtree
 
 configure-busio:
 build-busio:

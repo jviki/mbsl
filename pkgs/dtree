@@ -1,0 +1,42 @@
+# Library dtree to access device-tree
+# For now this only downloads the library
+DTREE_VERSION ?= 0.1
+DTREE_NAME    := dtree-$(DTREE_VERSION)
+DTREE_SHA1    ?= master
+DTREE_PATH    := $(SRC_PATH)/$(DTREE_NAME)
+DTREE_URL     ?= git://github.com/jviki/dtree.git
+
+download-dtree: $(TMP_PATH)/$(DTREE_NAME)
+$(TMP_PATH)/$(DTREE_NAME):
+	$(Q) if [ ! -d "$@" ]; then                         \
+		mkdir -p `dirname $@`;                      \
+		echo "[GIT]" $(DTREE_NAME) > /dev/stderr;\
+		git clone $(DTREE_URL) $@;               \
+	fi
+
+unpack-dtree: download-dtree $(DTREE_PATH)
+$(DTREE_PATH): force
+	$(Q) if [ ! -d "$@" ]; then                               \
+		echo "[MV]" $(DTREE_NAME) to $@ > /dev/stderr; \
+		cp -ar $(TMP_PATH)/$(DTREE_NAME) $@;           \
+		cd $@ && git checkout $(DTREE_SHA1);           \
+	else                                                      \
+		cd $@ && git pull;                                \
+		cd $@ && git checkout $(DTREE_SHA1);           \
+	fi
+
+configure-dtree:
+build-dtree:
+install-dtree:
+clean-dtree:
+	$(Q) $(call common-clean,DTREE)
+distclean-dtree: clean-dtree
+
+download-body: download-dtree
+download-fini: unpack-dtree
+configure-body: configure-dtree
+build-body: build-dtree
+install-body: install-dtree
+clean-body: clean-dtree
+distclean-body: distclean-dtree
+
