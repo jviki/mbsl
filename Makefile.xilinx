@@ -113,7 +113,9 @@ $(MSS_FILE): $(MSS_PATH)/$(MSS_SALONE).mss
 endif
 
 dts-generate: $(DTS_NEW_FILE)
-$(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE)
+$(DTS_PATH):
+	$(Q) mkdir -p $(DTS_PATH)
+$(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE) $(DTS_PATH)
 	$(Q) if [ -z "$(DEVTREE_ID)" ]; then                  \
 	       echo "No DEVTREE_ID is defined" > /dev/stderr; \
 	       exit 1;                                        \
