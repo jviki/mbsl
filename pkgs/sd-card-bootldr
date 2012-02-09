@@ -17,6 +17,9 @@ MB_FLAGS ?= -mxl-soft-mul -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-di
 MB_INCL  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/include
 MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
 
+MB_CFLAGS  ?= -Os -fdata-sections -ffunction-sections
+MB_LDFLAGS ?= --gc-sections
+
 #BOOTLDR_ELF ?= $(SRC_PATH)/
 
 download-sd-card-bootldr: $(call download-path,SD_CARD_BOOTLDR)
@@ -38,7 +41,10 @@ configure-sd-card-bootldr: $(SD_CARD_BOOTLDR_MSS)
 build-sd-card-bootldr: $(SD_CARD_BOOTLDR_ELF)
 $(SD_CARD_BOOTLDR_ELF): $(SD_CARD_BOOTLDR_SOURCES)
 	$(Q) cd $(SD_CARD_BOOTLDR_PATH) && \
-		$(MB_GCC) -O2 $(SD_CARD_BOOTLDR_SOURCES) -o $@ $(MB_FLAGS) -T $(SD_CARD_BOOTLDR_LINK) -I $(MB_INCL) -L $(MB_LIBS)
+		$(MB_GCC) $(MB_CFLAGS) $(MB_LDFLAGS) \
+			$(SD_CARD_BOOTLDR_SOURCES) -o $@  \
+			$(MB_FLAGS) -T $(SD_CARD_BOOTLDR_LINK) \
+			-I $(MB_INCL) -L $(MB_LIBS)
 	$(Q) cd $(SD_CARD_BOOTLDR_PATH) && \
 		$(MB_SIZE) $@
 
