@@ -7,9 +7,10 @@ SHELL := /bin/bash
 # Xilinx version
 XIL_VERSION  ?= 13.2
 XIL_ARCH     ?= 64
+XIL_HOME     ?= /opt/Xilinx/$(XIL_VERSION)/ISE_DS
 
 # path to ISE/settings{32,64}.sh
-XIL_ISE_ENV  ?= /opt/Xilinx/$(XIL_VERSION)/ISE_DS/settings$(XIL_ARCH).sh
+XIL_ISE_ENV  ?= $(XIL_HOME)/settings$(XIL_ARCH).sh
 # environment setup command
 XIL_SETUP     = source $(XIL_ISE_ENV)
 
