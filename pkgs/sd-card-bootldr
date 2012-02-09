@@ -1,0 +1,54 @@
+# SD Card bootloader
+SD_CARD_BOOTLDR_NAME := sd_card_bootloader
+SD_CARD_BOOTLDR_BASE_URL ?= http://www.fit.vutbr.cz/research/view_product.php
+SD_CARD_BOOTLDR_URL  := '$(SD_CARD_BOOTLDR_BASE_URL)?file=%2Fproduct%2F219%2Fsd_card_bootloader.zip&id=219'
+SD_CARD_BOOTLDR_AR   := zip
+SD_CARD_BOOTLDR_ORIG := $(SD_CARD_BOOTLDR_NAME)
+SD_CARD_BOOTLDR_PATH := $(SRC_PATH)/$(SD_CARD_BOOTLDR_NAME)
+
+SD_CARD_BOOTLDR_MSS  ?= $(MSS_PATH)/sd_card_bootldr.mss
+SD_CARD_BOOTLDR_SOURCES := $(SD_CARD_BOOTLDR_PATH)/src/*.c
+SD_CARD_BOOTLDR_ELF  ?= $(SD_CARD_BOOTLDR_PATH)/$(SD_CARD_BOOTLDR_NAME).elf
+SD_CARD_BOOTLDR_LINK ?= $(MSS_DIR)/$(SD_CARD_BOOTLDR_NAME).ld
+
+MB_GCC   ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-gcc
+MB_SIZE  ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-size
+MB_FLAGS ?= -mxl-soft-mul -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-div -mcpu=v8.00.b
+MB_INCL  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/include
+MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
+
+#BOOTLDR_ELF ?= $(SRC_PATH)/
+
+download-sd-card-bootldr: $(call download-path,SD_CARD_BOOTLDR)
+$(call download-path,SD_CARD_BOOTLDR):
+	$(Q) $(call download,SD_CARD_BOOTLDR)
+
+unpack-sd-card-bootldr: download-sd-card-bootldr $(SD_CARD_BOOTLDR_PATH)
+$(SD_CARD_BOOTLDR_PATH):
+	$(Q) $(call unpack,SD_CARD_BOOTLDR)
+
+configure-sd-card-bootldr: $(SD_CARD_BOOTLDR_MSS)
+	$(Q) cd $(SD_CARD_BOOTLDR_PATH) \
+		&& $(XIL_SETUP)              \
+		&& libgen                    \
+		-mhs $(MHS_FILE)             \
+		-p "$(FPGA_TYPE)"            \
+		$(SD_CARD_BOOTLDR_MSS)
+
+build-sd-card-bootldr: $(SD_CARD_BOOTLDR_ELF)
+$(SD_CARD_BOOTLDR_ELF): $(SD_CARD_BOOTLDR_SOURCES)
+	$(Q) cd $(SD_CARD_BOOTLDR_PATH) && \
+		$(MB_GCC) -O2 $(SD_CARD_BOOTLDR_SOURCES) -o $@ $(MB_FLAGS) -T $(SD_CARD_BOOTLDR_LINK) -I $(MB_INCL) -L $(MB_LIBS)
+	$(Q) cd $(SD_CARD_BOOTLDR_PATH) && \
+		$(MB_SIZE) $@
+
+ifneq ($(MSS_SALONE),)
+$(SD_CARD_BOOTLDR_MSS): $(MSS_SALONE)
+	$(Q) cp -v $< $@
+else
+$(error Missing MSS_SALONE variable to generate sd-card-bootldr one)
+endif
+
+download-body: download-sd-card-bootldr
+download-fini: unpack-sd-card-bootldr
+configure-body: configure-sd-card-bootldr
