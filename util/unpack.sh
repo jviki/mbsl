@@ -46,6 +46,11 @@ unpack_tmp()
             tar "$@" -xf "$archive_path" -C "$archive_dir"
         ;;
 
+		  "zip")
+            echo "[UNPACK] Processing $archive_name" > /dev/stderr
+				unzip $archive_path -d $archive_dir 
+        ;;
+
         *)
             echo "[UNPACK] Unsupported format of archive: $archive_fmt" > /dev/stderr
             exit 1
