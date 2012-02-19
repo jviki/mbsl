@@ -8,7 +8,7 @@ install-fini:
 
 KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
 KERNEL_INSTALL_SRC   = $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
-KERNEL_INSTALL_DST   = $(KERNEL_IMAGE)
+KERNEL_INSTALL_DST   = $(MBSL_IMAGE)
 
 kernel-install = $(RM) $(KERNEL_PATH)/{vmlinux,vmlinux.o} \
                  && $(RM) $(KERNEL_PATH)/usr/{initramfs_data.o,built-in.o,gen_init_cpio} \
