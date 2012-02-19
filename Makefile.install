@@ -8,7 +8,11 @@ install-fini:
 
 KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
 KERNEL_INSTALL_SRC   = $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
-KERNEL_INSTALL_DST   = $(KERNEL_IMAGE)
+KERNEL_INSTALL_DST   = $(MBSL_IMAGE)
+
+# pack generated distro option
+# they should work in any given order
+MBSL_PACK ?= srec
 
 kernel-install = $(RM) $(KERNEL_PATH)/{vmlinux,vmlinux.o} \
                  && $(RM) $(KERNEL_PATH)/usr/{initramfs_data.o,built-in.o,gen_init_cpio} \
@@ -22,4 +26,11 @@ install-dts: $(DTS_FILE)
 	$(Q) cp $(DTS_FILE) $(KERNEL_DTS)
 	$(Q) ls -lh $(KERNEL_DTS)/$(DTS).dts
 
+pack-image-srec: $(MBSL_IMAGE).srec
+	ls -lh $(MBSL_IMAGE).srec
+
+$(MBSL_IMAGE).srec: $(MBSL_IMAGE)
+	$(TOOLCHAIN_ENV) $(TOOLCHAIN_OBJCOPY) -O srec $^ $@
+
 install-init: install-dts
+install-fini: $(foreach format,$(MBSL_PACK),pack-image-$(format))

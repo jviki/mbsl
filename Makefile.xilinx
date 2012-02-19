@@ -44,7 +44,7 @@ xmd-dow-run  = $(XIL_SETUP) && ls -lh $(1) && xmd <<< "connect mb mdm; dow $(1);
 impact-batch = $(XIL_SETUP) && impact -batch $(1)
 
 boot-image: boot-by-xmd
-boot-by-xmd: $(KERNEL_IMAGE)
+boot-by-xmd: $(MBSL_IMAGE)
 	$(Q) $(call xmd-dow-run,$<)
 
 boot-design: boot-by-impact
