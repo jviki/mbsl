@@ -24,8 +24,10 @@ install-dts: $(DTS_FILE)
 	$(Q) cp $(DTS_FILE) $(KERNEL_DTS)
 	$(Q) ls -lh $(KERNEL_DTS)/$(DTS).dts
 
-pack-image-srec: $(KERNEL_INSTALL_DST).srec
-$(KERNEL_INSTALL_DST).srec: $(KERNEL_INSTALL_DST)
+pack-image-srec: $(MBSL_IMAGE).srec
+	ls -lh $(MBSL_IMAGE).srec
+
+$(MBSL_IMAGE).srec: $(MBSL_IMAGE)
 	$(TOOLCHAIN_ENV) $(TOOLCHAIN_OBJCOPY) -O srec $^ $@
 
 install-init: install-dts
