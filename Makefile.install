@@ -10,6 +10,8 @@ KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
 KERNEL_INSTALL_SRC   = $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
 KERNEL_INSTALL_DST   = $(MBSL_IMAGE)
 
+# pack generated distro option
+# they should work in any given order
 MBSL_PACK ?= srec
 
 kernel-install = $(RM) $(KERNEL_PATH)/{vmlinux,vmlinux.o} \
