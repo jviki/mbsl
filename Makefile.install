@@ -10,6 +10,8 @@ KERNEL_INSTALL_OPTS  = $(KERNEL_BUILD_OPTS)
 KERNEL_INSTALL_SRC   = $(KERNEL_PATH)/arch/microblaze/boot/simpleImage.$(DTS)
 KERNEL_INSTALL_DST   = $(MBSL_IMAGE)
 
+MBSL_PACK ?= srec
+
 kernel-install = $(RM) $(KERNEL_PATH)/{vmlinux,vmlinux.o} \
                  && $(RM) $(KERNEL_PATH)/usr/{initramfs_data.o,built-in.o,gen_init_cpio} \
                  && $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) $(KERNEL_INSTALL_OPTS) simpleImage.$(DTS) \
@@ -27,3 +29,4 @@ $(KERNEL_INSTALL_DST).srec: $(KERNEL_INSTALL_DST)
 	$(TOOLCHAIN_ENV) $(TOOLCHAIN_OBJCOPY) -O srec $^ $@
 
 install-init: install-dts
+install-fini: $(foreach format,$(MBSL_PACK),pack-image-$(format))
