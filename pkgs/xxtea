@@ -1,0 +1,35 @@
+# xxtea cipher tool support
+XXTEA_VERSION  ?= v0.1
+XXTEA_NAME     := xxtea
+XXTEA_AR       := tar.gz
+XXTEA_BASE_URL ?= https://github.com/$(XXTEA_GITHUB_OWNER)/xxtea/tarball
+XXTEA_URL       = '$(XXTEA_BASE_URL)/$(XXTEA_VERSION)'
+XXTEA_ORIG      = $(XXTEA_GITHUB_OWNER)-xxtea-$(XXTEA_ORIG_SHA1)
+XXTEA_GITHUB_OWNER ?= jviki
+XXTEA_ORIG_SHA1 ?= $(XXTEA_ORIG_SHA1-$(XXTEA_VERSION))
+
+XXTEA_PATH      = $(TOOLS_PATH)/$(XXTEA_NAME)-$(XXTEA_VERSION)
+XXTEA_EXEC      = $(XXTEA_PATH)/xxtea
+XXTEA_KEY      ?= $(MBSL_IMAGE).xxtea-key
+
+# hacking github tarball creation (contains sha-1 inside)
+XXTEA_ORIG_SHA1-v0.1 := 897856a
+
+download-xxtea: $(call download-path,XXTEA)
+$(call download-path,XXTEA):
+	$(Q) $(call download,XXTEA)
+
+unpack-xxtea: download-xxtea $(XXTEA_PATH)
+$(XXTEA_PATH):
+	$(Q) $(call unpack,XXTEA)
+	
+build-tool-xxtea:
+	$(Q) $(MAKE) -C $(XXTEA_PATH)
+
+pack-image-xxtea: $(MBSL_IMAGE).srec.xxtea
+	$(Q) ls -lh $^
+$(MBSL_IMAGE).srec.xxtea: $(MBSL_IMAGE).srec
+	$(Q) $(XXTEA_EXEC) -c -i $^ -o $@ -k $(XXTEA_KEY)
+
+download-body: download-xxtea
+download-fini: unpack-xxtea build-tool-xxtea
