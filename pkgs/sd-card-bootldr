@@ -34,7 +34,7 @@ MB_LDFLAGS ?= --gc-sections
 
 ############################
 
-#BOOTLDR_ELF ?= $(SRC_PATH)/
+BOOTLDR_ELF ?= $(SD_CARD_BOOTLDR_ELF)
 
 ############################
 
