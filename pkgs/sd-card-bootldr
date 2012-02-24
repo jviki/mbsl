@@ -6,13 +6,23 @@ SD_CARD_BOOTLDR_AR   := zip
 SD_CARD_BOOTLDR_ORIG := $(SD_CARD_BOOTLDR_NAME)
 SD_CARD_BOOTLDR_PATH := $(SRC_PATH)/$(SD_CARD_BOOTLDR_NAME)
 
+# special MSS for bootloader (auto-generated, see below) 
 SD_CARD_BOOTLDR_MSS  ?= $(MSS_PATH)/sd_card_bootldr.mss
-SD_CARD_BOOTLDR_SOURCES := $(SD_CARD_BOOTLDR_PATH)/src/*.c
+# directory with soruce files
+SD_CARD_BOOTLDR_SRC  := $(SD_CARD_BOOTLDR_PATH)/src
+# list of all C source files (full path)
+SD_CARD_BOOTLDR_C    := $(addprefix $(SD_CARD_BOOTLDR_SRC)/,$(notdir $(shell ls $(SD_CARD_BOOTLDR_SRC)/*.c)))
+# list of all potential object files (full path)
+SD_CARD_BOOTLDR_O     = $(SD_CARD_BOOTLDR_C:%.c=%.o)
+# target ELF file to be generated
 SD_CARD_BOOTLDR_ELF  ?= $(SD_CARD_BOOTLDR_PATH)/$(SD_CARD_BOOTLDR_NAME).elf
+# Linker script (TODO: where to assume it is located? Put it to MBSL_HOME/config?)
 SD_CARD_BOOTLDR_LINK ?= $(MSS_DIR)/$(SD_CARD_BOOTLDR_NAME).ld
 
+# MB toolchain from Xilinx EDK
 MB_GCC   ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-gcc
 MB_SIZE  ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-size
+# TODO: guess from MSS/MHS files
 MB_FLAGS ?= -mxl-soft-mul -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-div -mcpu=v8.00.b
 MB_INCL  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/include
 MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
@@ -22,6 +32,8 @@ MB_LDFLAGS ?= --gc-sections
 
 #BOOTLDR_ELF ?= $(SRC_PATH)/
 
+############################
+
 download-sd-card-bootldr: $(call download-path,SD_CARD_BOOTLDR)
 $(call download-path,SD_CARD_BOOTLDR):
 	$(Q) $(call download,SD_CARD_BOOTLDR)
@@ -30,6 +42,9 @@ unpack-sd-card-bootldr: download-sd-card-bootldr $(SD_CARD_BOOTLDR_PATH)
 $(SD_CARD_BOOTLDR_PATH):
 	$(Q) $(call unpack,SD_CARD_BOOTLDR)
 
+############################
+
+# generation of BSP
 configure-sd-card-bootldr: $(SD_CARD_BOOTLDR_MSS)
 	$(Q) cd $(SD_CARD_BOOTLDR_PATH) \
 		&& $(XIL_SETUP)              \
@@ -38,16 +53,26 @@ configure-sd-card-bootldr: $(SD_CARD_BOOTLDR_MSS)
 		-p "$(FPGA_TYPE)"            \
 		$(SD_CARD_BOOTLDR_MSS)
 
-build-sd-card-bootldr: $(SD_CARD_BOOTLDR_ELF)
-$(SD_CARD_BOOTLDR_ELF): $(SD_CARD_BOOTLDR_SOURCES)
-	$(Q) cd $(SD_CARD_BOOTLDR_PATH) && \
-		$(MB_GCC) $(MB_CFLAGS) $(MB_LDFLAGS) \
-			$(SD_CARD_BOOTLDR_SOURCES) -o $@  \
-			$(MB_FLAGS) -T $(SD_CARD_BOOTLDR_LINK) \
-			-I $(MB_INCL) -L $(MB_LIBS)
-	$(Q) cd $(SD_CARD_BOOTLDR_PATH) && \
-		$(MB_SIZE) $@
+############################
 
+build-sd-card-bootldr: $(SD_CARD_BOOTLDR_ELF)
+
+# building the ELF
+$(SD_CARD_BOOTLDR_ELF): $(SD_CARD_BOOTLDR_O)
+	$(MB_GCC) -Wl,-T -Wl,$(SD_CARD_BOOTLDR_LINK) $(MB_LDFLAGS) -L $(MB_LIBS) $(MB_FLAGS) -o $@ $^
+	$(MB_SIZE) $@
+
+# building modules (object files)
+# what is -fmessage-length=0? copied from XSDK...
+define sd-card-bootldr-compile
+$(1): $(1:%.o=%.c)
+	$(MB_GCC) -c -fmessage-length=0 $(MB_CFLAGS) -I $(MB_INCL) $(MB_FLAGS) $$^ -o $$@
+endef
+$(foreach OBJ,$(SD_CARD_BOOTLDR_O),$(eval $(call sd-card-bootldr-compile,$(OBJ))))
+
+############################
+
+# autogeneration of MSS file for the bootloader (just copy it :))
 ifneq ($(MSS_SALONE),)
 $(SD_CARD_BOOTLDR_MSS): $(MSS_SALONE)
 	$(Q) cp -v $< $@
@@ -55,6 +80,11 @@ else
 $(error Missing MSS_SALONE variable to generate sd-card-bootldr one)
 endif
 
+############################
+
 download-body: download-sd-card-bootldr
 download-fini: unpack-sd-card-bootldr
 configure-body: configure-sd-card-bootldr
+# allow this?
+# I think that bootloader should be build on demand before boot...
+#build-body: build-sd-card-bootldr
