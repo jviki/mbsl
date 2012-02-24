@@ -29,6 +29,8 @@ MB_FLAGS ?= -mxl-soft-mul -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-di
 MB_INCL  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/include
 MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
 
+# The additional flags allow to strip some unused functions
+# and thus make the result smaller...
 MB_CFLAGS  ?= -Os -fdata-sections -ffunction-sections
 MB_LDFLAGS ?= --gc-sections
 
