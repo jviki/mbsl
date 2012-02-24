@@ -6,6 +6,8 @@ SD_CARD_BOOTLDR_AR   := zip
 SD_CARD_BOOTLDR_ORIG := $(SD_CARD_BOOTLDR_NAME)
 SD_CARD_BOOTLDR_PATH := $(SRC_PATH)/$(SD_CARD_BOOTLDR_NAME)
 
+SD_CARD_BOOTLDR_CFG  ?= $(SD_CARD_BOOTLDR_NAME).h
+
 # special MSS for bootloader (auto-generated, see below) 
 SD_CARD_BOOTLDR_MSS  ?= $(MSS_PATH)/sd_card_bootldr.mss
 # directory with soruce files
@@ -44,8 +46,13 @@ $(SD_CARD_BOOTLDR_PATH):
 
 ############################
 
+# copies the selected bootloadr parameters.h file to its place
+copy-cfg-sd-card-bootldr: $(SD_CARD_BOOTLDR_SRC)/parameters.h
+$(SD_CARD_BOOTLDR_SRC)/parameters.h: $(CFG_PATH)/$(SD_CARD_BOOTLDR_CFG)
+	$(Q) cp -v $< $@
+
 # generation of BSP
-configure-sd-card-bootldr: $(SD_CARD_BOOTLDR_MSS)
+configure-sd-card-bootldr: copy-cfg-sd-card-bootldr $(SD_CARD_BOOTLDR_MSS)
 	$(Q) cd $(SD_CARD_BOOTLDR_PATH) \
 		&& $(XIL_SETUP)              \
 		&& libgen                    \
