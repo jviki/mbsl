@@ -48,13 +48,22 @@ $(SD_CARD_BOOTLDR_PATH):
 
 ############################
 
+ifdef XXTEA_NAME
+gen-crypto-key-header: $(SD_CARD_BOOTLDR_SRC)/crypto_key.h
+$(SD_CARD_BOOTLDR_SRC)/crypto_key.h: $(XXTEA_KEY)
+	$(Q) $(UTIL_PATH)/sd-card-bootldr-xxtea.sh $@ $<
+else
+gen-crypto-key-header:
+	$(Q) echo "" > $(SD_CARD_BOOTLDR_SRC)/crypto_key.h
+endif
+
 # copies the selected bootloadr parameters.h file to its place
 copy-cfg-sd-card-bootldr: $(SD_CARD_BOOTLDR_SRC)/parameters.h
 $(SD_CARD_BOOTLDR_SRC)/parameters.h: $(CFG_PATH)/$(SD_CARD_BOOTLDR_CFG)
 	$(Q) cp -v $< $@
 
 # generation of BSP
-configure-sd-card-bootldr: copy-cfg-sd-card-bootldr $(SD_CARD_BOOTLDR_MSS)
+configure-sd-card-bootldr: copy-cfg-sd-card-bootldr gen-crypto-key-header $(SD_CARD_BOOTLDR_MSS)
 	$(Q) cd $(SD_CARD_BOOTLDR_PATH) \
 		&& $(XIL_SETUP)              \
 		&& libgen                    \
