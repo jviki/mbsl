@@ -27,8 +27,8 @@
 // Uncomment to allow printing debug information on stdout, enlarge the bootloader by ~3.5kB
 #define DEBUG
 
-// Uncomment to allow memory test on start.
-#define MEMORY_TEST
+// Uncomment to allow (DDR2) memory test on start.
+//#define MEMORY_TEST
 
 /**
  * SD Card settings.
