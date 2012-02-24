@@ -32,6 +32,8 @@ MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
 MB_CFLAGS  ?= -Os -fdata-sections -ffunction-sections
 MB_LDFLAGS ?= --gc-sections
 
+############################
+
 #BOOTLDR_ELF ?= $(SRC_PATH)/
 
 ############################
