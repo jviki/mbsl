@@ -13,7 +13,7 @@ SD_CARD_BOOTLDR_MSS  ?= $(MSS_PATH)/sd_card_bootldr.mss
 # directory with soruce files
 SD_CARD_BOOTLDR_SRC  := $(SD_CARD_BOOTLDR_PATH)/src
 # list of all C source files (full path)
-SD_CARD_BOOTLDR_C    := $(addprefix $(SD_CARD_BOOTLDR_SRC)/,$(notdir $(shell ls $(SD_CARD_BOOTLDR_SRC)/*.c)))
+SD_CARD_BOOTLDR_C    := $(addprefix $(SD_CARD_BOOTLDR_SRC)/,$(notdir $(shell ls $(SD_CARD_BOOTLDR_SRC)/*.c 2>/dev/null)))
 # list of all potential object files (full path)
 SD_CARD_BOOTLDR_O     = $(SD_CARD_BOOTLDR_C:%.c=%.o)
 # target ELF file to be generated
