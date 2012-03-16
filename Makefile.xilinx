@@ -138,16 +138,25 @@ $(DTS_NEW_FILE): $(MHS_FILE) $(MSS_FILE) $(DTS_PATH)
 help-xilinx:
 	@echo "Xilinx:"
 	@echo "  dts-generate           ... Generates DTS file named <DTS_NEW> using MHS and MSS files"
+	@echo "  xilinx-cleanlock       ... Tries to clean lock of the cable"
 	@echo "  DTS_NEW                ... Variable that holds the name of generated DTS file"
 	@echo "  MHS_DIR                ... Where to look for MHS files, default: <DESIGN_DIR>"
 	@echo "  MSS_DIR                ... Where to look for MSS files, default: <DESIGN_DIR>"
 	@echo "  MHS_NAME               ... Base name of MHS file, default: <DESIGN>"
 	@echo "  MSS_NAME               ... Base name of MSS file, default: <DESIGN>"
+	@echo "  MSS_SALONE             ... Path to standalone MSS (linux <MSS_FILE> can be automatically generated from that)"
 	@echo "  FPGA_TYPE              ... Target FPGA that is used"
 	@echo "  FPGA_PROC_ID           ... ID of target processor (in FPGA)"
+	@echo "  FPGA_JTAG              ... Position of target FPGA in the JTAG chain, default: 1"
 	@echo "  XIL_VERSION            ... Version of Xilinx ISE"
 	@echo "  XIL_ISE_ENV            ... Path to settings script of ISE"
 	@echo "  XIL_ARCH               ... Architecture of settings script (64|32)"
+	@echo "  XIL_HOME               ... path to ISE_DS directory (XIL_VERSION wouldn't be used then)"
+	@echo "  XIL_OPTS               ... additional options to be set when calling Xilinx tools"
+	@echo "  BITINIT_OPTS           ... additional options to be set when calling bitinit"
+	@echo "  LIBGEN_OPTS            ... additional options to be set when calling libgen"
+	@echo "  BOOTLDR_ELF            ... path to ELF file that can be loaded into BlockRAMs (a bootloader)"
+	@echo "  BOOTLDR_BMM            ... path to bmm file of the design, default: <DESIGN_PATH>/system_bd.bmm"
 
 #################
 

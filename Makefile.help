@@ -8,7 +8,6 @@ help-banner:
 help-main: help-banner
 	@echo "Targets:"
 	@echo "  download               ... downloads all software and kernel sources from Internet"
-#	@echo "  patch                  ... patchs all selected packages if possible"
 	@echo "  kconfig_<name>         ... copies the kernel configuration <name> to kernel dir as .config"
 	@echo "  bbconfig_<name>        ... copies the busybox configuration <name> to busybox dir as .config"
 	@echo "  configure              ... configures all selected packages and possibly kernel and busybox"
@@ -19,7 +18,6 @@ help-main: help-banner
 	@echo "  boot-image             ... boots the kernel image into the running design"
 	@echo "  clean                  ... calls clean on all selected packages"
 	@echo "  distclean              ... calls distclean on all selected packages and possibly mrproper on kernel"
-#	@echo "  save-current-kconfig   ... saves current kernel .config in config/ dir as new.kconfig"
 	@echo "  help                   ... advanced help"
 	@echo "  version                ... tries to determine current version"
 
@@ -27,9 +25,7 @@ help-advanced-impl:
 	@echo "Useful internal targets:"
 	@echo "  kconfig-save           ... saves current kernel .config file to $(KCONFIG_NEW).kconfig"
 	@echo "  bbconfig-save          ... saves current busybox .config file to $(BBCONFIG_NEW).bbconfig"
-#	@echo "  kernel-with-system.map ... copies the System.map into initramfs"
 	@echo "  prepare-dts            ... copies selected DTS file into kernel dir hierarchy"
-#	@echo "  copy-image             ... copies generated kernel image to root of the distro"
 	@echo "Variables:"
 	@echo "  BUILD_PARALLEL         ... number of parallel processes when building applications"
 	@echo "  KERNEL_NAME            ... name of the kernel, will be linux-<KERNEL_NAME>"
@@ -39,14 +35,14 @@ help-advanced-impl:
 	@echo "  INITRAMFS_DIR          ... where to look for initramfs source files"
 	@echo "  GENRAMFS_DIR           ... where to place generated files to be included in initramfs"
 	@echo "  DESIGN_DIR             ... where to look for design bit streams (or even MHS, MSS files)"
-#	@echo "  PATCHS_DIR             ... where to look for patchs"
-#	@echo "  CONFIGS_DIR            ... where to look for kconfig and bbconfig files"
+	@echo "  PATCHS_DIR             ... where to look for patchs"
+	@echo "  CFG_DIR                ... where to look for kconfig and bbconfig files"
 	@echo "  DTS                    ... name of used DTS file (without suffix)"
 	@echo "  Q                      ... quite for commands in Makefile, default: @"
-#	@echo "  KCONFIG_OUTPUT         ... name of the new kernel config when running save-current-kconfig"
 	@echo "Hints:"
 	@echo "  $$ make configure KERNEL_CONFIGURE=menuconfig"
 	@echo "  $$ make configure BUSYBOX_CONFIGURE=menuconfig"
+	@echo "  $$ make kconfig-save KCONFIG_NEW=mykernel"
 
 help-advanced: help-main help-advanced-impl help-addon
 
