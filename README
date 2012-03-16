@@ -58,7 +58,7 @@ that implement the targets:
 * Makefile.distclean
 * Makefile.initramfs - implements generating of static part of initramfs
 * Makefile.patch
-* Makefile.path      - setting cosntant paths to different resources
+* Makefile.path      - setting constant paths to different resources
 * Makefile.pkgs      - includes packages to the Makefile
 * Makefile.xilinx    - targets to use Xilinx tools
 
@@ -101,7 +101,7 @@ use MBSL:
 
 5) install software to initramfs and build the image
 
-   $ make CONFIg=example install
+   $ make CONFIG=example install
 
 6) boot design and image
 
