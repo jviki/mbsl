@@ -42,7 +42,7 @@ help-advanced-impl:
 	@echo "Hints:"
 	@echo "  $$ make configure KERNEL_CONFIGURE=menuconfig"
 	@echo "  $$ make configure BUSYBOX_CONFIGURE=menuconfig"
-	@echo "  $$ make kconfig-save KCONFIG_NEW=mykernel
+	@echo "  $$ make kconfig-save KCONFIG_NEW=mykernel"
 
 help-advanced: help-main help-advanced-impl help-addon
 
