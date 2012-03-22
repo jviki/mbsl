@@ -76,6 +76,7 @@ configure-sd-card-bootldr: copy-cfg-sd-card-bootldr gen-crypto-key-header $(SD_C
 		&& libgen                    \
 		-mhs $(MHS_FILE)             \
 		-p "$(FPGA_TYPE)"            \
+		$(LIBGEN_OPTS)               \
 		$(SD_CARD_BOOTLDR_MSS)
 
 ############################
