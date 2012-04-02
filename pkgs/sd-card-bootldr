@@ -24,8 +24,11 @@ SD_CARD_BOOTLDR_LINK ?= $(MSS_DIR)/$(SD_CARD_BOOTLDR_NAME).ld
 # MB toolchain from Xilinx EDK
 MB_GCC   ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-gcc
 MB_SIZE  ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-size
+MB_VER   ?= v8.00.b
+MB_ENDIAN?= little
 # TODO: guess from MSS/MHS files
-MB_FLAGS ?= -mxl-soft-mul -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-div -mcpu=v8.00.b
+MB_CONF  ?= -mxl-soft-mul -mxl-barrel-shift -mxl-pattern-compare -mno-xl-soft-div
+MB_FLAGS := $(MB_CONF) -m$(MB_ENDIAN)-endian -mcpu=$(MB_VER)
 MB_INCL  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/include
 MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
 
