@@ -100,6 +100,15 @@ $(foreach OBJ,$(SD_CARD_BOOTLDR_O),$(eval $(call sd-card-bootldr-compile,$(OBJ))
 
 ############################
 
+clean-sd-card-bootldr:
+	$(RM) $(SD_CARD_BOOTLDR_O)
+	$(RM) $(SD_CARD_BOOTLDR_PATH)/src/platform_config.h
+	$(RM) -R $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)
+	$(RM) $(SD_CARD_BOOTLDR_PATH)/*.log
+	$(RM) -R $(SD_CARD_BOOTLDR_PATH)/__xps
+
+############################
+
 # autogeneration of MSS file for the bootloader (just copy it :))
 ifneq ($(MSS_SALONE),)
 $(SD_CARD_BOOTLDR_MSS): $(MSS_SALONE)
@@ -113,6 +122,7 @@ endif
 download-body: download-sd-card-bootldr
 download-fini: unpack-sd-card-bootldr
 configure-body: configure-sd-card-bootldr
+clean-body: clean-sd-card-bootldr
 # allow this?
 # I think that bootloader should be build on demand before boot...
 #build-body: build-sd-card-bootldr
