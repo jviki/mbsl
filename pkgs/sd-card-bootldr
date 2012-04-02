@@ -93,6 +93,9 @@ $(SD_CARD_BOOTLDR_ELF): $(SD_CARD_BOOTLDR_O)
 	$(MB_GCC) -Wl,-T -Wl,$(SD_CARD_BOOTLDR_LINK) $(MB_LDFLAGS) -L $(MB_LIBS) $(MB_FLAGS) -o $@ $^
 	$(MB_SIZE) $@
 
+$(BOOTLDR_ELF): $(SD_CARD_BOOTLDR_ELF)
+	$(Q) cp -v $^ $@
+
 # building modules (object files)
 # what is -fmessage-length=0? copied from XSDK...
 define sd-card-bootldr-compile
