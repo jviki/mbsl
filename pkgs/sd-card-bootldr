@@ -64,13 +64,15 @@ endif
 gen-platform-config:
 	$(Q) echo "" > $(SD_CARD_BOOTLDR_SRC)/platform_config.h
 
+gen-prerequisited: gen-crypto-key-header gen-platform-config
+
 # copies the selected bootloadr parameters.h file to its place
 copy-cfg-sd-card-bootldr: $(SD_CARD_BOOTLDR_SRC)/parameters.h
 $(SD_CARD_BOOTLDR_SRC)/parameters.h: $(CFG_PATH)/$(SD_CARD_BOOTLDR_CFG)
 	$(Q) cp -v $< $@
 
 # generation of BSP
-configure-sd-card-bootldr: copy-cfg-sd-card-bootldr gen-crypto-key-header $(SD_CARD_BOOTLDR_MSS)
+configure-sd-card-bootldr: copy-cfg-sd-card-bootldr gen-prerequisited $(SD_CARD_BOOTLDR_MSS)
 	$(Q) cd $(SD_CARD_BOOTLDR_PATH) \
 		&& $(XIL_SETUP)              \
 		&& libgen                    \
