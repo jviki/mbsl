@@ -60,6 +60,8 @@ $(DESIGN_FILE): $(DESIGN_PATH)/system.bit $(BOOTLDR_ELF)
 		-bm "$(BOOTLDR_BMM)"                    \
 		$(BITINIT_OPTS)                         \
 		-p  "$(FPGA_TYPE)" "$(MHS_FILE)"
+else
+	 $(info No bootloader is used)
 endif
 
 xilinx-cleanlock: cleanlock.cmd
