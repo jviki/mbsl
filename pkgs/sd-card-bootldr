@@ -129,6 +129,4 @@ download-body: download-sd-card-bootldr
 download-fini: unpack-sd-card-bootldr
 configure-body: configure-sd-card-bootldr
 clean-body: clean-sd-card-bootldr
-# allow this?
-# I think that bootloader should be build on demand before boot...
-#build-body: build-sd-card-bootldr
+build-body: build-sd-card-bootldr
