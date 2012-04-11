@@ -23,9 +23,7 @@
 /**
  * Debugging & testing.
  */
-
-// Uncomment to allow printing debug information on stdout, enlarge the bootloader by ~3.5kB
-#define DEBUG
+#define LOG_LEVEL 2
 
 // Uncomment to allow (DDR2) memory test on start.
 //#define MEMORY_TEST
