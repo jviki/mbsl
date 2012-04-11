@@ -42,7 +42,8 @@ MB_LDFLAGS ?= --gc-sections
 
 ############################
 
-BOOTLDR_ELF ?= $(SD_CARD_BOOTLDR_ELF)
+# this must be done by user in MBSL config file
+#BOOTLDR_ELF = $(SD_CARD_BOOTLDR_ELF)
 
 ############################
 
