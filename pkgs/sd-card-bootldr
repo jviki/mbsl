@@ -7,6 +7,8 @@ SD_CARD_BOOTLDR_ORIG := $(SD_CARD_BOOTLDR_NAME)
 SD_CARD_BOOTLDR_PATH := $(SRC_PATH)/$(SD_CARD_BOOTLDR_NAME)
 
 SD_CARD_BOOTLDR_CFG  ?= $(SD_CARD_BOOTLDR_NAME).h
+# Load defines from parameters.h
+#SD_CARD_BOOTLDR_CFG   = $(shell $(MB_GCC) -E -dN -P $(SD_CARD_BOOTLDR_SRC)/parameters.h 2>/dev/null)
 
 # special MSS for bootloader (auto-generated, see below) 
 SD_CARD_BOOTLDR_MSS  ?= $(MSS_PATH)/sd_card_bootldr.mss
