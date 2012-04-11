@@ -23,6 +23,7 @@ SD_CARD_BOOTLDR_LINK ?= $(MSS_DIR)/$(SD_CARD_BOOTLDR_NAME).ld
 
 # MB toolchain from Xilinx EDK
 MB_GCC   ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-gcc
+MB_STRIP ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-strip
 MB_SIZE  ?= PATH=$(XIL_HOME)/EDK/gnu/microblaze/lin64/bin mb-size
 MB_VER   ?= v8.00.b
 MB_ENDIAN?= little
