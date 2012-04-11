@@ -106,12 +106,14 @@ $(foreach OBJ,$(SD_CARD_BOOTLDR_O),$(eval $(call sd-card-bootldr-compile,$(OBJ))
 
 ############################
 
-clean-sd-card-bootldr:
-	$(RM) $(SD_CARD_BOOTLDR_O)
+distclean-sd-card-bootldr: clean-sd-card-bootldr
 	$(RM) $(SD_CARD_BOOTLDR_PATH)/src/platform_config.h
 	$(RM) -R $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)
 	$(RM) $(SD_CARD_BOOTLDR_PATH)/*.log
 	$(RM) -R $(SD_CARD_BOOTLDR_PATH)/__xps
+
+clean-sd-card-bootldr:
+	$(RM) $(SD_CARD_BOOTLDR_O)
 
 ############################
 
@@ -129,4 +131,5 @@ download-body: download-sd-card-bootldr
 download-fini: unpack-sd-card-bootldr
 configure-body: configure-sd-card-bootldr
 clean-body: clean-sd-card-bootldr
+distclean-body: distclean-sd-card-bootldr
 build-body: build-sd-card-bootldr
