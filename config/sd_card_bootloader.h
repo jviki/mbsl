@@ -50,7 +50,7 @@
  */
 
 // Uncomment to allow encrypted srec files, enlarge the bootloader by ~0.5kB
-//#define CRYPTO
+#define CRYPTO
 
 // Uncomment to disable CRC16 check of readed SD block.
 // In this case we relay only on SREC record checksum to detect errors. Use this to speed up reading of the image file.
