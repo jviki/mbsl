@@ -1,0 +1,35 @@
+# Lua interpreter
+LUA_VERSION  ?= 5.2.0
+LUA_NAME     := lua-$(LUA_VERSION)
+LUA_BASE_URL ?= http://www.lua.org/ftp
+LUA_AR       ?= tar.gz
+LUA_URL       = $(LUA_BASE_URL)/$(LUA_NAME).$(LUA_AR)
+LUA_ORIG     := $(LUA_NAME)
+LUA_PATH     := $(SRC_PATH)/$(LUA_NAME)
+
+LUA_BUILD_OPTS  = LDFLAGS="--static"
+LUA_BUILD_OPTS += CC="$(TOOLCHAIN_CC)"
+LUA_BUILD_OPTS += AR="$(TOOLCHAIN_CROSS)ar rcu"
+LUA_BUILD_OPTS += RANLIB="$(TOOLCHAIN_CROSS)ranlib"
+
+download-lua: $(call download-path,LUA)
+$(call download-path,LUA):
+	$(Q) $(call download,LUA)
+
+unpack-lua: download-lua $(LUA_PATH)
+$(LUA_PATH):
+	$(Q) $(call unpack,LUA)
+
+configure-lua:
+build-lua:
+	$(call common-build,LUA) posix
+
+install-lua:
+#	$(call common-install,LUA) INSTALL_TOP="$(GENRAMFS_PATH)"
+	mkdir -p $(GENRAMFS_PATH)/usr/bin
+	cp -v $(LUA_PATH)/src/lua $(GENRAMFS_PATH)/usr/bin/lua
+clean-lua:
+	$(call common-clean,LUA)
+
+download-body: download-lua
+download-fini: unpack-lua
