@@ -24,9 +24,10 @@ MB_XLNX_GCCTAR   := $(MB_XLNX_GCC-$(MB_XLNX_VERSION))
 MB_XLNX_DIR-be   := microblaze-unknown-linux-gnu
 MB_XLNX_DIR-le   := microblazeel-unknown-linux-gnu
 
-MB_XLNX_CROSS-be := microblaze-unknown-linux-gnu-
-MB_XLNX_CROSS-le := microblazeel-unknown-linux-gnu-
-MB_XLNX_CROSS     = $(MB_XLNX_CROSS-$(MB_XLNX_ENDIAN))
+MB_XLNX_PREFIX-be := microblaze-unknown-linux-gnu
+MB_XLNX_PREFIX-le := microblazeel-unknown-linux-gnu
+MB_XLNX_PREFIX    = $(MB_XLNX_PREFIX-$(MB_XLNX_ENDIAN))
+MB_XLNX_CROSS     = $(MB_XLNX_PREFIX)-
 
 ifndef MB_XLNX_GCC-$(MB_XLNX_VERSION)
 $(error Variable MB_XLNX_GCC-$(MB_XLNX_VERSION) is not defined, please fix mb-xlnx-toolchain package)
