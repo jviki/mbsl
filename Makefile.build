@@ -6,6 +6,9 @@ build-init:
 build-body:
 build-fini:
 
+# Possible values: static | shared
+BUILD_MODE ?= static
+
 TOOLCHAIN_CROSS    = $($(TOOLCHAIN_ID)_CROSS)
 TOOLCHAIN_CC       = $(TOOLCHAIN_CROSS)gcc
 TOOLCHAIN_OBJCOPY  = $(TOOLCHAIN_CROSS)objcopy
