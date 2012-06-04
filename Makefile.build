@@ -19,3 +19,8 @@ BUILD_PARALLEL    ?= 2
 kernel-build = $(TOOLCHAIN_ENV) $(MAKE) -j$(BUILD_PARALLEL) -C $(KERNEL_PATH) $(KERNEL_BUILD_OPTS) vmlinux.o
 common-build = $(TOOLCHAIN_ENV) $(MAKE) -j$(BUILD_PARALLEL) -C $($(1)_PATH) $($(1)_BUILD_OPTS)
 
+ifeq ($(BUILD_MODE),static)
+common-moded-build = $(call common-build,$(1)) LDFLAGS=--static
+else
+common-moded-build = $(call common-build,$(1))
+endif
