@@ -4,7 +4,7 @@ I2CIO_NAME    := i2cio-$(I2CIO_VERSION)
 I2CIO_SHA1    ?= master
 I2CIO_PATH    := $(SRC_PATH)/$(I2CIO_NAME)
 I2CIO_URL     ?= git://github.com/jviki/i2cio.git
-I2CIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC) LDFLAGS=-static
+I2CIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC)
 
 download-i2cio: $(TMP_PATH)/$(I2CIO_NAME)
 $(TMP_PATH)/$(I2CIO_NAME):
@@ -26,7 +26,7 @@ $(I2CIO_PATH): force
 	fi
 
 build-i2cio:
-	$(Q) $(call common-build,I2CIO)
+	$(Q) $(call common-moded-build,I2CIO)
 
 install-i2cio:
 	$(Q) cp -v $(I2CIO_PATH)/i2cio $(GENRAMFS_PATH)/usr/bin
