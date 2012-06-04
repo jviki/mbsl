@@ -7,7 +7,7 @@ MB_XLNX_AR       := tar.gz
 MB_XLNX_URL      := '$(MB_XLNX_BASE_URL)/?p=xldk/$(MB_XLNX_NAME).git;a=snapshot;h=$(MB_XLNX_SHA1);sf=tgz'
 MB_XLNX_ORIG     := $(MB_XLNX_NAME)
 MB_XLNX_PATH     := $(TOOLS_PATH)/$(MB_XLNX_NAME)
-MB_XLNX_LIBS     := $(MB_XLNX_PATH)/share/microblaze-unknown-linux-gnu/lib
+MB_XLNX_LIBS      = $(MB_XLNX_PATH)/$(MB_XLNX_PREFIX)/lib
 TOOLCHAIN_ID     := MB_XLNX
 
 ifeq (_le,$(findstring _le,$(MB_XLNX_VERSION)))
