@@ -43,7 +43,7 @@ $(MB_XLNX_PATH):
 	$(Q) mv $(TMP_PATH)/$(MB_XLNX_ORIG)/$(MB_XLNX_DIR-$(MB_XLNX_ENDIAN)) $(MB_XLNX_PATH)
 	$(Q) rm -Rf $(TMP_PATH)/$(MB_XLNX_ORIG)
 
-install-mb-xlnx:
+install-mb-xlnx-libs:
 	$(Q) mkdir -p $(GENRAMFS_PATH)/lib
 	$(Q) cp -v $(MB_XLNX_LIBS)/ld-2.3.6.so             $(GENRAMFS_PATH)/lib
 	$(Q) cp -v $(MB_XLNX_LIBS)/libc-2.3.6.so           $(GENRAMFS_PATH)/lib
@@ -60,6 +60,12 @@ install-mb-xlnx:
 	$(Q) cp -v $(MB_XLNX_LIBS)/libnss_nisplus-2.3.6.so $(GENRAMFS_PATH)/lib
 	$(Q) cp -v $(MB_XLNX_LIBS)/libpthread-0.10.so      $(GENRAMFS_PATH)/lib
 	$(Q) cp -v $(MB_XLNX_LIBS)/libresolv-2.3.6.so      $(GENRAMFS_PATH)/lib
+
+install-mb-xlnx-symlinks:
+	$(Q) cd $(GENRAMFS_PATH)/lib && ln -fvs ld-2.3.6.so ld.so.1
+	$(Q) cd $(GENRAMFS_PATH)/lib && ln -fvs libc-2.3.6.so libc.so.6
+
+install-mb-xlnx: install-mb-xlnx-libs install-mb-xlnx-symlinks
 
 download: download-mb-xlnx
 download-fini: unpack-mb-xlnx
