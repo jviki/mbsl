@@ -74,3 +74,7 @@ download-fini: unpack-mb-xlnx
 mb-xlnx-echo-endianity:
 	$(Q) echo "[TOOLCHAIN] Endianity: $(MB_XLNX_ENDIAN)" > /dev/stderr
 build-init: mb-xlnx-echo-endianity
+
+ifeq ($(BUILD_MODE),shared)
+install-init: install-mb-xlnx
+endif
