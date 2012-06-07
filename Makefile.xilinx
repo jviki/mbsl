@@ -34,6 +34,7 @@ DTS_FILE     := $(DTS_PATH)/$(DTS).dts
 # ELF file of bootloader
 BOOTLDR_ELF  ?=
 BOOTLDR_BMM  ?= $(DESIGN_PATH)/system_bd.bmm
+ORIG_BITSTREAM ?= $(DESIGN_PATH)/system.bit
 
 # JTAG number of FPGA device
 FPGA_JTAG    ?= 1
@@ -52,9 +53,9 @@ boot-by-impact: $(DESIGN_FILE) download.cmd
 	$(Q) $(call impact-batch,download.cmd)
 
 ifneq ($(BOOTLDR_ELF),)
-$(DESIGN_FILE): $(DESIGN_PATH)/system.bit $(BOOTLDR_ELF)
-	$(Q) $(XIL_SETUP) && bitinit                    \
-	 	-bt "$(DESIGN_PATH)/system.bit"         \
+$(DESIGN_FILE): $(ORIG_BITSTREAM) $(BOOTLDR_ELF)
+	$(Q) $(XIL_SETUP) && bitinit               \
+	 	-bt "$(ORIG_BITSTREAM)"                 \
 		-o  "$(DESIGN_FILE)"                    \
 		-pe "$(FPGA_PROC_ID)" "$(BOOTLDR_ELF)"  \
 		-bm "$(BOOTLDR_BMM)"                    \
