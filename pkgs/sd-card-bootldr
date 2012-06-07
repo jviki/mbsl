@@ -63,6 +63,7 @@ $(SD_CARD_BOOTLDR_SRC)/crypto_key.h: $(XXTEA_KEY)
 	$(Q) $(UTIL_PATH)/sd-card-bootldr-xxtea.sh $@ $<
 else
 gen-crypto-key-header:
+	$(Q) echo "Bootloader will be compiled without xxtea support (or reorder the packages)" > /dev/stderr
 	$(Q) echo "" > $(SD_CARD_BOOTLDR_SRC)/crypto_key.h
 endif
 
