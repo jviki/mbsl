@@ -106,13 +106,15 @@ FPGA_TYPE    ?= xc3s1600efg320-4
 # generates linux MSS file from standalone MSS file
 mss-linux-gen = awk -v LOG=1 -f $(UTIL_PATH)/standalone2linux.awk $(1) > $(2);
 
-# name of the source standalone MSS
-# if empty no generation will occure
+# Absolute path to the source standalone MSS.
+# If empty no generation will occure.
+# If specified and MSS_FILE doesn't exit, it is
+# used to generate it.
 MSS_SALONE   ?=
 
 # automatic linux MSS generation from standalone MSS
 ifneq ($(MSS_SALONE),)
-$(MSS_FILE): $(MSS_PATH)/$(MSS_SALONE).mss
+$(MSS_FILE): $(MSS_SALONE)
 	$(Q) $(call mss-linux-gen,$<,$@)
 endif
 
