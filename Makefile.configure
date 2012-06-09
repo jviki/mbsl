@@ -11,11 +11,11 @@ configure-fini:
 
 KERNEL_CONFIGURE ?= oldconfig
 kernel-configure  = $(TOOLCHAIN_ENV) $(MAKE) -C $(KERNEL_PATH) ARCH=microblaze $(KERNEL_CONFIGURE)
-kconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(KERNEL_PATH)
+kconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(KERNEL_PATH) CONFIG_CROSS_COMPILE $(TOOLCHAIN_CROSS)
 
 BUSYBOX_CONFIGURE ?= oldconfig
 busybox-configure  = $(TOOLCHAIN_ENV) $(MAKE) -C $(BUSYBOX_PATH) ARCH=microblaze $(BUSYBOX_CONFIGURE)
-bbconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(BUSYBOX_PATH)
+bbconfig-install   = $(UTIL_PATH)/config-install.sh $(CFG_PATH)/$(1) $(BUSYBOX_PATH) CONFIG_CROSS_COMPILER_PREFIX $(TOOLCHAIN_CROSS)
 
 # Kernel & Busybox configuration
 

@@ -2,14 +2,14 @@
 BUSIO_VERSION ?= 0.1
 BUSIO_NAME    := busio-$(BUSIO_VERSION)
 BUSIO_PATH    := $(SRC_PATH)/$(DTREE_NAME)
-BUSIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC) AR=$(TOOLCHAIN_CROSS)ar LDFLAGS=-static
+BUSIO_BUILD_OPTS ?= CC=$(TOOLCHAIN_CC) AR=$(TOOLCHAIN_CROSS)ar
 
 download-busio: download-dtree
 unpack-busio: unpack-dtree
 
 configure-busio:
 build-busio:
-	$(Q) $(call common-build,BUSIO) busio
+	$(Q) $(call common-moded-build,BUSIO) busio
 	$(Q) $(TOOLCHAIN_ENV) $(TOOLCHAIN_CROSS)strip $(BUSIO_PATH)/busio
 
 install-busio:
