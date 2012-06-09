@@ -34,6 +34,7 @@ DTS_FILE     := $(DTS_PATH)/$(DTS).dts
 # ELF file of bootloader
 BOOTLDR_ELF  ?=
 BOOTLDR_BMM  ?= $(DESIGN_PATH)/system_bd.bmm
+ORIG_BITSTREAM ?= $(DESIGN_PATH)/system.bit
 
 # JTAG number of FPGA device
 FPGA_JTAG    ?= 1
@@ -52,14 +53,16 @@ boot-by-impact: $(DESIGN_FILE) download.cmd
 	$(Q) $(call impact-batch,download.cmd)
 
 ifneq ($(BOOTLDR_ELF),)
-$(DESIGN_FILE): $(DESIGN_PATH)/system.bit $(BOOTLDR_ELF)
-	$(Q) $(XIL_SETUP) && bitinit                    \
-	 	-bt "$(DESIGN_PATH)/system.bit"         \
+$(DESIGN_FILE): $(ORIG_BITSTREAM) $(BOOTLDR_ELF)
+	$(Q) $(XIL_SETUP) && bitinit               \
+	 	-bt "$(ORIG_BITSTREAM)"                 \
 		-o  "$(DESIGN_FILE)"                    \
 		-pe "$(FPGA_PROC_ID)" "$(BOOTLDR_ELF)"  \
 		-bm "$(BOOTLDR_BMM)"                    \
 		$(BITINIT_OPTS)                         \
 		-p  "$(FPGA_TYPE)" "$(MHS_FILE)"
+else
+	 $(info No bootloader is used)
 endif
 
 xilinx-cleanlock: cleanlock.cmd
@@ -103,13 +106,15 @@ FPGA_TYPE    ?= xc3s1600efg320-4
 # generates linux MSS file from standalone MSS file
 mss-linux-gen = awk -v LOG=1 -f $(UTIL_PATH)/standalone2linux.awk $(1) > $(2);
 
-# name of the source standalone MSS
-# if empty no generation will occure
+# Absolute path to the source standalone MSS.
+# If empty no generation will occure.
+# If specified and MSS_FILE doesn't exit, it is
+# used to generate it.
 MSS_SALONE   ?=
 
 # automatic linux MSS generation from standalone MSS
 ifneq ($(MSS_SALONE),)
-$(MSS_FILE): $(MSS_PATH)/$(MSS_SALONE).mss
+$(MSS_FILE): $(MSS_SALONE)
 	$(Q) $(call mss-linux-gen,$<,$@)
 endif
 

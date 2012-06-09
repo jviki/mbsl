@@ -1,3 +1,4 @@
+*.xxtea-key
 *.cmd
 *.log
 gen-ramfs
