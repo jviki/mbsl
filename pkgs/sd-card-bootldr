@@ -37,8 +37,10 @@ MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
 
 # The additional flags allow to strip some unused functions
 # and thus make the result smaller...
-MB_CFLAGS  ?= -Os -fdata-sections -ffunction-sections
-MB_LDFLAGS ?= -Wl,--gc-sections
+#MB_CFLAGS  ?= -Os -fdata-sections -ffunction-sections
+#MB_LDFLAGS ?= -Wl,--gc-sections
+MB_CFLAGS  ?= -Wall -O0 -pedantic -g3
+MB_LDFLAGS ?=
 
 ############################
 
