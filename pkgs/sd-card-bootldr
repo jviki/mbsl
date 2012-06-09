@@ -39,7 +39,7 @@ MB_LIBS  ?= $(SD_CARD_BOOTLDR_PATH)/$(FPGA_PROC_ID)/lib
 # and thus make the result smaller...
 #MB_CFLAGS  ?= -Os -fdata-sections -ffunction-sections
 #MB_LDFLAGS ?= -Wl,--gc-sections
-MB_CFLAGS  ?= -Wall -O0 -pedantic -g3
+MB_CFLAGS  ?= -Wall -O0 -pedantic -g3 -std=gnu99
 MB_LDFLAGS ?=
 
 ############################
