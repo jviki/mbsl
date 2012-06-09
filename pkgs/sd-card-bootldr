@@ -97,7 +97,7 @@ build-sd-card-bootldr: $(SD_CARD_BOOTLDR_ELF)
 
 # building the ELF
 $(SD_CARD_BOOTLDR_ELF): $(SD_CARD_BOOTLDR_O)
-	$(MB_GCC) -Wl,-T -Wl,$(SD_CARD_BOOTLDR_LINK) $(MB_LDFLAGS) -L $(MB_LIBS) $(MB_FLAGS) -o $@ $^
+	$(MB_GCC) -Wl,-T -Wl,$(SD_CARD_BOOTLDR_LINK) $(MB_LDFLAGS) -L $(MB_LIBS) $(MB_FLAGS) -o $@ $^ -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
 	$(MB_SIZE) $@
 
 $(BOOTLDR_ELF): $(SD_CARD_BOOTLDR_ELF)
