@@ -83,12 +83,17 @@ $(SD_CARD_BOOTLDR_SRC)/parameters.h: $(CFG_PATH)/$(SD_CARD_BOOTLDR_CFG)
 
 # generation of BSP
 configure-sd-card-bootldr: copy-cfg-sd-card-bootldr gen-prerequisited $(SD_CARD_BOOTLDR_MSS)
-	$(Q) cd $(SD_CARD_BOOTLDR_PATH) \
-		&& $(XIL_SETUP)              \
-		&& libgen                    \
-		-mhs $(MHS_FILE)             \
-		-p "$(FPGA_TYPE)"            \
-		$(LIBGEN_OPTS)               \
+	$(Q) cd $(SD_CARD_BOOTLDR_PATH)   \
+		&& $(XIL_SETUP)                \
+		&& psf2Edward -inp $(MHS_FILE) \
+		-exit_on_error -edwver 1.2     \
+		-p "$(FPGA_TYPE)"              \
+		-xml system.xml                \
+		$(LIBGEN_OPTS)                 \
+		&& libgen                      \
+		-hw system.xml                 \
+		-pe $(FPGA_PROC_ID)            \
+		$(LIBGEN_OPTS)                 \
 		$(SD_CARD_BOOTLDR_MSS)
 
 ############################
