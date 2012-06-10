@@ -7,8 +7,7 @@ LUA_URL       = $(LUA_BASE_URL)/$(LUA_NAME).$(LUA_AR)
 LUA_ORIG     := $(LUA_NAME)
 LUA_PATH     := $(SRC_PATH)/$(LUA_NAME)
 
-LUA_BUILD_OPTS  = LDFLAGS="--static"
-LUA_BUILD_OPTS += CC="$(TOOLCHAIN_CC)"
+LUA_BUILD_OPTS  = CC="$(TOOLCHAIN_CC)"
 LUA_BUILD_OPTS += AR="$(TOOLCHAIN_CROSS)ar rcu"
 LUA_BUILD_OPTS += RANLIB="$(TOOLCHAIN_CROSS)ranlib"
 
@@ -22,7 +21,7 @@ $(LUA_PATH):
 
 configure-lua:
 build-lua:
-	$(call common-build,LUA) posix
+	$(call common-moded-build,LUA) posix
 
 install-lua:
 #	$(call common-install,LUA) INSTALL_TOP="$(GENRAMFS_PATH)"
