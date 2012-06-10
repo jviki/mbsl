@@ -32,3 +32,9 @@ clean-lua:
 
 download-body: download-lua
 download-fini: unpack-lua
+
+configure-body: configure-lua
+build-body: build-lua
+install-body: install-lua
+clean-body: clean-lua
+distclean-body: clean-lua
