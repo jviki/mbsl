@@ -65,6 +65,7 @@ install-mb-xlnx-libs:
 install-mb-xlnx-symlinks:
 	$(Q) cd $(GENRAMFS_PATH)/lib && ln -fvs ld-2.3.6.so ld.so.1
 	$(Q) cd $(GENRAMFS_PATH)/lib && ln -fvs libc-2.3.6.so libc.so.6
+	$(Q) cd $(GENRAMFS_PATH)/lib && ln -fvs libm-2.3.6.so libm.so.6
 
 install-mb-xlnx: install-mb-xlnx-libs install-mb-xlnx-symlinks
 
